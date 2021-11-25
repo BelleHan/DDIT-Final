@@ -1,0 +1,59 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.logis.dao.LogisDAO;
+import kr.or.fms.logis.dto.LogisContractInfoVO;
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.logis.dto.LogisWhVO;
+
+public class LogisServiceImpl implements LogisService {
+
+	public LogisDAO logisDAO;
+	public void setLogisDAO(LogisDAO logisDAO) {
+		this.logisDAO = logisDAO;
+	}
+	
+	@Override
+	public LogisVO getLogis(String logis_code) throws SQLException {
+		LogisVO logis = logisDAO.selectLogisByCode(logis_code);
+		return logis;
+	}
+
+	//반품개수
+	@Override
+	public int getReturnCount() throws SQLException {
+		int returnCount = logisDAO.selectReturnCount();
+		return returnCount;
+	}
+
+	//logis가 소유한 창고정보
+	@Override
+	public List<LogisWhVO> getLogisWh(String logis_code) throws SQLException {
+		List<LogisWhVO> logisWhList = logisDAO.selectLogisWh(logis_code);
+		return logisWhList;
+	}
+
+	//계약업체
+	@Override
+	public int getLogisHq(String logis_code) throws SQLException {
+		int hqCount = logisDAO.selectLogisHq(logis_code);
+		return hqCount;
+	}
+
+	//물품 탑5
+	@Override
+	public List<LogisWhVO> getTopGoods(String logis_code) throws SQLException {
+		List<LogisWhVO> topGoodsList = logisDAO.selectTopGoods(logis_code);
+		return topGoodsList;
+	}
+
+	//계약중인 업체정보
+	@Override
+	public List<LogisContractInfoVO> getContractHq(String logis_code) throws SQLException {
+		List<LogisContractInfoVO> logisContractList = logisDAO.selectContractHq(logis_code);
+		return logisContractList;
+	}
+
+}

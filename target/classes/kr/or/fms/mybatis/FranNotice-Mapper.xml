@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranNotice-Mapper">
+	<sql id="search">
+		<if test="searchType == 'o'.toString()">
+			and  p.fran_owner like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 't'.toString()">
+			and r.fran_notice_title like '%'||#{keyword}||'%'			
+		</if>
+		
+	</sql> 
+	
+	<resultMap type="franAppliDocVO" id="franAppliDocVO">
+		<result column="fran_applidoc_code" property="fran_applidoc_code" />
+		<result column="fran_code" property="fran_code" />
+		<result column="attach_no" property="attach_no" />
+		<result column="fran_appli_date" property="fran_appli_date" />
+		<result column="fran_memo" property="fran_memo" />
+	</resultMap>
+	
+		<resultMap type="fran" id="fran">
+		<result column="fran_code" property="fran_code" />
+		<result column="fran_owner" property="fran_owner" />
+		<result column="fran_tel" property="fran_tel" />
+		<result column="fran_zip" property="fran_zip" />
+		<result column="fran_addr" property="fran_addr" />
+		<result column="fran_detail_addr" property="fran_detail_addr" />
+		<result column="fran_email" property="fran_email" />
+		<result column="land_area" property="land_area" />
+		<result column="dedicated_area" property="dedicated_area" />
+		<result column="floor" property="floor" />
+		<result column="fran_se" property="fran_se" />
+		<result column="fran_gtn" property="fran_gtn" />
+		<result column="fran_rent_charge" property="fran_rent_charge" />
+		<result column="fran_manage_cost" property="fran_manage_cost" />
+	</resultMap>
+	
+	<resultMap type="franNotice" id="franNotice">
+		<result column="fran_applidoc_code" property="fran_applidoc_code" />
+		<result column="fran_code" property="fran_code" />
+		<result column="fran_notice_num" property="fran_notice_num" />
+		<result column="emp_no" property="emp_no" />
+		<result column="emp_name" property="emp_name" />
+		<result column="fran_notice_title" property="fran_notice_title" />
+		<result column="fran_notice_date" property="fran_notice_date" />
+		<result column="attach_no" property="attach_no" />
+		<result column="fran_notice_st" property="fran_notice_st" />
+		<result column="fran_remark" property="fran_remark" />
+		<collection property="franAppliDocVO" resultMap="franAppliDocVO"/>	
+		<collection property="franVO" resultMap="fran" />
+	</resultMap>
+	
+	<select id="selectFranNoticeDetail" resultMap="franNotice" parameterType="str">
+		SELECT
+		    p.fran_code,
+		    p.fran_tel,
+		    p.fran_addr,
+		    p.fran_owner,
+		    p.fran_email,
+		    p.fran_zip,
+		    p.fran_detail_addr,
+		    p.land_area,
+		    p.fran_se,
+		    p.fran_gtn,
+		    p.fran_rent_charge,
+		    p.fran_manage_cost,
+		    p.dedicated_area,
+		    p.floor,
+		    q.fran_applidoc_code,
+		    q.fran_code,
+		    q.attach_no,
+		    q.fran_memo,
+		    q.fran_appli_date,
+		    r.fran_notice_num,
+		    r.fran_code,
+		    r.emp_no,
+		    r.emp_name,
+		    r.attach_no,
+		    r.fran_notice_st,
+		    r.fran_notice_date,
+		    r.fran_notice_title,
+		    r.fran_applidoc_code
+		FROM
+		    fran_applidoc q,
+		    fran p,
+		    fran_notice r
+		WHERE
+		    p.fran_code = q.fran_code
+		    AND   p.fran_code = r.fran_code
+			AND r.fran_notice_num = #{fran_notice_num}
+		
+	</select>
+	
+	
+	<select id="selectFranNoticeList" resultMap="franNotice">
+		SELECT
+		   	r.fran_notice_num,
+		    r.fran_notice_title,
+		    r.emp_name,
+		    r.fran_notice_date,
+		    q.fran_appli_date,
+		    p.fran_owner,
+		    f.emp_name
+		FROM
+		    fran_notice r,
+		    fran p,
+		    fran_applidoc q,
+		    hq_emp f
+		WHERE
+		    p.fran_code = q.fran_code
+		    AND   p.fran_code = r.fran_code
+		    AND   r.emp_no = f.emp_no
+	    <include refid="search" />
+		    order by q.fran_appli_date desc
+  		 
+	</select>
+	
+	<select id="selectFranByNum" parameterType="str" resultType="franNotice">
+	select * 
+	from fran_notice
+	where fran_notice_num = #{fran_notice_num}
+	</select>
+	
+	<select id="selectFranNoticeListCount" resultType="int">
+		select 
+		count(*)
+		from 
+		fran_notice
+		<include refid="search" />
+	</select>
+	
+	
+	
+
+
+
+
+
+</mapper>

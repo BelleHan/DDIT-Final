@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Reply-Mapper">
+	
+	<select id="selectReplySeqNextValue" resultType="String" >
+		select reply_seq.nextval
+		from dual		
+	</select>
+	
+	<select id="selectReplyList" resultType="franReply">
+		select *
+		from fran_notice_reply
+		where fran_notice_num = #{fran_notice_num}
+		order by fran_reply_num asc
+	</select>
+	
+	<select id="countReply" resultType="int">
+		select count(fran_reply_num) 
+		from fran_notice_reply
+		where fran_notice_num = #{fran_notice_num}
+	</select>
+		
+	
+	<update id="insertReply" >
+		insert into fran_notice_reply(fran_reply_num,fran_notice_num,fran_reply_content,emp_no)
+		values(#{fran_reply_num},#{fran_notice_num},#{fran_reply_content},#{emp_no})
+	</update>
+	
+	<update id="updateReply" parameterType="franReply">
+		update fran_notice_reply 
+		set 
+		fran_reply_content=#{fran_reply_content},
+		reply_update_date=sysdate
+		where fran_reply_num=#{fran_reply_num}		
+	</update>
+	
+	<update id="deleteReply" parameterType="String">
+		delete from fran_notice_reply
+		where fran_reply_num=#{fran_reply_num}		
+	</update>	
+</mapper>
+
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+
+public interface FranHomeService {
+	
+	//발주신청
+		int getFranOrderCount(String fran_code )throws SQLException;
+		
+	//발주완료
+		int getOrderCompletedCount(String fran_code )throws SQLException;
+		
+		
+	//반품신청
+	int getReturnApplyCount(String fran_code )throws SQLException;
+	
+	//빈품완료
+	int getReturnCompleteCount(String fran_code )throws SQLException;
+	
+	
+	//가맹점간 재고요청
+	int getStockRequestCount(String fran_code )throws SQLException;	
+		
+	
+}

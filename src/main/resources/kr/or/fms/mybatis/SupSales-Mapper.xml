@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SupSales-Mapper">
+
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_name" property="sup_goods_name" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_img" property="sup_goods_img" />
+		<result column="sup_code" property="sup_code" />
+	</resultMap>
+	
+	<resultMap type="logis" id="logis">
+		<result column="logis_addr" property="logis_addr" />
+		<result column="logis_code" property="logis_code" />
+	</resultMap>
+
+	<resultMap type="hqBuyGoods" id="buyGoods">
+		<result column="goods_pur_code" property="goods_pur_code" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="pur_arrive_date" property="pur_arrive_date" />
+		<result column="goods_pur_quan" property="goods_pur_quan" />
+		<result column="goods_pur_price" property="goods_pur_price" />
+		<result column="pur_note" property="pur_note" />
+		<result column="pur_arrive_loc" property="pur_arrive_loc" />
+		<result column="goods_pur_st" property="goods_pur_st" />
+		<collection property="supGoodsVO" resultMap="supGoods" />
+		<collection property="logisVO" resultMap="logis" />
+	</resultMap>
+
+	<select id="selectBuyGoodsList" resultMap="buyGoods">
+		SELECT C.LOGIS_CODE, B.SUP_CODE, A.GOODS_PUR_ST, B.SUP_GOODS_IMG, A.GOODS_PUR_CODE, B.SUP_GOODS_NAME, A.SUP_GOODS_CODE, A.PUR_ARRIVE_DATE, C.LOGIS_ADDR, A.GOODS_PUR_QUAN, A.GOODS_PUR_PRICE, A.PUR_NOTE
+		FROM BUY_GOODS A, SUP_GOODS B, LOGIS C
+		WHERE A.SUP_GOODS_CODE = B.SUP_GOODS_CODE
+		AND A.PUR_ARRIVE_LOC = C.LOGIS_CODE
+		AND A.GOODS_PUR_ST = '1'
+	</select>
+	
+	<select id="selectSearchBuyListCount" resultType="int">
+		select count(*)
+		from buy_goods
+		where goods_pur_code is not null  			  	
+		and goods_pur_st = '1' 			  	
+<!-- 		<include refid="search" /> -->
+		order by goods_pur_date desc
+	</select>
+	
+	<update id="updateBuySt" parameterType="String">
+		UPDATE BUY_GOODS SET GOODS_PUR_ST = '2' 
+		WHERE goods_pur_code = #{goods_pur_code}
+	</update>
+	
+	<update id="insertInList" parameterType="in">
+		INSERT INTO IN_LIST (goods_pur_code, sup_goods_code, logis_code, in_date_schedule, in_num, in_loca) 
+		VALUES (#{goods_pur_code}, #{sup_goods_code}, #{logis_code}, #{in_date_schedule}, #{in_num}, #{in_loca})
+	</update>
+
+</mapper>

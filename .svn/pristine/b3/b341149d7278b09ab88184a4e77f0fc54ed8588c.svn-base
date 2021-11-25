@@ -1,0 +1,71 @@
+package kr.or.fms.fran;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dao.FranOrderManagerDAO;
+import kr.or.fms.fran.dto.FranOrderVO;
+import kr.or.fms.hq.dao.StockDAO;
+import kr.or.fms.hq.dto.FranStockVO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokOrderList {
+	SearchCriteria cri = new SearchCriteria();
+	@Autowired
+	SqlSession session;
+	
+	@Autowired
+	FranOrderManagerDAO orderManagerDAO;
+	
+	@Test
+	public void stockSearchList() throws SQLException, ParseException {
+		cri.getKeywordMap().put("fran_code", "F001");
+		cri.getKeywordMap().put("startDate", "20211105");
+		cri.getKeywordMap().put("endDate", "20221107");
+		cri.getKeywordMap().put("apprSt", "");
+		cri.getKeywordMap().put("deliSt", "");
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		List<FranOrderVO> list = session.selectList("Orderlist-Mapper.getOrderList", cri, rowBounds);
+		for (FranOrderVO f : list) {
+			System.out.println(f.getFran_code());
+			System.out.println(f.getFran_order_date());
+			System.out.println(f.getFran_appr_st());
+			System.out.println(f.getFran_order_price());
+			System.out.println(f.getFran_mark());
+			System.out.println(f.getOrder_st_code());
+			System.out.println(f.getOrder_deli_se());
+		}
+		System.out.println("리스트 크기 : " + list.size());
+//		List<FranOrder> list = session.selectList("Orderlist-Mapper.getOrderList", cri);
+//		System.out.println(list.size());
+	}
+	
+//	@Test
+//	public void orderDetail() {
+//		String order_code = "FROR211103";
+//		List<Object> list = session.selectList("Orderlist-Mapper.getOrderDetail", order_code);
+//		System.out.println(list.size());
+//	}
+
+}

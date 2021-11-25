@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Keyword-Mapper">
+
+	<select id="hqGoods" resultType="hqgoods">
+		select
+		a.sup_goods_code,
+		b.sup_goods_name,
+		c.sup_name,
+		a.goods_retail_price,
+		a.last_update
+		from hq_goods a, sup_goods b, sup c
+		where a.sup_goods_code = b.sup_goods_code
+		and b.sup_code = c.sup_code
+	</select>
+	
+	<select id="local" resultType="str">
+		select distinct(logis_local_num)
+		from logis
+	</select>
+</mapper>

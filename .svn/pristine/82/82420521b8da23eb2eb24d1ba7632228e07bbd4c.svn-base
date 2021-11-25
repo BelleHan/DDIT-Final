@@ -1,0 +1,266 @@
+package kr.or.fms.sup.controller;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.command.SupGoodsModifyCommand;
+import kr.or.fms.command.SupGoodsdRegistCommand;
+import kr.or.fms.sup.dto.SupGoodsVO;
+import kr.or.fms.sup.dto.SupVO;
+import kr.or.fms.sup.service.SupGoodsService;
+import kr.or.fms.util.MakeFileName;
+
+@Controller
+@RequestMapping("/sup")
+public class SupGoodsController {
+	
+	@Autowired
+	private SupGoodsService supGoodsService;
+	
+
+	private static final Logger logger = LoggerFactory.getLogger(SupController.class);
+	
+	
+//	@RequestMapping(value="/goods/list")
+//	public ModelAndView goodsList(SearchCriteria cri, ModelAndView mnv) throws SQLException{
+//		String url = "sup/goods/list3";
+//		
+//		Map<String, Object> dataMap = supGoodsService.getSupGoodsList(cri);
+//		
+//		mnv.addObject("dataMap",dataMap);
+//		mnv.setViewName(url);
+//		
+//		return mnv;
+//	}
+//	@RequestMapping(value="/goods/list")
+//	public ModelAndView goodsList( ModelAndView mnv, HttpSession session) throws SQLException{
+//		String url = "sup/goods/list3";
+//		
+//		SupVO sup = (SupVO)session.getAttribute("loginSup");
+//		String supCode = sup.getSup_code();
+//		
+//		Map<String, Object> dataMap = supGoodsService.getSupGoodsListBySupCode(supCode);
+//		
+//		mnv.addObject("dataMap",dataMap);
+//		mnv.setViewName(url);
+//		
+//		return mnv;
+//	}
+	@RequestMapping(value="/goods/buy")
+	public ModelAndView goodsList(SearchCriteria cri, String laca, String smca, String keyword, ModelAndView mnv, HttpSession session,
+			@RequestParam Map<String,Object> map) throws SQLException{
+		String url = "sup/goods/list3";
+		System.out.println("laca"+laca);
+		System.out.println("laca"+keyword);
+		
+		cri.setPerPageNum(10);
+		cri.getKeywordMap().put("laca", laca);
+		cri.getKeywordMap().put("smca", smca);
+		cri.getKeywordMap().put("keyword", keyword);
+		
+		Map<String, Object> dataMap = supGoodsService.getSupGoodsList(cri, session);
+		
+		mnv.addObject("map", map);
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	//대분류 선택시 대분류 parameter ajax로 받아옴
+	@ResponseBody
+	@RequestMapping(value="/goods/searchSmca",  method=RequestMethod.POST)
+	public List<String> searchSmca(@RequestBody String laca)throws Exception{
+		System.out.println("<<<<<"+laca);
+		
+		List<String> list = supGoodsService.searchSmca(laca);
+		
+		System.out.println("?"+list.size());
+		return list;
+	}
+	
+	@RequestMapping("goods/registForm")
+	public ModelAndView registForm(ModelAndView mnv)throws SQLException{
+		String url = "sup/goods/regist2";
+		
+		Map<String, Object> dataMap = supGoodsService.getGoodsClass();
+		
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	//bean id 가 picturePath인 것을 가져오는 annotation
+	@Resource(name="picturePath")
+	private String picturePath;
+	
+	@RequestMapping(value="/goods/picture", method= RequestMethod.POST, produces="text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> picture(@RequestParam("pictureFile") MultipartFile multi, String oldPicture)
+			throws Exception{
+		
+		ResponseEntity<String> entity = null;
+		
+		String result = "";
+		HttpStatus status = null;
+		
+		//파일저장확인
+		if((result = savePicture(oldPicture, multi))==null) {
+			result = "업로드 실패했습니다.";
+			status = HttpStatus.BAD_REQUEST;
+		}else {
+			status = HttpStatus.OK;
+		}
+		
+		entity = new ResponseEntity<String>(result, status);
+
+		return entity;
+	}
+	
+	
+	private String savePicture(String oldPicture, MultipartFile multi) throws Exception {
+		String fileName = null;
+
+		/* 파일유무확인 */
+		if (!(multi == null || multi.isEmpty() || multi.getSize() > 1024 * 1024 * 5)) {
+
+			/* 파일저장폴더설정 */
+			String uploadPath = picturePath;
+			fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
+			File storeFile = new File(uploadPath, fileName);
+
+//			storeFile.mkdirs();
+
+			// local HDD 에 저장.
+			multi.transferTo(storeFile);
+
+			if (oldPicture != null && !oldPicture.isEmpty()) {
+				File oldFile = new File(uploadPath, oldPicture);
+				if (oldFile.exists()) {
+					oldFile.delete();
+				}
+			}
+		}
+		return fileName;
+	}
+	
+	@RequestMapping(value = "goods/getPicture", produces = "text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<byte[]> getPicture(String sup_goods_img) throws Exception {
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		String imgPath = this.picturePath;
+		try {
+			in = new FileInputStream(new File(imgPath, sup_goods_img));
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.CREATED);
+		} catch (IOException e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			in.close();
+		}
+		return entity;
+	}
+
+	@RequestMapping(value="goods/regist2", method = RequestMethod.POST)
+	public String regist(SupGoodsdRegistCommand regReq, HttpServletRequest request, RedirectAttributes rttr, HttpSession session)throws Exception, IOException{
+		String url = "redirect:/sup/goods/buy.do";
+		
+		SupVO sup = (SupVO)session.getAttribute("loginSup");
+		
+		SupGoodsVO supGoods = regReq.toSupGoodsVO();
+		supGoods.setSup_code(sup.getSup_code());
+		
+		supGoodsService.regist(supGoods);
+		rttr.addFlashAttribute("from", "regist");
+		
+		return url;
+	}
+
+	
+	@RequestMapping("goods/detail")
+	public String detail(@ModelAttribute("sup_goods_code") String sup_goods_code, Model model)throws SQLException{
+		String url = "sup/goods/detail";
+		
+		SupGoodsVO supGoods = supGoodsService.getSupGoods(sup_goods_code);
+		
+		model.addAttribute("supGoods",supGoods);
+		
+		return url;
+		
+	}
+	
+	@RequestMapping("goods/modifyForm")
+	public ModelAndView modifyForm(String sup_goods_code, ModelAndView mnv)throws SQLException{
+		String url = "sup/goods/modify";
+		
+		SupGoodsVO supGoods = supGoodsService.getSupGoods(sup_goods_code);
+		Map<String, Object> dataMap = supGoodsService.getGoodsClass();
+		
+		mnv.addObject("dataMap",dataMap);
+		mnv.addObject("supGoods", supGoods);
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping(value="goods/modify", method=RequestMethod.POST)
+	public String modify(SupGoodsModifyCommand modifyReq, HttpSession session, RedirectAttributes rttr)throws Exception{
+		String url = "redirect:/sup/goods/detail.do?sup_goods_code="+modifyReq.getSup_goods_code();
+		
+		SupGoodsVO supGoods = modifyReq.toParseGoods();
+		
+		//신규 파일 변경 및 기존 파일 삭제
+		String fileName = savePicture(modifyReq.getOldPicture(), modifyReq.getSup_goods_img());
+		supGoods.setSup_goods_img(fileName);
+		
+//		System.out.println("old"+modifyReq.getOldPicture());
+//		System.out.println("new"+fileName);
+		
+		System.out.println("code"+modifyReq.getSup_goods_code());
+		
+		if(modifyReq.getSup_goods_img().isEmpty()) {
+			supGoods.setSup_goods_img(modifyReq.getOldPicture());
+		}
+		
+		//db내용 수정
+		supGoodsService.modify(supGoods);
+		
+		rttr.addFlashAttribute("parentReload", false);
+		rttr.addAttribute("from", "modify");
+		rttr.addFlashAttribute("supGoods", supGoodsService.getSupGoods(modifyReq.getSup_goods_code()));
+		
+		return url;
+		
+	}
+
+	
+}

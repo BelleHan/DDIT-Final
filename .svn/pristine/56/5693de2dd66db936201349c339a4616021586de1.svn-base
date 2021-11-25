@@ -1,0 +1,46 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+
+public class FranDAOImpl implements FranDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+
+	@Override
+	public List<FranVO> selectFranList() throws SQLException {
+		List<FranVO> franList = session.selectList("Fr-Mapper.selectFranList");
+		return franList;
+	}
+
+	@Override
+	public List<FranVO> selectFranList(Criteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranVO> franList = session.selectList("Fr-Mapper.selectFranList", null, rowBounds);
+		return franList;
+	}
+
+	@Override
+	public List<FranVO> selectFranList(SearchCriteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranVO> franList = session.selectList("Fr-Mapper.selectSearchFranList",cri,rowBounds);
+		return franList;
+	}
+
+}

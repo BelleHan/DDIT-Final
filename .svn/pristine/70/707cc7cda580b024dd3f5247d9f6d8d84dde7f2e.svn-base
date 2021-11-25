@@ -1,0 +1,242 @@
+/**
+ * Created by yyh on 2020. 12. 10..
+ */
+
+@font-face {
+    font-family: 'NotoSansCJKkr-R';
+    font-style: normal;
+    font-weight: 400;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'NotoSansCJKkr-M';
+    font-style: normal;
+    font-weight: 500;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'NotoSansCJKkr-B';
+    font-style: normal;
+    font-weight: 700;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'NotoSansCJKkr-DL';
+    font-style: normal;
+    font-weight: 300;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'),
+    url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');
+}
+
+body {
+    font-family: NotoSansCJKkr-R;
+    font-size: 13px;
+}
+
+/* notice 스타일 */
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.header-area {
+    height: 56px;
+    text-align: center;
+    padding-top: 15px;
+    font-size: 16px;
+}
+
+.title-border {
+    background-color: #d8d8d8;
+    height: 1px;
+}
+
+.title-content {
+    padding: 30px 0 24px 0;
+    margin-bottom: 24px;
+    font-size: 16px;
+    color: #212121;
+    text-align: center;
+}
+
+.title-notice {
+    border: 1px solid #aaaaaa;
+    border-radius: 16px;
+    font-size: 12px;
+    height: 22px;
+    padding: 2px 9px;
+    color: #aaaaaa;
+    margin: 0 39% 8px 39%;
+}
+
+.title-invoice {
+    font-size: 24px;
+    font-family: NotoSansCJKkr-B;
+    margin-bottom: 2px;
+}
+
+.title-company {
+    font-size: 16px;
+}
+
+.info-area {
+    display: block;
+    margin-bottom: 25px;
+}
+
+.info-back-line {
+    position: relative;
+}
+
+.info-parcel-text-active {
+    font-family: NotoSansCJKkr-M;
+    font-size: 10px;
+    color: #212121;
+    margin-top: 6px;
+}
+
+.info-parcel-text-none {
+    font-family: NotoSansCJKkr-DL;
+    font-size: 10px;
+    color: #757575;
+    margin-top: 6px;
+}
+
+.info-back-line:before {
+    content: '';
+    position: absolute;
+    background-color: #e2e5e8;
+    height: 1px;
+    top: 25px;
+    right: 13%;
+    left: 6%;
+}
+
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.parcel-img {
+    width: 50px;
+    height: 50px;
+}
+
+/* notice 스타일 end */
+
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15 {
+    position: relative;
+    min-height: 1px;
+}
+
+.col-xs-15 {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .col-sm-15 {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-15 {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-15 {
+        width: 20%;
+        float: left;
+    }
+}
+
+.tracking-status-item-list {
+    border-top: 8px solid #f0f0f0;
+}
+
+.tracking-status-item {
+    padding: 16px 52px;
+    font-size: 13px;
+    color: #212121;
+}
+
+.tracking-status-item-list :first-child > .location-text {
+    font-family: 'NotoSansCJKkr-B';
+}
+
+.tracking-status-item-list :first-child > .status-text {
+    font-family: 'NotoSansCJKkr-B';
+    color: #ff6d00;
+}
+
+.tracking-status-item-list :first-child > .list-circle {
+    position: relative;
+    top: 20px;
+    left: -31px;
+    width: 10px;
+    height: 10px;
+    background: #757575;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.time-text {
+    font-size: 12px;
+    color: #aaaaaa;
+}
+
+.list-circle {
+    border: 2px solid #757575;
+    position: relative;
+    top: 20px;
+    left: -30px;
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.vertical-line {
+    position: absolute;
+    width: 2px;
+    height: 80px;
+    background: #aaaaaa;
+    left: 25px;
+    top: 40px;
+}
+
+.notice-area {
+    background-color: #f0f0f0;
+    height: 44px;
+    padding: 12px 16px;
+}
+
+.template-notice {
+    font-size: 12px;
+    color: #757575;
+}
+
+.banner-area {
+    background-color: #ff801f;
+}

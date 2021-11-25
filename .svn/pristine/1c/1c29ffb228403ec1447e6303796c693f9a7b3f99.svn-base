@@ -1,0 +1,17 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.FranAppliVO;
+
+public interface AppliDAO {
+	
+	List<FranAppliVO> selectAppliCriteria(SearchCriteria cri) throws SQLException;
+
+	int selectAppliCriteriaTotalCount(SearchCriteria cri) throws SQLException;
+
+	FranAppliVO selectAppliByFran_applidoc_code(String fran_applidoc_code) throws SQLException;
+
+}

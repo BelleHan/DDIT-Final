@@ -1,0 +1,175 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="cri" value="${pageMaker.cri }" />
+<head>
+<style>
+.th{
+	background-color: silver;
+
+}
+.tab {
+	width: 1000px;
+	margin-left: 10%;
+	
+}
+
+</style>
+</head>
+
+<title>재고조회</title>
+
+<body>
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>재고조회</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>가맹점재고
+				        </a>
+			        </li>
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+   	<section class="content">
+   		<div class="card">
+   			<div class="card-header with-border">
+   				<!-- <button type="button" class="btn btn-primary" onclick="OpenWindow('registForm.do', '업체등록', '800', '700');" >업체등록</button> -->
+   				<div id="keyword" class="card-tools" style="width:550px;">
+   					 <div class="input-group row">	
+   					 	<!-- search bar -->
+   					 		<div class="input-group input-group-sm col-sm-3">
+								<span class=" search-group col-sm-4">지역</span>
+								<div class="input-group col-sm-7">
+									<input type="text" id="fms-local" class="form-control form-fms-search" value="fms-local" >
+									<span class="input-group-append">
+										<button type="button" id="btn-local" class="btn btn-primary btn-flat btn-fms-search"><i class="fas fa-search"></i></button>
+									</span>
+								</div>
+							</div>
+   					 		<!-- 모달 영역 -->
+							<div class="modal fade" id="modal-local" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">지역</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										</div>
+										<div class="modal-body">
+											<table class="table table-bordered keyword-list" id="modal-fms-local">
+												<tr>
+													<th>지역코드</th>
+													<th>지역명</th>
+												</tr>
+											</table>
+										</div>
+										<div class="modal-footer">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 모달 끝 -->
+   					 	<!-- keyword -->
+   					 	<input class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요." value="${cri.keyword }"/>
+   					 	
+						<span class="input-group-append">
+							<button class="btn btn-primary" type="button" 
+									id="searchBtn" data-card-widget="search" onclick="list_go(1);">
+								<i class="fa fa-fw fa-search"></i>
+							</button>
+						</span>
+					<!-- end : search bar -->		
+   					 </div>
+   				</div>   			
+   			</div>
+  		</div>
+   	</section>
+
+	<div class="row">
+		<div class="col-12 col-sm-12">
+			<div class="card card-primary card-tabs">
+				<div class="card-header p-0 pt-1">
+					<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+						<li class="nav-item"><a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">가맹점</a></li>
+						<li class="nav-item"><a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">물류센터</a></li>
+						<li class="nav-item"><a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">공급업체</a></li>
+					</ul>
+				</div>
+				<div class="card-body">
+					<div class="tab-content" id="custom-tabs-one-tabContent">
+						<div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+							<!-- <div class="card-body" style="text-align:center;"> -->
+							<div class="row">
+								<div class="col-sm-12">
+									<table class="table table-bordered">
+										<tr>
+											<th>no</th>
+											<th>지역</th>
+											<th>가맹점코드</th>
+											<th>가맹점</th>
+											<th>분류1</th>
+											<th>분류2</th>
+											<th>제품명</th>
+											<th>제품코드</th>
+											<th>현재고</th>
+											<th>안전재고</th>
+											<th>적정재고</th>
+											<th>입고단가</th>
+											<th>출고단가</th>
+											<th>최대발주량</th>
+											<th>재고금액</th>
+											<th>qrcode</th>
+										</tr>
+										<c:forEach items="${franStockList }" var="stock">
+											<tr style="cursor: pointer;">
+												<td>no</td>
+												<td>${stock.fran_local_num }</td>
+												<td>${stock.fran_code }</td>
+												<td>${stock.fran_name }</td>
+												<td>${stock.sup_goods_laca }</td>
+												<td>${stock.sup_goods_smca }</td>
+												<td>${stock.sup_goods_name }</td>
+												<td>${stock.hq_goods_code }</td>
+												<td>${stock.fran_goods_stock }</td>
+												<td>${stock.fran_safe_stock }</td>
+												<td>${stock.fran_suit_stock }</td>
+												<td>${stock.goods_delivery_price }</td>
+												<td>${stock.goods_retail_price }</td>
+												<td>${stock.sup_goods_attr1 }</td>
+											</tr>
+										</c:forEach>
+									</table>
+								</div>
+								<!-- col-sm-12 -->
+							</div>
+							<!-- row -->
+							<div class="card-footer">
+								<%@ include file="/WEB-INF/views/common/pagination.jsp"%>
+							</div>
+						</div>
+						<!-- card-body -->
+
+
+						<div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>

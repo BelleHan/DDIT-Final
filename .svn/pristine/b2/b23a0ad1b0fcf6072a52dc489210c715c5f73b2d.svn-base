@@ -1,0 +1,332 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
+
+<body>
+	<section class="content-header">
+	<!-- 신규건수 -->
+	<div class="row">
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">신규반품요청건</span>
+                <span class="info-box-number">1,410&nbsp;건</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">계약중인업체</span>
+                <span class="info-box-number">410&nbsp;개</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Uploads</span>
+                <span class="info-box-number">13,648</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Likes</span>
+                <span class="info-box-number">93,139</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        
+        
+        
+        <!-- 소유한 창고정보 -->
+        
+        <div class="row">
+          <div class="col-md-3">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-warning">
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Nadia Carmichael</h3>
+                <h5 class="widget-user-desc">Lead Developer</h5>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Projects <span class="float-right badge bg-primary">31</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Tasks <span class="float-right badge bg-info">5</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Completed Projects <span class="float-right badge bg-success">12</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Followers <span class="float-right badge bg-danger">842</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+          <div class="col-md-3">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-warning">
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Nadia Carmichael</h3>
+                <h5 class="widget-user-desc">Lead Developer</h5>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Projects <span class="float-right badge bg-primary">31</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Tasks <span class="float-right badge bg-info">5</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Completed Projects <span class="float-right badge bg-success">12</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Followers <span class="float-right badge bg-danger">842</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+          <div class="col-md-3">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-warning">
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Nadia Carmichael</h3>
+                <h5 class="widget-user-desc">Lead Developer</h5>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Projects <span class="float-right badge bg-primary">31</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Tasks <span class="float-right badge bg-info">5</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Completed Projects <span class="float-right badge bg-success">12</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Followers <span class="float-right badge bg-danger">842</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+          <div class="col-md-3">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-warning">
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Nadia Carmichael</h3>
+                <h5 class="widget-user-desc">Lead Developer</h5>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Projects <span class="float-right badge bg-primary">31</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Tasks <span class="float-right badge bg-info">5</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Completed Projects <span class="float-right badge bg-success">12</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Followers <span class="float-right badge bg-danger">842</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+        </div>
+	 <!-- 창고정보 end -->
+	 
+	 <div class="row">
+          <div class="col-md-3">
+            <div class="card card-primary collapsed-card">
+              <div class="card-header">
+                <h3 class="card-title">Expandable</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                The body of the card
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Collapsable</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body" style="display: block;">
+                The body of the card
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3">
+            <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">Removable</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                The body of the card
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3">
+            <div class="card card-danger">
+              <div class="card-header">
+                <h3 class="card-title">Maximizable</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                The body of the card
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        
+        
+	 
+	 
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>main</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        </a>
+			        </li>
+			           
+	    		  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+
+</body>

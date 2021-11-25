@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Hq-Mapper">
+
+	<select id="selectEmp" parameterType="str" resultType="hqEmp">
+		select
+		*
+		from hq_emp
+		where emp_no=#{code}
+	</select>
+	
+	<sql id="search">	
+		<if test="searchType == 'i'.toString()">
+			and fran_owner like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'p'.toString()">
+			and fran_code like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'e'.toString()">
+			and fran_tel like '%'||#{keyword}||'%'			
+		</if>		
+	</sql>
+	
+	<select id="selectFranList" resultType="fran">
+		select *
+		from fran
+	</select>
+	
+	<select id="selectSearchFranList" resultType="fran">
+		select
+		*
+		from fran
+		where fran_code is not null
+		<include refid="search" />
+		order by fran_code desc
+	</select>
+	
+	<select id="selectFranListCount" resultType="int">
+		select
+		count(*)
+		from fran
+		where fran_code is not null
+		<include refid="search" />
+	</select>
+	
+	<select id="selectFranByCode" parameterType="str" resultType="fran">
+		select
+		*
+		from fran
+		where fran_code=#{fran_code}
+	</select>
+	
+	<select id="selectLogisList" resultType="logis">
+		select *
+		from logis
+	</select>
+	
+	<select id="selectSearchLogisList" resultType="logis">
+		select
+		*
+		from logis
+		where logis_code is not null
+		<include refid="search" />
+		order by fran_code desc
+	</select>
+	
+	<select id="selectLogisListCount" resultType="logis">
+		select
+		count(*)
+		from logis
+		where logis_code is not null
+		<include refid="search" />
+	</select>
+	
+</mapper>

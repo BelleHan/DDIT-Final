@@ -1,0 +1,26 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+
+
+public interface FranHomeDAO {
+	
+	//발주신청
+	int selectFranOrderCount(String fran_code )throws SQLException;
+	
+	//발주완료
+	int selectOrderCompletedCount(String fran_code )throws SQLException;
+	
+	//반품신청
+	int selectReturnApplyCount(String fran_code )throws SQLException;
+	
+	//빈품완료
+	int selectReturnCompleteCount(String fran_code )throws SQLException;
+	
+	
+	//가맹점 재고요청
+	int selectStockRequestCount(String fran_code )throws SQLException;
+
+
+	
+}

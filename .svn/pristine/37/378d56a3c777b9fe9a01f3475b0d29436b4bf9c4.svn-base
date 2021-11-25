@@ -1,0 +1,361 @@
+package kr.or.fms.command;
+
+import kr.or.fms.fran.dto.FranVO;
+
+public class FranModifyCommand {
+	
+	private String fran_code;			//가맹점코드
+	private String hq_code;				//본사코드
+	private String fran_pwd;			//가맹점패스워드
+	private String fran_local_num;		//가맹점지역코드
+	private String fran_tel;			//가맹점전화번호
+	private String fran_addr;			//가맹점 주소
+	private String fran_st;				//가맹점운영상태(1.운영 2.휴점 3.폐점)
+	private String fran_reg_st;			//가맹점등록상태
+	private String fran_name;			//가맹점명
+	private String fran_owner;			//가맹점주명
+	private String fran_email;			//가맹점이메일
+	private String application_result;		//가맹점신청서결과
+	private String fran_zip;				//가맹점우편번호
+	private String fran_detail_addr;	//가맹점상세주소
+	private String fran_area;			//면적
+	private String fran_se;				//점포구분(1.본인 2.임대)
+	private int fran_gtn;				//보증금
+	private int fran_rent_charge;		//임대료
+	private int fran_manage_cost;		//관리비
+	private String authority;			//권한
+	private String fran_latitude;		//위도
+	private String fran_logitude;		//경도
+
+
+
+
+	public String getFran_code() {
+		return fran_code;
+	}
+
+
+
+
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+
+
+
+
+	public String getHq_code() {
+		return hq_code;
+	}
+
+
+
+
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+
+
+
+
+	public String getFran_pwd() {
+		return fran_pwd;
+	}
+
+
+
+
+	public void setFran_pwd(String fran_pwd) {
+		this.fran_pwd = fran_pwd;
+	}
+
+
+
+
+	public String getFran_local_num() {
+		return fran_local_num;
+	}
+
+
+
+
+	public void setFran_local_num(String fran_local_num) {
+		this.fran_local_num = fran_local_num;
+	}
+
+
+
+
+	public String getFran_tel() {
+		return fran_tel;
+	}
+
+
+
+
+	public void setFran_tel(String fran_tel) {
+		this.fran_tel = fran_tel;
+	}
+
+
+
+
+	public String getFran_addr() {
+		return fran_addr;
+	}
+
+
+
+
+	public void setFran_addr(String fran_addr) {
+		this.fran_addr = fran_addr;
+	}
+
+
+
+
+	public String getFran_st() {
+		return fran_st;
+	}
+
+
+
+
+	public void setFran_st(String fran_st) {
+		this.fran_st = fran_st;
+	}
+
+
+
+
+	public String getFran_reg_st() {
+		return fran_reg_st;
+	}
+
+
+
+
+	public void setFran_reg_st(String fran_reg_st) {
+		this.fran_reg_st = fran_reg_st;
+	}
+
+
+
+
+	public String getFran_name() {
+		return fran_name;
+	}
+
+
+
+
+	public void setFran_name(String fran_name) {
+		this.fran_name = fran_name;
+	}
+
+
+
+
+	public String getFran_owner() {
+		return fran_owner;
+	}
+
+
+
+
+	public void setFran_owner(String fran_owner) {
+		this.fran_owner = fran_owner;
+	}
+
+
+
+
+	public String getFran_email() {
+		return fran_email;
+	}
+
+
+
+
+	public void setFran_email(String fran_email) {
+		this.fran_email = fran_email;
+	}
+
+
+
+
+	public String getApplication_result() {
+		return application_result;
+	}
+
+
+
+
+	public void setApplication_result(String application_result) {
+		this.application_result = application_result;
+	}
+
+
+
+
+	public String getFran_zip() {
+		return fran_zip;
+	}
+
+
+
+
+	public void setFran_zip(String fran_zip) {
+		this.fran_zip = fran_zip;
+	}
+
+
+
+
+	public String getFran_detail_addr() {
+		return fran_detail_addr;
+	}
+
+
+
+
+	public void setFran_detail_addr(String fran_detail_addr) {
+		this.fran_detail_addr = fran_detail_addr;
+	}
+
+
+
+
+	public String getFran_area() {
+		return fran_area;
+	}
+
+
+
+
+	public void setFran_area(String fran_area) {
+		this.fran_area = fran_area;
+	}
+
+
+
+
+	public String getFran_se() {
+		return fran_se;
+	}
+
+
+
+
+	public void setFran_se(String fran_se) {
+		this.fran_se = fran_se;
+	}
+
+
+
+
+	public int getFran_gtn() {
+		return fran_gtn;
+	}
+
+
+
+
+	public void setFran_gtn(int fran_gtn) {
+		this.fran_gtn = fran_gtn;
+	}
+
+
+
+
+	public int getFran_rent_charge() {
+		return fran_rent_charge;
+	}
+
+
+
+
+	public void setFran_rent_charge(int fran_rent_charge) {
+		this.fran_rent_charge = fran_rent_charge;
+	}
+
+
+
+
+	public int getFran_manage_cost() {
+		return fran_manage_cost;
+	}
+
+
+
+
+	public void setFran_manage_cost(int fran_manage_cost) {
+		this.fran_manage_cost = fran_manage_cost;
+	}
+
+
+
+
+	public String getAuthority() {
+		return authority;
+	}
+
+
+
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+
+
+
+	public String getFran_latitude() {
+		return fran_latitude;
+	}
+
+
+
+
+	public void setFran_latitude(String fran_latitude) {
+		this.fran_latitude = fran_latitude;
+	}
+
+
+
+
+	public String getFran_logitude() {
+		return fran_logitude;
+	}
+
+
+
+
+	public void setFran_logitude(String fran_logitude) {
+		this.fran_logitude = fran_logitude;
+	}
+
+
+
+
+	public FranVO toFranVO() {
+		FranVO fran = new FranVO();
+		fran.setFran_code(this.fran_code);
+		fran.setFran_name(this.fran_name);
+		fran.setFran_owner(this.fran_owner);
+		fran.setFran_tel(this.fran_tel);
+		fran.setFran_addr(this.fran_addr);
+		fran.setFran_st(this.fran_st);
+		fran.setFran_reg_st(this.fran_reg_st);
+		fran.setFran_area(this.fran_area);
+		fran.setFran_gtn(this.fran_gtn);
+		fran.setFran_rent_charge(this.fran_rent_charge);
+		fran.setFran_manage_cost(this.fran_manage_cost);
+		fran.setFran_se(this.fran_se);
+		return fran;
+	}
+	
+	
+
+	
+}

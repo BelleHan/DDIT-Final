@@ -1,0 +1,124 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.logis.dao.LogisStockDAO;
+import kr.or.fms.logis.dto.LStockTakingVO;
+import kr.or.fms.logis.dto.LStockVO;
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.logis.dto.LogisWhVO;
+
+public class LogisStockServiceImpl implements LogisStockService {
+	
+	private LogisStockDAO stockDAO;
+	public LogisStockDAO getStockDAO() {
+		return stockDAO;
+	}
+	public void setStockDAO(LogisStockDAO stockDAO) {
+		this.stockDAO = stockDAO;
+	}
+
+	@Override
+	public Map<String, Object> getStockList(SearchCriteria cri, HttpSession session) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		LogisVO logis = (LogisVO) session.getAttribute("loginLogis");
+		
+		cri.getKeywordMap().put("logis_code", logis.getLogis_code());
+//		System.out.println(cri.getKeywordMap().get("wh"));
+//		System.out.println(cri.getKeywordMap().get("laca"));
+//		System.out.println(cri.getKeywordMap().get("smca"));
+//		System.out.println(cri.getKeywordMap().get("logis_code"));
+		// 현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
+		List<LStockVO> logisStock = stockDAO.selectStockCriteria(cri);
+		// 전체 board 개수
+		int totalCount = stockDAO.selectStockCriteriaTotalCount(cri);
+		
+		List<LogisWhVO> whComboList = stockDAO.selectWhCombo(logis.getLogis_code());
+		List<String> lacaList = stockDAO.selectLaca();
+		List<String> smcaList = stockDAO.selectSmca();
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		dataMap.put("logisStock", logisStock);
+		dataMap.put("pageMaker", pageMaker);
+		dataMap.put("lacaList", lacaList);
+		dataMap.put("smcaList", smcaList);
+		dataMap.put("whComboList", whComboList);
+		
+		return dataMap;
+	}
+	@Override
+	public List<LogisWhVO> getWhCombo(String logis_code) throws SQLException {
+		List<LogisWhVO> whComboList = stockDAO.selectWhCombo(logis_code);
+		return whComboList;
+	}
+	@Override
+	public List<String> getLaca() throws SQLException {
+		List<String> lacaList = stockDAO.selectLaca();
+		return lacaList;
+	}
+	@Override
+	public List<String> getSmca() throws SQLException {
+		List<String> smcaList = stockDAO.selectSmca();
+		return smcaList;
+	}
+	@Override
+	public List<LogisWhVO> getStockForModify(LogisWhVO logisWhVO) throws SQLException {
+		List<LogisWhVO> logisWh = stockDAO.selectStockByHq_goods_code(logisWhVO);
+		return logisWh;
+	}
+
+	@Override
+	public void modify(LogisWhVO logisWhVO) throws SQLException {
+		stockDAO.updateStock(logisWhVO);
+		
+	}
+	@Override
+	public List<LogisWhVO> getStock(LogisWhVO logisWhVO) throws SQLException {
+		List<LogisWhVO> logisWh = stockDAO.selectStockByHq_goods_code(logisWhVO);
+		return logisWh;
+	}
+	
+	@Override
+	public Map<String, Object> getTakingList(SearchCriteria cri, HttpSession session) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		LogisVO logis = (LogisVO) session.getAttribute("loginLogis");
+		
+		cri.getKeywordMap().put("logis_code", logis.getLogis_code());
+//		System.out.println(cri.getKeywordMap().get("wh"));
+//		System.out.println(cri.getKeywordMap().get("laca"));
+//		System.out.println(cri.getKeywordMap().get("smca"));
+//		System.out.println(cri.getKeywordMap().get("logis_code"));
+		// 현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
+		List<LStockTakingVO> takingStock = stockDAO.selectStockTakingCriteria(cri);
+		// 전체 board 개수
+		int totalCount = stockDAO.selectStockTakingCriteriaTotalCount(cri);
+		
+		List<LogisWhVO> whComboList = stockDAO.selectWhCombo(logis.getLogis_code());
+		List<String> lacaList = stockDAO.selectLaca();
+		List<String> smcaList = stockDAO.selectSmca();
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		System.out.println(takingStock);
+		dataMap.put("takingStock", takingStock);
+		dataMap.put("pageMaker", pageMaker);
+		dataMap.put("lacaList", lacaList);
+		dataMap.put("smcaList", smcaList);
+		dataMap.put("whComboList", whComboList);
+		
+		return dataMap;
+	}
+	
+}

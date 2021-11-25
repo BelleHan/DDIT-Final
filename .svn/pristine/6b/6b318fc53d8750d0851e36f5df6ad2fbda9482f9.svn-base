@@ -1,0 +1,63 @@
+package kr.or.fms.fran.dto;
+
+public class FranDealVO {//당장거래
+	
+	private String fran_deal_code;	//거래코드
+	private String fran_code;		
+	private String hq_code;
+	private String sup_goods_code;	
+	private String appr_deal_fran;	//요청승인가맹점코드
+	private String deal_date;		//거래일자
+	private String deal_quan;		//거래수량
+	private String deal_st;			//거래상태
+	
+	public String getFran_deal_code() {
+		return fran_deal_code;
+	}
+	public void setFran_deal_code(String fran_deal_code) {
+		this.fran_deal_code = fran_deal_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getAppr_deal_fran() {
+		return appr_deal_fran;
+	}
+	public void setAppr_deal_fran(String appr_deal_fran) {
+		this.appr_deal_fran = appr_deal_fran;
+	}
+	public String getDeal_date() {
+		return deal_date;
+	}
+	public void setDeal_date(String deal_date) {
+		this.deal_date = deal_date;
+	}
+	public String getDeal_quan() {
+		return deal_quan;
+	}
+	public void setDeal_quan(String deal_quan) {
+		this.deal_quan = deal_quan;
+	}
+	public String getDeal_st() {
+		return deal_st;
+	}
+	public void setDeal_st(String deal_st) {
+		this.deal_st = deal_st;
+	}
+	
+}

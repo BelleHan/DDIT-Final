@@ -1,0 +1,44 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.FranAppliVO;
+
+public class AppliDAOImpl implements AppliDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+
+	@Override
+	public List<FranAppliVO> selectAppliCriteria(SearchCriteria cri) throws SQLException {
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);		
+		
+		List<FranAppliVO> appliList=
+				session.selectList("FranAppli-Mapper.selectSearchAppliList",cri,rowBounds);
+		
+		return appliList;
+	}
+
+	@Override
+	public int selectAppliCriteriaTotalCount(SearchCriteria cri) throws SQLException {
+		int count=session.selectOne("FranAppli-Mapper.selectSearchAppliListCount",cri);
+		return count;
+	}
+
+	@Override
+	public FranAppliVO selectAppliByFran_applidoc_code(String fran_applidoc_code) throws SQLException {
+		FranAppliVO appli=
+				session.selectOne("FranAppli-Mapper.selectAppliByFran_applidoc_code", fran_applidoc_code);
+		return appli;
+	}
+
+}

@@ -1,0 +1,202 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="supGoodsList" value="${dataMap.supGoodsList }" />
+<c:set var="lacaList" value="${dataMap.lacaList }" />
+<c:set var="smcaList" value="${dataMap.smcaList }" />
+<c:set var="keyword" value="${dataMap.keyword }" />
+<head></head>
+
+<title>공지목록</title>
+
+<body>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+
+	<c:if test="${from eq 'regist' }" >
+		<script>
+			alert("등록되었습니다.");
+			window.opener.location.reload();			
+			window.close();
+		</script>
+	</c:if>
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid" style="padding:0; margin:0">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+<!-- 	  				<h2>물품관리</h2>  				 -->
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>물품목록
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	물품구매
+			        </li>		        
+	    	  	</ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+	 <!-- Main content -->
+    <section class="content">	
+    
+		<div class="card">
+			<div class="card-body search-body" style="height: auto;">
+				<div class="search-group">
+					<div class="input-group">
+						<select class="form-control col-md-3" name="laca" id="laca"
+					  		onchange="list_go_buyGoods();" style="text-align: center;">
+						<c:if test="${!empty lacaList }">
+					  		<option value="" >대분류</option>
+					  		<c:forEach var ="lacaList" items="${lacaList }">
+					  			<option value="${lacaList.sup_goods_laca }" ${lacaList.sup_goods_laca eq '${lacaList.sup_goods_laca}' ? 'selected':'' } >${lacaList.sup_goods_laca }</option>
+					  		</c:forEach>
+					  	</c:if>						
+					  	</select>
+					  	
+						<select class="form-control col-md-3" name="smca" id="smca"
+					  		onchange="list_go_buyGoods();" style="text-align: center;">
+					  		<c:if test="${!empty smcaList }">
+					  		<option value="" >소분류</option>
+					  		<c:forEach var ="smcaList" items="${smcaList }">
+					  			<option value="${smcaList.sup_goods_smca }" ${smcaList.sup_goods_smca eq '${smcaList.sup_goods_smca}' ? 'selected':'' }  >${smcaList.sup_goods_smca }</option>
+					  		</c:forEach>
+				  		</c:if>
+					  	</select>						
+						<input class="form-control" type="text" name="keyword" placeholder="물품명을 입력하세요." value="${param.keyword }"/>
+						<span class="input-group-append">
+							<button class="btn btn-primary" type="button" onclick="list_go_buyGoods(1);" 
+							data-card-widget="search">
+								<i class="fa fa-fw fa-search"></i>
+							</button>
+						</span>
+				       <div class="input-group col-sm-2">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!--card-body(검색창)  -->
+
+			
+			<div class="row" style="padding:0px 15px;">
+				<div class="col-sm-10"></div>
+				<div class="col-sm-1" style="padding:10px 5px 0px 5px;float:right; margin:0;">
+					<button type="button" class="btn btn-primary float-sm-right" id="registBtn" style="float:right" onclick="location.href='registForm.do'">개별등록</button>
+	<!-- 				 onclick="OpenWindow('registForm.do','물품등록',800,750);">물품등록</button>	
+			 -->
+			 	</div>
+			 	<div class="col-sm-1" style="padding:10px 10px 0px 5px; margin:0;">
+					<form enctype="multipart/form-data" method="POST" name="excelUpForm" id="excelUpForm" action="<%=request.getContextPath()%>/sup/goods/excelImport" >
+						<button type="button" class="btn btn-primary float-sm-right" id="ExcelImportBtn" style="float:right" onclick="location.href='excelForm.do'">일괄등록</button>
+					</form>
+				</div>
+			</div>
+			<!-- 버튼 -->
+
+			<div class="card-body">
+				<table class="table table-bordered text-center table-hover" >
+					<thead>
+					<tr style="font-size:0.95em;">
+						<th style="width:10%;">물품코드</th>
+						<th style="width:10%;">대분류</th>
+						<th style="width:10%;">물품종류</th>
+						<th style="width:45%;">물품명</th>
+						<th style="width:10%;">납품가(원)</th>
+						<th>등록일</th>
+					</tr>				
+					</thead>				
+					<c:if test="${empty supGoodsList }" >
+						<tr>
+							<td colspan="6">
+								<strong>해당 내용이 없습니다.</strong>
+							</td>
+						</tr>
+					</c:if>						
+					<c:forEach items="${supGoodsList }" var="goodsList">
+						<tr style='font-size:0.85em;' onclick="location.href='detail.do?sup_goods_code=${goodsList.sup_goods_code}'">
+							<td>${goodsList.sup_goods_code}</td>
+							<td>${goodsList.sup_goods_laca }</td>
+							<td>${goodsList.sup_goods_smca }</td>
+							<td style="text-align:left; overflow: hidden;white-space: nowrap; text-overflow: ellipsis;" >
+									${goodsList.sup_goods_name }</td>
+							<td>${goodsList.sup_goods_price }</td>
+							<td>
+								<fmt:formatDate value="${goodsList.sup_goods_regdate }" pattern="yyyy-MM-dd"/>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>				
+			</div>
+			<div class="card-footer">
+				<%@ include file="/WEB-INF/views/common/pagination.jsp" %>				
+			</div>
+		
+    </section>
+    <!-- /.content -->
+<script>
+// 	function checkFileType(filePath){
+// 		var fileFormat = filePath.split(".");
+		
+// 		if(fileFormat.indexOf("xls")>-1 || fileFormat.indexOf("xlsx")>-1){
+// 			return true;
+// 		}else{
+// 			return false;
+// 		}
+// 	}
+	
+// 	function check(){
+// 		var file = $("#excelFile").val();
+		
+// 		if(file==""|| file == null){
+// 			alert("파일을 선택해주세요.");
+			
+// 			return false;
+// 		}else if(!checkFileType(file)){
+// 			alert("엑셀 파일만 업로드 가능합니다.");
+// 			return false;
+// 		}
+		
+// 		if(confirm("업로드 하시겠습니까?")){
+// 			var options = {
+// 				success:function(data){
+// 					console.log(data);
+// 					alert("모든 데이터가 업로드 되었습니다.");
+// 				},
+// 				type:"POST"
+// 			};
+// 			$("#excelUpForm").ajaxSubmit(options);
+// 		}
+// 	}
+
+	$('excelUpForm').change(function(){
+		var form = $("#excelUpForm")[0];
+		
+		var data = new FormData(form);
+		$.ajax({
+			enctype:"multipart/form-data",
+			method:"POST",
+			url:'<%=request.getContextPath()%>/sup/goods/excelUp.do',
+			processData:false,
+			contentType:false,
+			cache:false,
+			data:data,
+			success:function(result){
+				alert("업로드 성공!!");
+			}
+		});
+	});
+	
+</script>
+</body>
+

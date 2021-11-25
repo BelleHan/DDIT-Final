@@ -1,0 +1,38 @@
+package kr.or.fms.sup.dto;
+								/* 출고목록 */
+public class WhOutListVO {
+	
+	private String out_code;		//출고코드
+	private String sup_goods_code;	//공급업체물품코드
+	private String hq_code;			//본사코드
+	private int out_num;			//출고수량
+	
+	
+	
+	public String getOut_code() {
+		return out_code;
+	}
+	public void setOut_code(String out_code) {
+		this.out_code = out_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public int getOut_num() {
+		return out_num;
+	}
+	public void setOut_num(int out_num) {
+		this.out_num = out_num;
+	}
+	
+	
+}

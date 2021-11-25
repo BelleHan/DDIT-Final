@@ -1,0 +1,125 @@
+package kr.or.fms.logis.dto;
+
+import java.util.Date;
+
+import kr.or.fms.hq.dto.HqVO;
+
+/* 물류센터창고 */
+public class LogisWhVO {
+	
+	private String wh_code;			//창고코드
+	private String logis_code;		//물류센터코드
+	private String hq_goods_code;	//본사물품코드
+	private String wh_name;			//창고명
+	private String wh_area;			//창고면적
+	private String wh_st;			//창고구분
+	private int logis_goods_stock;	//재고량
+	private int logis_safe_stock;	//안전재고량
+	private int logis_suit_stock;	//적정재고량
+	private Date stock_date;		//입고날짜
+	private Date stock_update;		//갱신일자
+	private String sup_goods_name;	//물품명
+	private String sup_goods_code;	//공급업체물품코드
+	private String sup_goods_img;	//재고실사를 위한 제품이미지
+	
+	private LogisVO logisVO;
+	private HqVO hqVO;
+	
+	public HqVO getHqVO() {
+		return hqVO;
+	}
+	public void setHqVO(HqVO hqVO) {
+		this.hqVO = hqVO;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getSup_goods_name() {
+		return sup_goods_name;
+	}
+	public void setSup_goods_name(String sup_goods_name) {
+		this.sup_goods_name = sup_goods_name;
+	}
+	public String getSup_goods_img() {
+		return sup_goods_img;
+	}
+	public void setSup_goods_img(String sup_goods_img) {
+		this.sup_goods_img = sup_goods_img;
+	}
+	public LogisVO getLogisVO() {
+		return logisVO;
+	}
+	public void setLogisVO(LogisVO logisVO) {
+		this.logisVO = logisVO;
+	}
+	public Date getStock_update() {
+		return stock_update;
+	}
+	public void setStock_update(Date stock_update) {
+		this.stock_update = stock_update;
+	}
+	public Date getStock_date() {
+		return stock_date;
+	}
+	public void setStock_date(Date stock_date) {
+		this.stock_date = stock_date;
+	}
+	public String getWh_code() {
+		return wh_code;
+	}
+	public void setWh_code(String wh_code) {
+		this.wh_code = wh_code;
+	}
+	public String getLogis_code() {
+		return logis_code;
+	}
+	public void setLogis_code(String logis_code) {
+		this.logis_code = logis_code;
+	}
+	public String getHq_goods_code() {
+		return hq_goods_code;
+	}
+	public void setHq_goods_code(String hq_goods_code) {
+		this.hq_goods_code = hq_goods_code;
+	}
+	public String getWh_name() {
+		return wh_name;
+	}
+	public void setWh_name(String wh_name) {
+		this.wh_name = wh_name;
+	}
+	public String getWh_area() {
+		return wh_area;
+	}
+	public void setWh_area(String wh_area) {
+		this.wh_area = wh_area;
+	}
+	public String getWh_st() {
+		return wh_st;
+	}
+	public void setWh_st(String wh_st) {
+		this.wh_st = wh_st;
+	}
+	public int getLogis_goods_stock() {
+		return logis_goods_stock;
+	}
+	public void setLogis_goods_stock(int logis_goods_stock) {
+		this.logis_goods_stock = logis_goods_stock;
+	}
+	public int getLogis_safe_stock() {
+		return logis_safe_stock;
+	}
+	public void setLogis_safe_stock(int logis_safe_stock) {
+		this.logis_safe_stock = logis_safe_stock;
+	}
+	public int getLogis_suit_stock() {
+		return logis_suit_stock;
+	}
+	public void setLogis_suit_stock(int logis_suit_stock) {
+		this.logis_suit_stock = logis_suit_stock;
+	}
+	
+}

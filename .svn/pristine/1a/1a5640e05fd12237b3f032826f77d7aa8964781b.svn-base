@@ -1,0 +1,611 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="cri" value="${pageMaker.cri }" />
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style>
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.table {
+    font-size: 13px;
+    text-align: center;
+}
+.search-group, .form-control {
+	font-size : 13px;
+	text-align : right;
+}
+.search-group {
+	padding: 6px 3px 0px 3px;
+}
+.search-card {
+	padding-top : 5ps;
+    padding-bottom: 0px;
+    width: 1280px;
+    margin: auto;
+}
+.search-body{
+	padding : 5px 10px;
+}
+.input-padding-bottom {
+	margin-bottom : 17px;
+}
+.custom-checkbox {
+	padding-left : 108px;
+}
+#btn-goods {
+	height : 31px;
+}
+.custom-control-label {
+	padding-top: 3px;
+}
+</style>
+</head>
+
+<title>출고계획</title>
+
+<body>
+	<div class="content-wrapper">
+	 <!-- Main content -->
+		<section class="content-header with-border" style="min-height: 70px; max-height: 70px;">
+		  	<div class="container-fluid">
+		  		<div class="row md-2">
+		  			<div class="col-sm-6">
+		  				<h1>출고계획</h1>  				
+		  			</div>
+		  			<div class="col-sm-6">
+		  				<ol class="breadcrumb float-sm-right">
+				        <li class="breadcrumb-item">
+				        	<a href="list.do">
+					        	<i class="fa fa-dashboard"></i>입출고계획
+					        </a>
+				        </li>
+		    	  </ol>
+		  			</div>
+		  		</div>
+		  	</div>
+		</section>
+	 
+		<div class="col-12 col-sm-12" >
+			<div class="card card-secondary card-tabs" style="min-height: 960px; max-height: 960px; overflow-y: scroll;" >
+				<div class="card-header p-0 pt-1">
+					<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+						<li class="nav-item" onclick="javascript:logis_go();"><a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">입고</a></li>
+						<li class="nav-item"><a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">출고</a></li>
+					</ul>
+				</div>
+				<div>
+					<span>
+						<button style="width: 70px;  margin-left: 90%; margin-top: 10px;" onclick="javascript:registGo();" type="button" id="btn-search" class="btn btn-block bg-gradient-primary btn-sm">등록</button>
+					</span>
+							
+				</div>
+				<div class="card-body search-card" style="width: 100%;">
+					<div class="card">
+						<div class="card-body search-body" >
+			        	<form>
+			            	<div class="search-group">
+			   					<div class="input-group">
+			   					 	<!-- keyword -->
+			   					 	<div class="input-group col-sm-12" >
+									 	<div class="input-group input-padding-bottom col-sm-3" style="float: left;">
+											<span class=" search-group col-sm-4" >물류센터코드</span>
+											<div class="input-group input-group-sm col-sm-8">
+												<input type="text" id="fms-log" name="fms-log" class="form-control form-fms-search" value="" >
+												<span class="input-group-append">
+													<button type="button" id="btn-log" name="btn-log" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-caret-down"></i></button>
+												</span>
+											</div>
+										</div>
+										<div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4" >물품코드</span>
+											<div class="input-group input-group-sm col-sm-8">
+												<input type="text" id="fms-hq" name="fms-hq" class="form-control form-fms-search" value="" >
+												<span class="input-group-append">
+													<button type="button" id="btn-hq" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-caret-down"></i></button>
+												</span>
+											</div>
+										</div>
+										<div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4">가맹점도착지</span>
+											<div class="input-group input-group-sm col-sm-8">
+												<input type="text" id="fms-outFran" name="fms-outFran" class="form-control form-fms-search" value="" >
+												<span class="input-group-append">
+													<button type="button" id="btn-outFran" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-caret-down"></i></button>
+												</span>
+											</div>
+										</div>					
+										 <div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4">물류센터도착지</span>
+											<div class="input-group  input-group-sm  col-sm-8">
+												<input type="text" id="fms-outLogis" name="fms-outLogis" class="form-control form-fms-search" value="" >
+												<span class="input-group-append">
+													<button type="button" id="btn-outLogis" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-caret-down"></i></button>
+												</span>
+											</div>
+										</div> 
+										 <div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4">출고상태</span>
+											<div class="input-group  input-group-sm  col-sm-8">
+										<select class="form-control" name="out_st" id="out_st">
+				                   		  <option value="1" ${ param.out_loca_type == 1 ? 'selected' : '' }>물류센터</option>
+				                          <option value="2" ${ param.out_loca_type == 2 ? 'selected' : '' }>가맹점</option> 
+				                		</select>
+											</div>
+										</div> 
+										 <div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4">출고수량</span>
+											<div class="input-group  input-group-sm  col-sm-8">
+										<input type="text" id="out_num" name="out_num" class="form-control" >
+											</div>
+										</div> 
+										 <div class="input-group input-padding-bottom col-sm-3">
+											<span class=" search-group col-sm-4">출고일자</span>
+											<div class="input-group  input-group-sm  col-sm-8">
+												<input type="date" id="out_date" name="out_date" class="form-control" >
+											</div>
+										</div> 
+									</div>
+								</div>
+		   					</div>
+		   					</form>
+			             </div>
+					</div>
+				</div>
+					<!-- /.card-header -->
+              	<div class="card-body table-responsive p-0" style="margin-bottom: 300px;">
+	                <table class="table table-hover">
+	                	<thead>
+		                    <tr>
+		                    	<th>no</th>
+								<th>출고번호</th>
+								<th>본사물품코드</th>
+								<th>물류센터코드</th>
+								<th>출고지유형</th>
+								<th>도착지</th>
+								<th>출고일자</th>
+								<th>출고상태</th>
+								<th>출고수량</th>
+							 </tr>
+	                  	</thead>
+						<tbody>
+		                    <c:forEach items="${outList }" var="out">
+		                    	<c:set var="i" value="${i+1 }"/>
+								<tr style="cursor: pointer;">
+									<td>${i }</td>
+									<td>${out.out_code }</td>
+									<td>${out.hq_goods_code }</td>
+									<td>${out.logis_code }</td>
+									<td>${out.out_loca_type }</td>
+									<td>${out.out_loca }</td>
+									<td><fmt:formatDate value="${out.out_date }" pattern="yyyy-MM-dd"/></td>
+									<td>${out.out_st }</td>
+									<td>${out.out_num }</td>
+								</tr>
+							</c:forEach>
+		                 </tbody>
+					</table>
+             	</div>
+				<div class="card-body search-">
+					<%@ include file="/WEB-INF/views/common/paginationHqStockFran.jsp"%>
+				</div>
+			</div><!-- /.card-->
+			<div class="tab-content" id="custom-tabs-one-tabContent">
+				<div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab"></div>
+				<div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab"></div>
+			</div>
+		</div>
+	</div>
+	<!-- </div> -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+<script>
+var data = "";
+var fms_log = "";
+var fms_hq = "";
+var fms_outFran = "";
+var fms_outLogis = "";
+var out_st = "";
+var out_num = "";
+var out_date = "";
+var page = 1;
+
+
+function registGo(){
+			
+	fms_log = $('#fms-log').val();
+	fms_hq = $('#fms-hq').val();
+	fms_outFran = $('#fms-outFran').val();
+	fms_outLogis = $('#fms-outLogis').val();
+	out_st = $('#out_st').val();
+	out_num = $('#out_num').val();
+	out_date = $('#out_date').val();
+	
+	
+	if(!page) page = 1;
+	
+	data = {"fms_log": fms_log, "fms_hq": fms_hq, "fms_outFran": fms_outFran, "fms_outLogis": fms_outLogis, "page" : page, "out_st" : out_st, "out_num" : out_num, "out_date" : out_date }
+    console.log(data)
+	/* $.ajax({
+		url:'outRegist.do'
+		, type : 'post'
+		, data : JSON.stringify(data)
+		, contentType : 'application/json; charset=UTF-8'
+		, dataType : 'json'
+		, success : function() {
+			
+			alert("등록되었습니다.");
+			
+		}
+		, error:function(request,status,error){
+	        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    }	
+	
+	}) */
+ 	$.ajax({
+		url:'outRegist.do'
+		, type : 'post'
+		, data : JSON.stringify(data)
+		, contentType : 'application/json; charset=UTF-8'
+		, dataType : 'json'
+		, success : function(result) {
+			
+			alert(result.resultCode);
+			alert('성공');
+			
+			if(result.resultCode == 'success'){
+				location.href="/inout/Outdetail";  
+			}
+		}
+		, error:function(request,status,error){
+	        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    }	
+	
+	}) 
+}
+</script>
+	
+<!-- 지역검색 영역 -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-log" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">물류센터</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered log-list" id="modal-fms-log">
+				<tr>
+						<th>no</th>
+						<th>물류센터코드</th>
+						<th>물류센터명</th>
+						<th>대표</th>
+						<th>주소</th>
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 모달 끝 -->
+<script>
+function logis_go() {
+	location.href="<%=request.getContextPath()%>/hq/inout/InPlanList";
+}
+
+function printData(dataArr, target, templateObject, removeClass){
+	var template = Handlebars.compile(templateObject.html());
+	var html = template(dataArr);
+	$(removeClass).remove();
+	target.append(html);
+}
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script type="text/x-handlerbars-template" id="log-list-template">
+	{{#each .}}  
+			<tr class="log" id="log{{@key}}" onclick="javascript:logKey('{{logis_code}}');">
+				<td>{{@key}}</td>
+				<td>{{logis_code}}</td>
+				<td>{{logis_name}}</td>
+				<td>{{logis_owner}}</td>
+				<td>{{logis_addr}}{{logis_detail_addr}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//log modal
+	$('#btn-log').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/log.do',
+			type:'get',
+			success:function(logList){
+				printData(logList, $('.log-list'), $('#log-list-template'), $('.log'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-log').modal('show');
+			}
+		})
+	});
+	
+	// 지역을 선택하면 해당 값이 키워드로
+	function logKey(data){
+		document.querySelector('#fms-log').value = data;
+		$('#modal-log').modal('hide');
+	}
+
+</script>
+<!-- 물류센터코드 검색 끝 -->
+<!-- 물품코드검색  -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-hq" tabindex="-1" role="diahq" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog " role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">물품코드</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered hq-list" id="modal-fms-hq">
+				<tr>
+						<th>물품코드</th>
+						<th>물품명</th>
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="hq-list-template">
+	{{#each .}}  
+			<tr class="hq" id="hq{{@key}}" onclick="javascript:hqKey('{{hq_goods_code}}');">
+				<td>{{@key}}</td>
+				<td>{{hq_goods_code}}</td>
+				<td>{{hq_goods_name}}</td>
+				
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//hq modal
+	$('#btn-hq').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/hq.do',
+			type:'get',
+			success:function(hqList){
+				printData(hqList, $('.hq-list'), $('#hq-list-template'), $('.hq'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-hq').modal('show');
+			}
+		})
+	});
+	
+	// 가맹점을 선택하면 해당 값이 키워드로
+	function hqKey(data){
+		document.querySelector('#fms-hq').value = data;
+		$('#modal-hq').modal('hide');
+	}
+
+</script>
+<!-- 물품코드검색 끝 -->
+<!-- 가맹점도착지 검색 -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-outFran" tabindex="-1" role="diaoutFran" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">가맹점도착지</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered outFran-list" id="modal-fms-outFran">
+				<tr>
+						<th>no</th>
+						<th>가맹점코드</th>
+						<th>가맹점명</th>
+						<th>대표</th>
+						<th>주소</th>
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="outFran-list-template">
+	{{#each .}}  
+			<tr class="outFran" id="outFran{{@key}}" onclick="javascript:outFranKey('{{fran_code}}');">
+				<td>{{@key}}</td>
+				<td>{{fran_code}}</td>
+				<td>{{fran_name}}</td>
+				<td>{{fran_owner}}</td>
+				<td>{{fran_addr}} {{fran_detail_addr}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//laca modal
+	$('#btn-outFran').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/outFran.do',
+			type:'get',
+			success:function(outFranList){
+				printData(outFranList, $('.outFran-list'), $('#outFran-list-template'), $('.outFran'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-outFran').modal('show');
+			}
+		})
+	});
+	
+	// 물품을 선택하면 해당 값이 키워드로
+	function outFranKey(data){
+		document.querySelector('#fms-outFran').value = data;
+		$('#modal-outFran').modal('hide');
+	}
+	
+</script>
+<!--가맹점 도착지 검색 끝 -->
+<!-- 물류센터 도착지 검색 -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-outLogis" tabindex="-1" role="diaoutLogis" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">물류센터 도착지</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered outLogis-list" id="modal-fms-outLogis">
+				<tr>
+						<th>no</th>
+						<th>물류센터코드</th>
+						<th>물류센터명</th>
+						<th>대표</th>
+						<th>주소</th>
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="outLogis-list-template">
+	{{#each .}}  
+			<tr class="outLogis" id="outLogis{{@key}}" onclick="javascript:outLogisKey('{{logis_code}}');">
+				<td>{{logis_code}}</td>
+				<td>{{logis_name}}</td>
+				<td>{{logis_owner}}</td>
+				<td>{{logis_addr}}{{logis_detail_addr}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//outLogis modal
+	$('#btn-outLogis').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/outLogis.do',
+			type:'get',
+			success:function(outLogisList){
+				console.log(outLogisList);
+				printData(outLogisList, $('.outLogis-list'), $('#outLogis-list-template'), $('.outLogis'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-outLogis').modal('show');
+			}
+		})
+	});
+	
+	// 물품을 선택하면 해당 값이 키워드로
+	function outLogisKey(data){
+		document.querySelector('#fms-outLogis').value = data;
+		$('#modal-outLogis').modal('hide');
+	}
+
+</script>
+ <!-- 소분류 검색 끝 -->
+<!-- 본사물품 검색  -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-goods" tabindex="-1" role="diaoutCode" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">출고번호</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered outCode-list" id="modal-fms-outCode">
+				<tr>
+						<th>물품코드</th>
+						<th>물품명</th>
+						<th>공급업체</th>
+						<th>가격</th>
+						<th>등록날짜</th> <!-- yyyy-MM-dd  -->
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="hqgoods-list-template">
+	{{#each .}}  
+			<tr class="hqgoods" id="goods{{@key}}" onclick="javascript:hqgoodsKey('{{sup_goods_name}}');">
+				<td>{{sup_goods_code}}</td>
+				<td>{{sup_goods_name}}</td>
+				<td>{{sup_name}}</td>
+				<td>{{goods_retail_price}}</td>
+				<td>{{last_update}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//goods modal
+	$('#btn-goods').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/hqgoods.do',
+			type:'get',
+			success:function(goodsList){
+				printData(goodsList, $('.goods-list'), $('#hqgoods-list-template'), $('.hqgoods'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-goods').modal('show');
+			}
+		})
+	});
+	
+	// 물품을 선택하면 해당 값이 키워드로
+	function hqgoodsKey(data){
+		document.querySelector('#fms-goods').value = data;
+		$('#modal-goods').modal('hide');
+	}
+
+</script>
+<!-- 본사물품 검색 끝 -->
+ 
+</body>

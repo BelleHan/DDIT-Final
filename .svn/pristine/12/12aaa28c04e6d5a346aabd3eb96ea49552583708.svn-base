@@ -1,0 +1,18 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+
+public interface FranListService {
+	
+	// 가맹점리스트조회
+	List<FranVO> getFranList()throws SQLException;
+	List<FranVO> getFranList(Criteria cri)throws SQLException;
+	Map<String,Object> getFranList(SearchCriteria cri)throws SQLException;
+
+}

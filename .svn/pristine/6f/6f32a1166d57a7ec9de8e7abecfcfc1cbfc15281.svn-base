@@ -1,0 +1,80 @@
+<%@page import="kr.or.fms.sup.dto.SupGoodsVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%List<SupGoodsVO> compareList = (List<SupGoodsVO>)request.getAttribute("compareList"); %>
+
+	<% for(int i = 0; i<Math.round(compareList.size()/2.0);i++) {  // 0,1,2,3,4  ==> 3
+		
+		%>
+		
+		<div class="row">
+				<div class="col-sm-12">
+					<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+		                <thead>
+		                	<tr role="row">
+			                	<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="2">선택</th>
+							<%
+							
+							int endIndex = i*2+2;
+							if(compareList.size()<i*2+2){
+								endIndex = compareList.size();
+							}
+							
+							List<SupGoodsVO> list = compareList.subList(i*2, endIndex);  // 0,1
+							
+								for(int j = 0; j<list.size(); j++){
+									System.out.println(i + " " + j + " : " + list.size() + " : "  + list.get(j).getSup_goods_name());
+							%>
+								
+						        <th class="sorting" tabindex="0" style="width:300px" aria-controls="example1" rowspan="1" colspan="1"><%= compareList.get(j).getSup_goods_name() %></th>
+							
+								<%	
+									if(list.size()==1){
+										%>
+										<th class="sorting" tabindex="0" style="width:300px" aria-controls="example1" rowspan="1" colspan="1"></th>
+										<%
+									}
+								%>
+							
+											                		
+							<%	
+								}
+							%>
+							</tr>
+				        </thead>
+		              </table>
+		          </div>
+		       </div>
+		
+		
+		<%
+		
+	}%>
+	
+			
+	   
+		    
+<script>
+	//단가*수량 계산
+	function calcprice(count,price){
+		var num = $('#buy_quan'+count).val().trim();
+		var totalprice = $('#buyTotalPrice'+count);
+		
+		if(num)	totalprice.text(num * price); 
+	}
+
+
+</script>	   
+</body>
+</html>

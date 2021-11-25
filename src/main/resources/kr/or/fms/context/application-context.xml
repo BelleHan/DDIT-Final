@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- boardImgPath -->
+	<bean id="imgPath" class="java.lang.String">
+		<constructor-arg value="c:/attach/board/img" />      
+	</bean>
+	
+	<!-- sup.Goods.picture -->
+	<bean id="picturePath" class="java.lang.String">
+		<constructor-arg value="${supGoods.picture.upload}" />      
+	</bean>
+	
+	<!-- file upload -->
+	<bean id="fileUploadPath" class="java.lang.String">
+		<constructor-arg value="${fms.upload}"/>
+	</bean>
+	
+	<!-- login user log path -->
+<!-- 	<bean id="loginUserLogSavePath" class="java.lang.String"> -->
+<!-- 		<constructor-arg value="c:/log/loginUser" /> -->
+<!-- 	</bean> -->
+	<!-- login user log path -->
+	<bean id="loginUserLogSavePath" class="java.lang.String">
+		<constructor-arg value="login.FranUser.log" />
+	</bean>
+	
+	<bean id="loginUserLogSaveFileName" class="java.lang.String">
+		<constructor-arg value="login_fran_log.csv" />
+	</bean>
+	
+	<!-- DAO	 -->
+	<bean id="menuDAO" class="kr.or.fms.dao.MenuDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="empDAO" class="kr.or.fms.hq.dao.EmpDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="franNoticeDAO" class="kr.or.fms.hq.dao.FranNoticeDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="keywordDAO" class="kr.or.fms.dao.KeywordDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="franlistDAO" class="kr.or.fms.hq.dao.FranListDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="logislistDAO" class="kr.or.fms.hq.dao.LogisListDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="suplistDAO" class="kr.or.fms.hq.dao.SupListDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="returnDAO" class="kr.or.fms.logis.dao.ReturnDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="supGoodsDAO" class="kr.or.fms.sup.dao.SupGoodsDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="stockDAO" class="kr.or.fms.hq.dao.StockDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="attachDAO" class="kr.or.fms.dao.AttachDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franReturnDAO" class="kr.or.fms.fran.dao.FranReturnDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="inOutDAO" class="kr.or.fms.hq.dao.OutDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="supDAO" class="kr.or.fms.sup.dao.SupDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="supSalesDAO" class="kr.or.fms.sup.dao.SupSalesDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franDAO" class="kr.or.fms.fran.dao.FranDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="hqReturnDAO" class="kr.or.fms.hq.dao.HqReturnDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="hqOrderDAO" class="kr.or.fms.hq.dao.HqOrderDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franApplyDAO" class="kr.or.fms.fran.dao.FranApplyDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franHomeDAO" class="kr.or.fms.fran.dao.FranHomeDAOImpl" 
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="replyDAO" class="kr.or.fms.hq.dao.ReplyDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+		
+	<!-- Service	 -->
+	<bean id="franHomeService" class="kr.or.fms.fran.service.FranHomeServiceImpl"
+		p:franHomeDAO-ref="franHomeDAO"
+	/>
+	
+	
+	<bean id="franApplyService" class="kr.or.fms.fran.service.FranApplyServiceImpl"
+		p:franApplyDAO-ref="franApplyDAO"
+		p:attachDAO-ref="attachDAO"
+	    />
+	<bean id="franService" class="kr.or.fms.fran.service.FranServiceImpl"
+		p:menuDAO-ref="franDAO"
+	    />
+	<bean id="menuService" class="kr.or.fms.service.MenuServiceImpl"
+		p:menuDAO-ref="menuDAO"
+	    />
+	<bean id="empService" class="kr.or.fms.hq.service.EmpServiceImpl"
+		p:empDAO-ref="empDAO"
+		/>
+	<bean id="franNoticeService" class="kr.or.fms.hq.service.FranNoticeServiceImpl"
+		p:franNoticeDAO-ref="franNoticeDAO"
+		
+		/>
+	<bean id="keywordService" class="kr.or.fms.service.KeywordServiceImpl"
+		p:keywordDAO-ref="keywordDAO"
+		/>
+	<bean id="comListService" class="kr.or.fms.hq.service.ComListServiceImpl"
+		p:franListDAO-ref="franlistDAO"
+		p:logisListDAO-ref="logislistDAO"
+		p:supListDAO-ref="suplistDAO"
+		/>
+	<bean id="returnService" class="kr.or.fms.logis.service.ReturnServiceImpl"
+		p:returnDAO-ref="returnDAO"
+		/>
+	<bean id="franReturnService" class="kr.or.fms.fran.service.FranReturnServiceImpl"
+		p:attachDAO-ref="attachDAO"
+		p:franReturnDAO-ref="franReturnDAO"
+		/>
+	<bean id="hqReturnService" class="kr.or.fms.hq.service.HqReturnServiceImpl"
+		p:attachDAO-ref="attachDAO"
+		p:hqReturnDAO-ref="hqReturnDAO"
+		/>
+	<bean id="supGoodsService" class="kr.or.fms.sup.service.SupGoodsServiceImpl"
+		p:supGoodsDAO-ref="supGoodsDAO"/>
+	<bean id="stockService" class="kr.or.fms.hq.service.StockListServiceImpl"
+		p:stockDAO-ref="stockDAO"/>
+	<bean id="inOutService" class="kr.or.fms.hq.service.InOutServiceImpl"
+		p:outDAO-ref="inOutDAO"/>
+	<bean id="supService" class="kr.or.fms.sup.service.SupServiceImpl"
+		p:supDAO-ref="supDAO"/>
+	<bean id="supSalesService" class="kr.or.fms.sup.service.SupSalesServiceImpl"
+		p:supSalesDAO-ref="supSalesDAO"/>
+	<bean id="hqOrderService" class="kr.or.fms.hq.service.HqOrderServiceImpl"
+		p:hqOrderDAO-ref="hqOrderDAO" />
+	<bean id="replyService" class="kr.or.fms.hq.service.ReplyServiceImpl"
+		p:replyDAO-ref="replyDAO" />
+</beans>
+
+
+
+
+
+
+

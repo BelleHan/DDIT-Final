@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranHome-Mapper">
+
+	
+	<select id="selectFranOrderCount" resultType="int" parameterType="str">
+	select
+		 count(*)
+	from 
+		fran_order
+	where fran_appr_st = '1'
+		  and fran_code=#{fran_code}
+	</select>
+	
+	<select id="selectOrderCompletedCount" resultType="int" parameterType="str">
+	select 
+		count(*)
+	from 
+		fran_order
+	where order_st_code = '2'
+	and fran_code=#{fran_code}
+	</select>
+	
+	<select id="selectReturnApplyCount" resultType="int" parameterType="str">
+	select 
+		count(*)
+	from 
+		return
+	where return_check_st='1'
+	and fran_code = #{fran_code}
+	</select>
+	<select id="selectReturnCompleteCount" resultType="int" parameterType="str">
+	select 
+		count(*)
+	from 
+		return
+	where return_check_st='2'
+	and fran_code = #{fran_code}
+	</select>
+	<select id="selectStockRequestCount" resultType="int" parameterType="str">
+	 select 
+	 	count(deal_quan) 
+	from 
+		fran_deal 
+	where appr_deal_fran = #{fran_code} 
+	and deal_st='1'
+ 	and deal_date like sysdate
+	</select>
+	
+	<select id="selectStockAcceptCount" resultType="int" parameterType="str">
+		select 
+	 	count(*) 
+		from 
+			fran_deal 
+		where fran_code = #{fran_code}
+		and deal_st='2'
+	 	and deal_date like sysdate
+	</select>
+</mapper>

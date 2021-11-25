@@ -1,0 +1,295 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style>
+table{
+	text-align: center;
+}
+.card-header{
+	margin:0px 6px;
+}
+body {
+   font-family: 'Noto Sans KR', sans-serif;
+}
+.content-header{
+   padding : 8px .5em;
+}
+.card-body{
+    padding: 0.25rem;
+}
+.table {
+    font-size: 13px;
+    text-align: center;
+}
+.search-group, .form-control {
+   font-size : 13px;
+   text-align : right;
+}
+.search-group {
+   padding-top: 2px;
+}
+.search-card {
+   padding-top : 5px;
+    padding-bottom: 0px;
+   height : 85px;
+    width: 1260px;
+    margin: auto;
+}
+.search-body{
+   padding : 5px 30px;
+   height : 80px;
+}
+.search-navi{
+   position : fixed;
+   top : 92vh;
+   left : 71vh;
+   font-size : 13px;   
+}
+.search-navi{
+   position : fixed;
+   top : 35rem;
+   left : 34rem;   
+   font-size : 13px;
+}
+.input-padding-bottom {
+   margin-bottom : 5px;
+}
+.custom-checkbox {
+   padding-left : 108px;
+}
+#btn-goods {
+   height : 31px;
+}
+.custom-control-label {
+   padding-top: 3px;
+}
+.btn-fms-search{
+   height: 30px;
+}
+#btn-search {
+   height : 65px; margin-left : 26px;
+}
+.body-top {
+   margin-top : 5px;
+}
+#custom-tabs-one-profile-tab{
+   background-color: white;
+}
+#tab{
+background-color: #5ea4ff;
+}
+.table td{
+padding: 6.8px;
+}
+</style>
+
+</head>
+
+<title>물품상세내용</title>
+
+<body>
+	 
+	 <!-- Main content -->
+    <section class="content" style="overflow-y:scroll;overflow-x:hidden ">		
+		<div class="card">
+			<!-- -------------------- -->
+			<div class="row">
+	          <div class="col-12">
+	            <div class="card">
+	              <div class="card-header card-outline card-info" style="background-color:white;">
+	              	<i class="fas fa-info-circle float-left" style="padding:4px 5px 0 0; "></i><span class="card-title" style="font-size:16px;"><b>물품상세정보</b></span>
+	              	<button type="button" id="listBtn" class="btn btn-primary" onclick="CloseWindow();" style="float: right;">닫 기</button>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="col-sm-12">
+		              <table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:15px;">
+<!-- 		                <thead> -->
+		                <tr role="row">
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="width:150px; background-color: #E6E6E6;">물품이미지</th>
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">물품명</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">납품가(원)</th>
+		               
+		                </tr>
+<!-- 		                </thead> -->
+<!-- 		                <tbody> -->
+		                <tr role="row" >
+		                  <td class="sorting_1" rowspan="9" colspan="2">
+		                  	<div class="product-image col-sm-2" id="pictureView" 
+									style="height:350px; background-image:url('<%=request.getContextPath()%>/sup/goods/getPicture.do?sup_goods_img=${supGoods.sup_goods_img}');background-repeat:no-repeat;background-position:center;background-size:cover;"></div>
+		                  </td>
+		                  <td class="sorting_1" colspan="2">${supGoods.sup_goods_name }</td>
+		                  <td colspan="2"><fmt:formatNumber value="${supGoods.sup_goods_price}" pattern="#,###"></fmt:formatNumber> </td>
+		                 
+		                </tr>
+<!-- 		                </tbody> -->
+<!-- 		                <thead> -->
+		                 <tr role="row">
+		                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">물품분류</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">물품종류</th>
+		                </tr>
+<!-- 		                </thead> -->
+<!-- 		                <tbody> -->
+		                <tr role="row" >
+		                 <td colspan="2">${supGoods.sup_goods_laca}</td>
+		                  <td colspan="2">${supGoods.sup_goods_smca}</td>
+		                </tr>
+<!-- 		                </tbody> -->
+<!-- 		                <thead> -->
+		                 <tr role="row">
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">물품재질</th>
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">포장재질</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">용량(단위)</th>
+		                </tr>
+<!-- 		                </thead> -->
+<!-- 		                <tbody> -->
+		                <tr role="row" >
+		                  <td class="sorting_1" colspan="2">${supGoods.sup_goods_attr2}</td>
+		                  <td>${supGoods.sup_goods_attr3}</td>
+ 		                  <td>${supGoods.sup_goods_attr1}${supGoods.sup_goods_unit}</td>
+		                </tr>
+<!-- 		                </tbody> -->
+<!-- 		                <thead> -->
+		                 <tr role="row">
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">가로(cm)</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">세로(cm)</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">높이(cm)</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">무게(kg)</th>
+		                </tr>
+<!-- 		                </thead> -->
+<!-- 		                <tbody> -->
+		                <tr role="row" >
+		                  <td>${supGoods.sup_goods_attr4}</td>
+		                  <td>${supGoods.sup_goods_attr5}</td>
+		                  <td>${supGoods.sup_goods_attr6}</td>
+		                  <td>${supGoods.sup_goods_attr7}</td>
+		                </tr>
+<!-- 		                </tbody> -->
+<!-- 		                <thead> -->
+		                 <tr role="row">
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="4" style="background-color: #E6E6E6;">제품특성</th>
+		                </tr>
+<!-- 		                </thead> -->
+<!-- 		                <tbody> -->
+		                <tr role="row" >
+		                  <td class="sorting_1" colspan="4">${supGoods.sup_goods_attr8}</td>
+		                </tr>
+<!-- 		                </tbody> -->
+		              </table>
+	              </div><!-- /.card-body -->
+	            </div><!-- /.card -->
+	            
+	            <div class="card"><!-- card supply 정보-->
+	              <div class="card-header card-outline card-info" style="background-color:white;">
+	                <i class="fas fa-warehouse float-left" style="padding:4px 5px 0 0;"></i>
+	                <span class="card-title" style="font-size:16px;"><b>공급업체정보</b></span>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="col-sm-12">
+		              <table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:14px;">
+		                <c:if test="${supGoods.supVO.sup_contract_st eq 1}">
+			                <thead>
+				                <tr role="row">
+					                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">공급업체명</th>
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">대표명</th>
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">전화번호</th>
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">이메일</th>
+				                </tr>
+			                </thead>
+			                <tbody>
+				                <tr role="row" >
+				                  <td class="sorting_1" colspan="2">${supGoods.supVO.sup_name }
+<%-- 				                  	<button type="button" class="btn btn-warning">${codeName}</button> --%>
+				                  </td>
+				                  <td>${supGoods.supVO.sup_owner}</td>
+				                  <td>${supGoods.supVO.sup_tel}</td>
+				                  <td>${supGoods.supVO.sup_email}</td>
+				                </tr>
+			                </tbody>
+		                </c:if>
+					
+					<c:if test="${supGoods.supVO.sup_contract_st ne 1}">
+					 	<thead>
+			                <tr role="row">
+								 <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="3" style="background-color: #E6E6E6;">공급업체명</th>
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">계약종료일</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+				              <td class="sorting_1" colspan="3">${supGoods.supVO.sup_name }&nbsp;&nbsp;
+					             <button type="button" class="btn btn-warning" style="font-size: 13px;"><b>계약중</b></button>
+					          </td>
+			                  <td class="sorting_1" colspan="2">
+			                  	<fmt:formatDate value="${supGoods.supContInfoVO.sup_cont_end }" pattern="yyyy-MM-dd" />
+			                  </td>
+			                </tr>
+		                </tbody>
+		                <thead>
+				                <tr role="row">
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">대표명</th>
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">전화번호</th>
+					                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">이메일</th>
+				                </tr>
+			                </thead>
+			                <tbody>
+				                <tr role="row" >
+				                  <td>${supGoods.supVO.sup_owner}</td>
+				                  <td colspan="2">${supGoods.supVO.sup_tel}</td>
+				                  <td colspan="2">${supGoods.supVO.sup_email}</td>
+				                </tr>
+			                </tbody>
+					</c:if>
+
+		                <thead>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="3" style="background-color: #E6E6E6;">주소</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">사업자등록번호</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+			                  <td class="sorting_1" colspan="3">${supGoods.supVO.sup_zip}&nbsp;${supGoods.supVO.sup_addr}&nbsp;${supGoods.supVO.sup_detail_addr}</td>
+			                  <td colspan="2">${supGoods.supVO.sup_business_no}</td>
+			                </tr>
+		                </tbody>
+		                <thead>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">주요거래물품</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" style="background-color: #E6E6E6;">거래은행</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2" style="background-color: #E6E6E6;">계좌번호</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+			                <c:if test="${empty supGoods.supVO.sup_prod}" >
+			                <td class="sorting_1" colspan="2">-</td>
+			                </c:if>
+			                <c:if test="${!empty supGoods.supVO.sup_prod}" >
+			                <td class="sorting_1" colspan="2">커피원두</td>
+			                </c:if>
+			                  
+			                  <td colspan="1">${supGoods.supVO.sup_bank}</td>
+			                  <td colspan="2">${supGoods.supVO.sup_account}</td>
+			                </tr>
+		                </tbody>
+		              </table>
+	              </div><!-- /.card-body -->
+	            </div><!-- /.card supply -->
+	          </div>
+	        </div>
+			<div class="card-footer">
+			</div>
+		</div>
+		
+    </section>
+    <!-- /.content -->
+
+</body>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranToFran-Mapper">
+	
+	<select id="selectSearchGoods" resultType="hqGoods">
+<!-- 		select  -->
+<!-- 		hq_goods_name, hq_goods_code   -->
+<!-- 		from hq_goods  -->
+<!-- 		where hq_goods_name like '%'||#{}||'%'' -->
+	</select>
+	
+	<select id="selectSearchFran" parameterType="str">
+         select fran_latitude, fran_longitude 
+         from fran 
+         where fran_local_num = #{fran_local_num}
+	</select>
+	
+	<select id="selectFranLocal" parameterType="str">
+         select fran_local_num 
+         from fran 
+         where fran_code = #{fran_code}
+	</select>
+
+</mapper>

@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div style="padding:10px 16px;">
+	<h4>물품 Import</h4> 
+	</div>
+	
+	<div class="card" style="height:80vh;overflow-y:scroll;overflow-x:hidden">
+			
+	        <div class="card-header">
+	              <h3 class="card-title">1.엑셀파일 작성법(Example)</h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+		           <div class="col-12 row" style="float:left; padding-left: 0px;">
+	<!-- 	           <div class="col-sm-12" style="padding:10px 20px 0px 5px;"> -->
+						<div class="col-sm-2">
+						<form enctype="multipart/form-data" action="<%=request.getContextPath()%>/sup/goods/excelExport" method="post">
+							<button type="submit" class="btn btn-secondary float-sm-left" id="formExportBtn" style="margin-bottom: 10px; padding:8px 14px;font-size: 15px;">엑셀 샘플 다운로드&nbsp;&nbsp;<i class="fas fa-file-upload"></i></button>
+						</form>
+						</div>
+						
+						 <div class="col-sm-6" style="padding-top:10px;">
+							<form enctype="multipart/form-data" method="post" name="excelUpForm" id="excelUpForm" action="excelImport.do" >
+								<input type="file" id="excelFile" name="excleFile" value="엑셀 업로드" />
+								<input type="submit" value="Submit"/>
+							</form>
+				 		 </div>
+				  </div>
+				  
+				  <div class="info-box" style="margin-top: 10px; padding-top: 15px;background: #E6E6E6;">
+		              <div class="info-box-content" style="font-size: 14px;">
+		                <span class="info-box-text">*위 버튼을 클릭하여 샘플 파일을 다운받아 해당 포맷에 작성하시기 바랍니다.</span>
+		                <span class="info-box-text">*엑셀표에서 첫번째 행은 제외됩니다.</span>
+		                <span class="info-box-text">*확장자를 .xslx로 변경하여 업로드 시 에러가 발생할 수 있습니다. 이 경우, 확장자를 .xls로 저장하여 재시도 해보시기 바랍니다.</span>
+		                <span class="info-box-text">*물품코드는 고유 값으로 중복되지 않게 작성하시기 바랍니다. 물품코드가 중복되는 경우 업로드 시 에러가 발생할 수 있습니다.</span>
+		                <span class="info-box-text">*샘플파일 내 각 필드에 대한 설명은 아래 테이블을 참고하시기 바랍니다.</span>
+		                <span class="info-box-text">*작성된 엑셀파일을 선택한 후 'Submit' 버튼을 눌러 물품을 일괄등록합니다.</span>
+		              </div>
+	              <!-- /.info-box-content -->
+            	 </div>
+	            
+	              <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+	              	<div class="row">
+	           			<div class="col-sm-12">
+	             			 <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+	               			 <thead>
+				                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 325.399px;">항목</th>
+				                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" >표시형식(예시)</th>
+				                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 204.74px;">비고</th>
+				                </tr>
+				                </thead>
+				                <tbody>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Firefox 1.0</td>
+				                  <td>Win 98+ / OSX.2+</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Firefox 1.5</td>
+				                  <td>Win 98+ / OSX.2+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Firefox 2.0</td>
+				                  <td>Win 98+ / OSX.2+</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Firefox 3.0</td>
+				                  <td>Win 2k+ / OSX.3+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Camino 1.0</td>
+				                  <td>OSX.2+</td>
+				                </tr>
+				                
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Camino 1.5</td>
+				                  <td>OSX.3+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape 7.2</td>
+				                  <td>Win 95+ / Mac OS 8.6-9.2</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape Browser 8</td>
+				                  <td>Win 98SE+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape Navigator 9</td>
+				                  <td>Win 98+ / OSX.2+</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Mozilla 1.0</td>
+				                  <td>Win 95+ / OSX.1+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape 7.2</td>
+				                  <td>Win 95+ / Mac OS 8.6-9.2</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape Browser 8</td>
+				                  <td>Win 98SE+</td>
+				                </tr>
+				                
+				                <tr role="row" class="odd">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Netscape Navigator 9</td>
+				                  <td>Win 98+ / OSX.2+</td>
+				                </tr>
+				                
+				                <tr role="row" class="even">
+				                  <td class="sorting_1">Gecko</td>
+				                  <td>Mozilla 1.0</td>
+				                  <td>Win 95+ / OSX.1+</td>
+				                </tr>
+				                </tbody>
+				                
+				              </table>
+	              		</div>
+	              </div>
+	            <!-- /.card-body -->
+	     </div>
+     </div>
+   </div>
+<!-- card -->     
+<script type="text/javascript">
+	function call(){
+		alert(this.value)
+	}
+</script>
+</body>
+</html>

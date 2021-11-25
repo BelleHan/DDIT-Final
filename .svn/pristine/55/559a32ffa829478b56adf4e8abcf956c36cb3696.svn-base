@@ -1,0 +1,53 @@
+package kr.or.fms.sup.dto;
+									/* 출고 */
+import java.util.Date;
+
+public class WhOutVO {
+
+	private String out_code;		//출고코드
+	private String logis_code;		//물류센터코드
+	private String out_location;	//출고지
+	private Date out_date;			//출고일자
+	private int out_total;			//출고총수량
+	private int out_st;				//출고상태
+	
+	public String getOut_code() {
+		return out_code;
+	}
+	public void setOut_code(String out_code) {
+		this.out_code = out_code;
+	}
+	public String getLogis_code() {
+		return logis_code;
+	}
+	public void setLogis_code(String logis_code) {
+		this.logis_code = logis_code;
+	}
+	public String getOut_location() {
+		return out_location;
+	}
+	public void setOut_location(String out_location) {
+		this.out_location = out_location;
+	}
+	public Date getOut_date() {
+		return out_date;
+	}
+	public void setOut_date(Date out_date) {
+		this.out_date = out_date;
+	}
+	public int getOut_total() {
+		return out_total;
+	}
+	public void setOut_total(int out_total) {
+		this.out_total = out_total;
+	}
+	public int getOut_st() {
+		return out_st;
+	}
+	public void setOut_st(int out_st) {
+		this.out_st = out_st;
+	}
+	
+	
+	
+}

@@ -1,0 +1,14 @@
+package kr.or.fms.sup.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public interface SupGoodsDAO {
+	
+	//물품리스트 조회
+	List<SupGoodsVO> selectGoodsList()throws SQLException;
+//	List<SupGoodsVO> selectMemberList(Criteria cri)throws SQLException;
+//	List<SupGoodsVO> selectMemberList(SearchCriteria cri)throws SQLException;
+}

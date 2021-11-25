@@ -1,0 +1,510 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="cri" value="${pageMaker.cri }" />
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style>
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.content-header{
+	padding : 8px .5em;
+}
+.card-body{
+    padding: 0.25rem;
+}
+.table {
+    font-size: 13px;
+    text-align: center;
+}
+.search-group, .form-control {
+	font-size : 13px;
+	text-align : right;
+}
+.search-group {
+	padding-top: 2px;
+}
+.search-card {
+	padding-top : 5px;
+    padding-bottom: 0px;
+	height : 43.8rem;
+    width: 1260px;
+    margin: auto;
+}
+.search-body{
+	padding : 10px 5px;
+	height : 57px;
+}
+.search-navi{
+	position : fixed;
+	top : 95vh;
+	left : 30rem;
+	font-size : 11px;	
+}
+.input-padding-bottom {
+	margin-bottom : 5px;
+}
+.custom-checkbox {
+	padding-left : 108px;
+}
+#btn-goods {
+	height : 31px;
+}
+.custom-control-label {
+	padding-top: 3px;
+}
+.btn-fms-search{
+	height: 30px;
+}
+#btn-search {
+	height : 42px; margin-left : 26px; padding : 3px;
+}
+.body-top {
+	margin-top : 5px;
+}
+#amount-avg-td {
+	text-align: right;
+	font-size:16px;
+	padding-right: 12rem;
+}
+</style>
+</head>
+<body>
+	 <!-- Main content -->
+		<div class="col-12 body-top">
+			<div class="card card-secondary card-tabs" style="overflow-x: hidden;" >
+				<div class="card-header p-0 pt-1">
+					<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+						<li class="nav-item"><a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">가맹점 매출</a></li>
+						<li class="nav-item" onclick="javascript:logis_go();"><a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">물류센터 매출</a></li>
+					</ul>
+				</div>
+				
+				<div class="card-body search-card">
+					<div class="card">
+						<div class="card-body search-body">
+			            	<div class="search-group">
+			            		<div class="col-12">
+				   					<div class="input-group col-11">
+				   					 	<!-- keyword -->
+									 	<div class="input-group col-sm-4" style="position : absolute; left : -2.3rem;">
+											<span class=" search-group col-sm-2" >기간</span>
+											<div class="input-group input-group-sm col-sm-10">
+												<div class="input-group-prepend">
+													<button type="button" id="btn-period" class="btn bg-gradient-secondary btn-flat btn-fms-search">
+														<i class="far fa-calendar-alt"></i>
+													</button>
+												</div>
+												<input type="text" class="form-control float-right" id="reservation">
+											</div><!-- /.input group -->
+										</div>
+				   					 	<div class="input-group col-sm-7" >
+										 	<div class="input-group input-padding-bottom col-sm-4" style="position : absolute; left : 19rem;">
+												<span class=" search-group col-sm-4">지역</span>
+												<div class="input-group input-group-sm col-sm-8">
+													<input type="text" id="fms-local" name="fms-local" class="form-control form-fms-search" value="" >
+													<span class="input-group-append">
+														<button type="button" id="btn-local" name="btn-local" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<div class="input-group input-padding-bottom col-sm-5" style="position : absolute; left : 30rem;">
+												<span class=" search-group col-sm-4">가맹점</span>
+												<div class="input-group input-group-sm col-sm-8">
+													<input type="text" id="fms-fran" name="fms-fran" class="form-control form-fms-search" value="" >
+													<span class="input-group-append">
+														<button type="button" id="btn-fran" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+													</span>
+												</div>
+											</div>
+											<div class="input-group input-padding-bottom col-sm-5" style="position: absolute;left: 43.6rem;">
+												<span class=" search-group col-sm-4">물품</span>
+												<div class="input-group input-group-sm col-sm-8">
+													<input type="text" id="fms-goods" name="fms-goods" class="form-control form-fms-search" value="" >
+													<span class="input-group-append">
+														<button type="button" id="btn-goods" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+													</span>
+												</div>
+											</div>											
+											<div class="input-group input-padding-bottom col-sm-2" style="position: absolute; left: 59.5rem;">
+												<button type="button" style="font-family: none; font-size: 0.8rem; margin-left: 1rem;width: 5rem;"class="btn btn-block bg-gradient-secondary" onclick="refresh();">초기화</button>
+											</div>
+										</div>
+									<div class="input-group col-1" style="position: absolute;left: 66rem;top: -0.3rem;">
+										<span>
+											<button onclick="javascript:searchGoSalesF(1);" type="button" id="btn-search" class="btn btn-block btn-outline-secondary btn-lg btn-fms-search"><i class="fas fa-sw fa-search">&nbsp;&nbsp;&nbsp;search</i></button>
+										</span>
+									</div>
+								</div>
+		   					</div>
+			             </div>
+					</div>
+				</div>
+					<!-- /.card-header -->
+              	<div class="card-body table-responsive p-0 list-line" style="min-height: 38rem;">
+	                <table class="table table-hover">
+	                	<thead>
+		                    <tr>
+								<th>no</th>
+								<th>지역</th>
+								<th>가맹점코드</th>
+								<th>가맹점</th>
+								<th>대분류</th>
+								<th>소분류</th>
+								<th>물품코드</th>
+								<th>물품명</th>
+								<th>매출</th>
+								<th>날짜</th>
+							 </tr>
+	                  	</thead>
+						<tbody id="fran-sales-list">
+		                    <c:forEach items="${franSalesList }" var="sales">
+		                    	<c:set var="i" value="${i+1 }"/>
+								<tr class="fran-sales" style="cursor: pointer;">
+									<td>${i }</td>
+									<td>${sales.fran_local_num }</td>
+									<td>${sales.fran_code }</td>
+									<td>${sales.fran_name }</td>
+									<td>${sales.sup_goods_laca }</td>
+									<td>${sales.sup_goods_smca }</td>
+									<td>${sales.hq_goods_code }</td>
+									<td>${sales.hq_goods_name }</td>
+									<td id="amount-${i }"><fmt:formatNumber value="${sales.sales_amount }" pattern="#,###"/></td>
+									<td><fmt:formatDate value="${sales.sales_date }" pattern="yyyy-MM-dd"/></td>
+								</tr>
+							</c:forEach>
+								<tr id="amount-avg">
+				                	<td colspan="10" id="amount-avg-td"><strong>총 매출 &nbsp;<fmt:formatNumber value="${sum }" pattern="#,###"/>&nbsp;원</strong></td>
+								</tr>
+		                 </tbody>
+					</table>
+             	</div>
+			</div><!-- /.card-->
+			<div class="card-body search-navi">
+				<%@ include file="/WEB-INF/views/common/paginationHqSalesFran.jsp"%>
+			</div>
+			<div class="tab-content" id="custom-tabs-one-tabContent">
+				<div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab"></div>
+				<div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab"></div>
+			</div>
+		</div>
+	</div>
+	<!-- </div> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+<script>
+var data = "";
+var fms_local = "";
+var fms_fran = "";
+var fms_goods = "";
+var start_date = "";
+var end_date ="";
+var amountNumberFormat = "";
+var page = 1;
+
+function searchGoSalesF(realpage, url){
+	var period = $('#reservation').val();
+	var dateArr = period.split(' ');
+	for (var i=0; i < dateArr.length ; i++) {
+		dateArr[i] = dateArr[i].slice(0, -1);
+	}
+	start_date = dateArr[0] + dateArr[1] + dateArr[2];
+	end_date = dateArr[4] + dateArr[5] + dateArr[6];
+	if(!realpage) page = 1;
+	page = realpage;
+	data = {"fms_local": fms_local, "fms_fran": fms_fran,"fms_goods": fms_goods, "page" : page, "start_date" : start_date, "end_date" : end_date};
+	console.log(data);
+	$.ajax({
+		url:'franSearch.do'
+		, method : 'post'
+		, data : JSON.stringify(data)
+		, contentType : 'application/json; charset=UTF-8'
+		, dataType : 'json'
+		, success : function(dataMap) {
+			printData(dataMap.franSalesList, $('#fran-sales-list'),$('#fransales-list-template'), $('.fran-sales'));
+			printPagination(dataMap.pageMaker,$('nav.pagination-nav'),$('#salesfran-pagination-template'));
+			amountNumberFormat = dataMap.sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			console.log(amountNumberFormat);
+			$('#amount-avg').remove();
+		}, complete : function() {
+			$('#fran-sales-list').append('<tr id="amount-avg"><td colspan="10" id="amount-avg-td"><strong>총 매출 &nbsp;'+amountNumberFormat+'&nbsp;원</strong></td></tr>');
+		}
+	})
+}
+
+function refresh() {
+	fms_local = "";
+	fms_fran = "";
+	fms_goods = "";
+	document.querySelector('#fms-local').value = "";
+	document.querySelector('#fms-fran').value = "";
+	document.querySelector('#fms-goods').value = "";
+}
+</script>
+<!-- 지역검색 영역 -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-local" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">지역</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body table-responsive p-0 table-scroll">
+				<table class="table table-hover" id="modal-fms-local">
+					<thead>
+						<tr>
+								<th>no</th>
+								<th>지역번호</th>
+						</tr>
+					</thead>
+					<tbody class="local-list">
+					<!-- modal이 뿌려질 영역 -->
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="local-list-template">
+	{{#each .}}  
+			<tr class="local" id="local{{math @key '+' 1}}" onclick="javascript:localKey('{{this}}');">
+				<td>{{math @key '+' 1}}</td>
+				<td>{{this}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//local modal
+	$('#btn-local').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/local.do',
+			type:'get',
+			success:function(goodsList){
+				printData(goodsList, $('.local-list'), $('#local-list-template'), $('.local'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-local').modal('show');
+			}
+		})
+	});
+	
+	// 지역을 선택하면 해당 값이 키워드로
+	function localKey(num, code){
+		document.querySelector('#fms-local').value = num;
+		fms_local = num;
+		$('#modal-local').modal('hide');
+	}
+
+</script>
+<!-- 지역검색 끝 -->
+<!-- 가맹점검색  -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-fran" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">가맹점</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body table-responsive p-0 table-scroll">
+				<table class="table table-hover" id="modal-fms-fran">
+					<thead>
+						<tr>
+								<th>코드</th>
+								<th>가맹점명</th>
+								<th>대표</th>
+								<th>주소</th>
+						</tr>
+					</thead>
+					<tbody class="fran-list">
+					<!-- modal이 뿌려질 영역 -->
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="fran-list-template">
+	{{#each .}}  
+			<tr class="fran" id="fran{{math @key '+' 1}}" onclick="javascript:franKey('{{fran_name}}','{{fran_code}}');">
+				<td>{{fran_code}}</td>
+				<td>{{fran_name}}</td>
+				<td>{{fran_owner}}</td>
+				<td>{{fran_addr}} {{fran_detail_addr}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//fran modal
+	$('#btn-fran').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/fran.do',
+			type:'get',
+			success:function(goodsList){
+				printData(goodsList, $('.fran-list'), $('#fran-list-template'), $('.fran'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-fran').modal('show');
+			}
+		})
+	});
+	
+	// 가맹점을 선택하면 해당 값이 키워드로
+	function franKey(name, code){
+		document.querySelector('#fms-fran').value = name;
+		fms_fran = code;
+		$('#modal-fran').modal('hide');
+	}
+
+</script>
+<!-- 가맹점검색 끝 -->
+<!-- 본사물품 검색  -->
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-goods" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">본사 물품</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body table-responsive p-0 table-scroll">
+				<table class="table table-hover" id="modal-fms-goods">
+				<thead>
+					<tr>
+							<th>물품코드</th>
+							<th>물품명</th>
+							<th>공급업체</th>
+							<th>가격</th>
+							<th>등록날짜</th> <!-- yyyy-MM-dd  -->
+					</tr>
+				</thead>
+					<tbody class="goods-list">
+					<!-- modal이 뿌려질 영역 -->
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<script type="text/x-handlerbars-template" id="hqgoods-list-template">
+	{{#each .}}  
+			<tr class="hqgoods" id="goods{{math @key '+' 1}}" onclick="javascript:hqgoodsKey('{{sup_goods_name}}','{{hq_goods_code}}');">
+				<td>{{hq_goods_code}}</td>
+				<td>{{sup_goods_name}}</td>
+				<td>{{sup_name}}</td>
+				<td>{{goods_retail_price}}</td>
+				<td>{{last_update}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//goods modal
+	$('#btn-goods').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/hqgoods.do',
+			type:'get',
+			success:function(goodsList){
+				printData(goodsList, $('.goods-list'), $('#hqgoods-list-template'), $('.hqgoods'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-goods').modal('show');
+			}
+		})
+	});
+	
+	// 물품을 선택하면 해당 값이 키워드로
+	function hqgoodsKey(name, code){
+		document.querySelector('#fms-goods').value = name;
+		fms_goods = code;
+		$('#modal-goods').modal('hide');
+	}
+</script>
+<!-- 본사물품 검색 끝 -->
+<!-- 키워드 검색 끝 -->
+<script type="text/x-handlerbars-template" id="fransales-list-template">
+	{{#each .}}  
+			<tr class="fran-sales" style="cursor: pointer;">
+				<td>{{math @key "+" 1}}</td>
+				<td>{{fran_local_num }}</td>
+				<td>{{fran_code }}</td>
+				<td>{{fran_name }}</td>
+				<td>{{sup_goods_laca }}</td>
+				<td>{{sup_goods_smca }}</td>
+				<td>{{hq_goods_code }}</td>
+				<td>{{hq_goods_name }}</td>
+				<td>{{numberFormat sales_amount }}</td>
+{{#ifeq sales_date}}
+				<td>{{prettifyDate sales_date }}</td>
+{{else}}
+				<td></td>
+{{/ifeq}}
+			</tr>
+	{{/each}}
+</script>
+<!-- 키워드 검색 끝 -->
+<!-- 키워드 페이지네이션 -->
+<script type="text/x-handlebars-template"  id="salesfran-pagination-template" >
+<ul class="pagination justify-content-center m-0">
+	<li class="paginate_button page-item">
+		<a href="javascript:searchGoSalesF(1)" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+			<i class='fas fa-angle-double-left'></i>
+		</a>
+	</li>
+	<li class="paginate_button page-item">
+		<a href="{{#if prev}}javascript:searchGoSalesF({{prevPageNum}}){{else}}javascript:searchGoSalesF(1){{/if}}" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+			<i class='fas fa-angle-left'></i>
+		</a>
+	</li>
+	{{#each pageNum}}
+	<li class="paginate_button page-item {{signActive this}} ">
+		<a href="javascript:searchGoSalesF({{this}})" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+			{{this}}
+		</a>
+	</li>
+	{{/each}}
+
+	<li class="paginate_button page-item ">
+		<a href="{{#if next}}javascript:searchGoSalesF({{nextPageNum}}){{else}}javascript:searchGoSalesF(1){{/if}}" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+			<i class='fas fa-angle-right'></i>
+		</a>
+	</li>
+	<li class="paginate_button page-item">
+		<a href="javascript:searchGoSalesF({{realEndPage}})" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+			<i class='fas fa-angle-double-right'></i>
+		</a>
+	</li>
+</ul>
+</script>
+<!-- 키워드 페이지네이션 끝 -->
+</body>

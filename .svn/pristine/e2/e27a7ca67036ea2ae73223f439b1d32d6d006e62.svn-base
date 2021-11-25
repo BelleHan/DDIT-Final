@@ -1,0 +1,58 @@
+package kr.or.fms.logis.dto;
+
+public class LogisWhVO {
+	
+	private String wh_code;
+	private String logis_code;
+	private String sup_goods_code;
+	private String hq_code;
+	private String wh_name;
+	private String wh_area;
+	private int wh_st;
+	
+	public String getWh_code() {
+		return wh_code;
+	}
+	public void setWh_code(String wh_code) {
+		this.wh_code = wh_code;
+	}
+	public String getLogis_code() {
+		return logis_code;
+	}
+	public void setLogis_code(String logis_code) {
+		this.logis_code = logis_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getWh_name() {
+		return wh_name;
+	}
+	public void setWh_name(String wh_name) {
+		this.wh_name = wh_name;
+	}
+	public String getWh_area() {
+		return wh_area;
+	}
+	public void setWh_area(String wh_area) {
+		this.wh_area = wh_area;
+	}
+	public int getWh_st() {
+		return wh_st;
+	}
+	public void setWh_st(int wh_st) {
+		this.wh_st = wh_st;
+	}
+	
+	
+
+}

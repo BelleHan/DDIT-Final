@@ -1,0 +1,65 @@
+package kr.or.fms.hq.dto;
+									/* (본사)물품구매 */
+import java.util.Date;
+
+public class BuyGoodsVO {
+
+	private String goods_pur_code;	//물품구매코드
+	private String hq_code;			//본사코드
+	private Date goods_pur_date;	//구매일자
+	private int goods_pur_price;	//총구매금액
+	private int goods_pur_st;		//구매승인상태
+	
+	private Date pur_arrive_date;	//납품일자
+	private String pur_note;		//비고
+	private String pur_arrive_loc;	//납품장소
+	
+	public String getGoods_pur_code() {
+		return goods_pur_code;
+	}
+	public void setGoods_pur_code(String goods_pur_code) {
+		this.goods_pur_code = goods_pur_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public Date getGoods_pur_date() {
+		return goods_pur_date;
+	}
+	public void setGoods_pur_date(Date goods_pur_date) {
+		this.goods_pur_date = goods_pur_date;
+	}
+	public int getGoods_pur_price() {
+		return goods_pur_price;
+	}
+	public void setGoods_pur_price(int goods_pur_price) {
+		this.goods_pur_price = goods_pur_price;
+	}
+	public int getGoods_pur_st() {
+		return goods_pur_st;
+	}
+	public void setGoods_pur_st(int goods_pur_st) {
+		this.goods_pur_st = goods_pur_st;
+	}
+	public Date getPur_arrive_date() {
+		return pur_arrive_date;
+	}
+	public void setPur_arrive_date(Date pur_arrive_date) {
+		this.pur_arrive_date = pur_arrive_date;
+	}
+	public String getPur_note() {
+		return pur_note;
+	}
+	public void setPur_note(String pur_note) {
+		this.pur_note = pur_note;
+	}
+	public String getPur_arrive_loc() {
+		return pur_arrive_loc;
+	}
+	public void setPur_arrive_loc(String pur_arrive_loc) {
+		this.pur_arrive_loc = pur_arrive_loc;
+	}
+}

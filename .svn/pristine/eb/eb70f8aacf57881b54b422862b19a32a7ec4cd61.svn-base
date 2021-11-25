@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LogisOut-Mapper">
+	<sql id="map">	
+		<if test="keywordMap.out_code!=null and !keywordMap.out_code.equals('')">
+			and out_loca = #{keywordMap.out_code}			
+		</if>
+		<if test="keywordMap.fms_st!=null and !keywordMap.fms_st.equals('')">
+			and out_st = #{keywordMap.fms_st}			
+		</if>
+		<if test="keywordMap.start_date!=null and !keywordMap.start_date.equals('')">
+		    and <![CDATA[out_date >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null and !keywordMap.end_date.equals('')">
+			and <![CDATA[out_date <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	
+	<select id="outList" resultType="out">
+		select 
+		   distinct out_code,
+				    logis_code,
+				    out_loca_type,
+				    out_loca,
+				    out_date,
+				    out_st
+		from out
+		where out_code is not null
+		and logis_code = #{keywordMap.logis_code}
+		<include refid="map"/>
+		order by out_date desc
+	</select>
+	
+	<select id="outListCount" resultType="int">
+		select count(distinct out_code)
+		from out
+		where out_code is not null
+		and logis_code = #{keywordMap.logis_code}
+		<include refid="map"/>
+	</select>
+	
+	<select id="outLocaFran" resultType="out">
+	SELECT 
+		DISTINCT B.FRAN_NAME
+       , A.OUT_LOCA 
+       
+	FROM
+		OUT A, FRAN B
+  	WHERE 
+       	A.OUT_LOCA = B.FRAN_CODE
+    AND A.LOGIS_CODE = #{logiscode}
+	</select>
+	<select id="outLocaLogis" resultType="out">
+	SELECT 
+		DISTINCT B.LOGIS_NAME
+       	, A.OUT_LOCA 
+       
+	FROM
+       	OUT A, LOGIS B
+  	WHERE 
+       	A.OUT_LOCA = B.LOGIS_CODE
+    AND	A.LOGIS_CODE = #{logiscode}
+	</select>
+	
+	<select id="getDetail" resultType="out" parameterType="str">
+		select *
+		from out
+		where out_code=#{out_code}
+	</select>
+	
+	<update id="updateOut" parameterType="map">
+		update out
+		set
+		out_num=#{out_num}
+		where out_code=#{out_code}
+		and hq_goods_code=#{hq_goods_code}	
+	</update>
+	
+
+	
+
+</mapper>

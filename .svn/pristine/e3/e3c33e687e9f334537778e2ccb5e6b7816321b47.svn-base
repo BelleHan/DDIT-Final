@@ -1,0 +1,67 @@
+package kr.or.fms.fran.dto;
+
+import java.util.Date;
+
+public class FranStChange {
+	private String st_change_code;	//운영상태변경신청코드
+	private String st__code; 		//가맹점코드
+	private Date st_change_date;	//운영상태변경신청일자
+	private int appli_st;			//신청한운영상태
+	private Date st_change_start;	//운영상태변경시작일
+	private Date st_change_end; 	//운영상태변경종료일
+	private String st_change_reason;//운영상태변경사유
+	private int hq_appr;			//본사승인여부
+	
+	
+	public String getSt_change_code() {
+		return st_change_code;
+	}
+	public void setSt_change_code(String st_change_code) {
+		this.st_change_code = st_change_code;
+	}
+	public String getSt__code() {
+		return st__code;
+	}
+	public void setSt__code(String st__code) {
+		this.st__code = st__code;
+	}
+	public Date getSt_change_date() {
+		return st_change_date;
+	}
+	public void setSt_change_date(Date st_change_date) {
+		this.st_change_date = st_change_date;
+	}
+	public int getAppli_st() {
+		return appli_st;
+	}
+	public void setAppli_st(int appli_st) {
+		this.appli_st = appli_st;
+	}
+	public Date getSt_change_start() {
+		return st_change_start;
+	}
+	public void setSt_change_start(Date st_change_start) {
+		this.st_change_start = st_change_start;
+	}
+	public Date getSt_change_end() {
+		return st_change_end;
+	}
+	public void setSt_change_end(Date st_change_end) {
+		this.st_change_end = st_change_end;
+	}
+	public String getSt_change_reason() {
+		return st_change_reason;
+	}
+	public void setSt_change_reason(String st_change_reason) {
+		this.st_change_reason = st_change_reason;
+	}
+	public int getHq_appr() {
+		return hq_appr;
+	}
+	public void setHq_appr(int hq_appr) {
+		this.hq_appr = hq_appr;
+	}
+	
+	
+	
+}

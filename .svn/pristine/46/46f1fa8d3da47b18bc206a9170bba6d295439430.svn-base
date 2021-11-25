@@ -1,0 +1,169 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<head></head>
+
+<title>공지목록</title>
+
+<body>
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h5>물품상세내용</h5>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="hq/goods/list.do">
+				        	<i class="fa fa-dashboard"></i>공급업체물품
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	${supGoods.sup_goods_name }
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+	 <!-- Main content -->
+    <section class="content">		
+		<div class="card">
+			<div class="col-sm-12" style="padding:10px 20px 0px 5px;">
+				<button type="button" class="btn btn-primary float-sm-right" id="registBtn" onclick="OpenWindow('registForm.do','물품등록',1100,750);">구매하기</button>				
+			</div>
+			
+			<!-- -------------------- -->
+			<div class="row">
+	          <div class="col-12">
+	            <div class="card">
+	              <div class="card-header">
+	              	<i class="fas fa-info-circle float-left" style="padding:4px 5px 0 0; "></i><span class="card-title" style="font-size:16px;"><b>물품상세정보</b></span>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="col-sm-12">
+		              <table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:14px;">
+		                <thead>
+		                <tr role="row">
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2">물품명</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">납품가(원)</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">물품분류</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">물품종류</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">용량</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		                <tr role="row" >
+		                  <td class="sorting_1" colspan="2">${supGoods.sup_goods_name }</td>
+		                  <td>${supGoods.sup_goods_price}</td>
+		                  <td>${supGoods.sup_goods_laca}</td>
+		                  <td>${supGoods.sup_goods_smca}</td>
+		                  <td>${supGoods.sup_goods_attr1}${supGoods.sup_goods_unit}</td>
+		                </tr>
+		                </tbody>
+		                <thead>
+		                 <tr role="row">
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">포장재질</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">물품재질</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">가로</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">세로</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">높이</th>
+		                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">무게</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		                <tr role="row" >
+		                  <td class="sorting_1">${supGoods.sup_goods_attr2}</td>
+		                  <td>${supGoods.sup_goods_attr3}</td>
+		                  <td>${supGoods.sup_goods_attr4}</td>
+		                  <td>${supGoods.sup_goods_attr5}</td>
+		                  <td>${supGoods.sup_goods_attr6}</td>
+		                  <td>${supGoods.sup_goods_attr7}</td>
+		                </tr>
+		                </tbody>
+		                <thead>
+		                 <tr role="row">
+		                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="6">제품특성</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		                <tr role="row" >
+		                  <td class="sorting_1" colspan="6">${supGoods.sup_goods_attr8}</td>
+		                </tr>
+		                </tbody>
+		              </table>
+	              </div><!-- /.card-body -->
+	            </div><!-- /.card -->
+	            
+	            <div class="card"><!-- card supply-->
+	              <div class="card-header">
+	                <i class="fas fa-warehouse float-left" style="padding:4px 5px 0 0;"></i>
+	                <span class="card-title" style="font-size:16px;"><b>공급업체정보</b></span>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="col-sm-12">
+		              <table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:14px;">
+		                <thead>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2">공급업체명</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">대표명</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">전화번호</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">이메일</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+			                  <td class="sorting_1" colspan="2">${supGoods.supVO.sup_name }
+			                  	<button type="button" class="btn btn-warning">${supGoods.supVO.sup_contract_st}</button>
+			                  </td>
+			                  <td>${supGoods.supVO.sup_owner}</td>
+			                  <td>${supGoods.supVO.sup_tel}</td>
+			                  <td>${supGoods.supVO.sup_email}</td>
+			                </tr>
+		                </tbody>
+		                <thead>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="3">주소</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2">사업자등록번호</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+			                  <td class="sorting_1" colspan="3">${supGoods.supVO.sup_zip}${supGoods.supVO.sup_addr}${supGoods.supVO.sup_detail_addr}</td>
+			                  <td colspan="2">${supGoods.supVO.sup_business_no}</td>
+			                </tr>
+		                </tbody>
+		                <thead>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="2">주요거래물품</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">거래은행</th>
+				                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="2">계좌번호</th>
+			                </tr>
+		                </thead>
+		                <tbody>
+			                <tr role="row" >
+			                  <td class="sorting_1" colspan="2">${supGoods.supVO.sup_prod}</td>
+			                  <td colspan="1">${supGoods.supVO.sup_bank}</td>
+			                  <td colspan="2">${supGoods.supVO.sup_account}</td>
+			                </tr>
+		                </tbody>
+		              </table>
+	              </div><!-- /.card-body -->
+	            </div><!-- /.card supply -->
+	          </div>
+	        </div>
+			<div class="card-footer">
+			</div>
+		</div>
+		
+    </section>
+    <!-- /.content -->
+
+</body>
+

@@ -1,0 +1,294 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>공급업체 홈</title>
+<style>
+</style>
+<!-- 차트 링크 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+</head>
+<body>
+	<div class="col-12 row" style="padding-top: 20px;">
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		
+	</div>
+	<div class="col-12 row">
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		
+	</div>
+	<div class="col-12 row">
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+		<div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>New Orders</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+	</div>
+	<!-- /.info-box -->
+	
+	<div class="col-12">
+		<div class="info-box">
+			<div class="info-box-content">
+				<div class="card">
+					<div class="card-header border-transparent">
+					
+						<h3 class="card-title"><strong><i class="far fa-bell"></i> 최근공급요청</strong></h3>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table m-0">
+								<thead>
+									<tr>
+										<th>Order ID</th>
+										<th>Item</th>
+										<th>상태</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><a href="pages/examples/invoice.html">SG0010</a></td>
+										<td>Call of Duty IV</td>
+										<td><span class="badge badge-success">발송</span></td>
+									</tr>
+									<tr>
+										<td><a href="pages/examples/invoice.html">OR1848</a></td>
+										<td>Samsung Smart TV</td>
+										<td><span class="badge badge-warning">대기</span></td>
+									</tr>
+									<tr>
+										<td><a href="pages/examples/invoice.html">OR7429</a></td>
+										<td>iPhone 6 Plus</td>
+										<td><span class="badge badge-danger">완료</span></td>
+									</tr>
+									<tr>
+										<td><a href="pages/examples/invoice.html">OR7429</a></td>
+										<td>Samsung Smart TV</td>
+										<td><span class="badge badge-info">배송중</span></td>
+									</tr>
+									<tr>
+										<td><a href="pages/examples/invoice.html">OR1848</a></td>
+										<td>Samsung Smart TV</td>
+										<td><span class="badge badge-warning">대기</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /.card-body -->
+				</div>
+				
+			</div>
+			<div class="card col-6">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="ion ion-clipboard mr-1"></i>
+                  To Do List
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <ul class="todo-list ui-sortable" data-widget="todo-list">
+                  <li class="">
+                    <!-- checkbox -->
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                      <label for="todoCheck1"></label>
+                    </div>
+                    <!-- todo text -->
+                    <span class="text">Design a nice theme</span>
+                    <!-- Emphasis label -->
+                    <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
+                    <!-- General tools such as edit or delete-->
+                  </li>
+                  <li class="">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo2" id="todoCheck2" >
+                      <label for="todoCheck2"></label>
+                    </div>
+                    <span class="text">Make the theme responsive</span>
+                    <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
+                  </li>
+                  <li class="">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo3" id="todoCheck3">
+                      <label for="todoCheck3"></label>
+                    </div>
+                    <span class="text">Let theme shine like a star</span>
+                    <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
+                  </li>
+                  <li class="">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo4" id="todoCheck4">
+                      <label for="todoCheck4"></label>
+                    </div>
+                    <span class="text">Let theme shine like a star</span>
+                    <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
+                  </li>
+                  <li class="">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo5" id="todoCheck5">
+                      <label for="todoCheck5"></label>
+                    </div>
+                    <span class="text">Check your messages and notifications</span>
+                    <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
+                  </li>
+                  <li class="">
+                    <div class="icheck-primary d-inline ml-2">
+                      <input type="checkbox" value="" name="todo6" id="todoCheck6">
+                      <label for="todoCheck6"></label>
+                    </div>
+                    <span class="text">Let theme shine like a star</span>
+                    <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+			</div>
+		</div>
+	<!-- /.info-box -->
+
+</body>
+</html>

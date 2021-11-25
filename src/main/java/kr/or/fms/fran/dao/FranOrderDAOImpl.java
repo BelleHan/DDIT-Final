@@ -1,0 +1,111 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.fran.dto.FranOrderDeVO;
+import kr.or.fms.fran.dto.FranOrderVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class FranOrderDAOImpl implements FranOrderDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public List<HqGoodsVO> orderGoodsCriteriaList(SearchCriteria cri, String fran_local_num) throws SQLException {
+		
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);	
+		
+		Map<String , Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("cri", cri);
+		dataMap.put("fran_local_num", fran_local_num);
+		
+		List<HqGoodsVO> orderList = 
+				session.selectList("Order-Mapper.selectOrderGoods", dataMap ,rowBounds);
+		return orderList;
+		
+	}
+
+	@Override
+	public int selectOrderGoodsCount(SearchCriteria cri) throws SQLException {
+		int count = session.selectOne("Order-Mapper.selectOrderGoodsCount", cri);
+		return count;
+	}
+
+	//대분류콤보박스
+	@Override
+	public List<String> selectLaca() throws SQLException {
+		List<String> lacaCombo = session.selectList("Order-Mapper.lacaCombo");
+		return lacaCombo;
+	}
+	//소분류콤보박스
+	@Override
+	public List<String> selectSmca() throws SQLException {
+		List<String> smcaCombo = session.selectList("Order-Mapper.smcaCombo");
+		return smcaCombo;
+	}
+	//대분류 적용시 소분류
+	@Override
+	public List<String> searchSmca(String sup_goods_laca) throws SQLException {
+		List<String> searchSmcaList = session.selectList("Order-Mapper.searchSmca", sup_goods_laca);
+		return searchSmcaList;
+	}
+	//검색적용한 발주물품리스트
+	@Override
+	public List<HqGoodsVO> searchOrderList(HqGoodsVO hqGoods) throws SQLException {
+		List<HqGoodsVO> searchList = session.selectList("Order-Mapper.searchOrderList", hqGoods);
+		return searchList;
+	}
+//	@Override
+//	public List<HqGoodsVO> orderGoodsList() throws SQLException {
+//		List<HqGoodsVO> orderList = session.selectList("Order-Mapper.selectOrderGoods");
+//		return orderList;
+//		
+//	}
+
+	@Override
+	public void insertOrder(FranOrderVO franOrder) throws SQLException {
+		session.update("Order-Mapper.insertFranOrder", franOrder);
+	}
+
+	@Override
+	public void insertOrderDe(FranOrderDeVO franOrderDe) throws SQLException {
+		session.update("Order-Mapper.insertFranOrderDe", franOrderDe);
+	}
+
+	@Override
+	public List<FranOrderDeVO> availableNumWh(FranOrderDeVO franOrderDe) throws SQLException {
+		List<FranOrderDeVO> availableList = session.selectList("Order-Mapper.confirmOrder", franOrderDe);
+		return availableList;
+	}
+
+	@Override
+	public String selectFranOrderCode() throws SQLException {
+		String fran_order_code = session.selectOne("Order-Mapper.selectFranOrderCode");
+		return fran_order_code;
+	}
+
+	@Override
+	public List<FranGoodsDeVO> selectRecList(FranVO fran) throws SQLException {
+		List<FranGoodsDeVO> recList = session.selectList("Order-Mapper.selectRecList", fran);
+		return recList;
+	}
+
+	
+
+	
+
+}

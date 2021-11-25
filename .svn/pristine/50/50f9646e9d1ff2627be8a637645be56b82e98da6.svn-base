@@ -1,0 +1,514 @@
+package kr.or.fms.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+import kr.or.fms.command.OutModifyCommand;
+import kr.or.fms.command.OutRegistCommand;
+import kr.or.fms.hq.dto.OutVO;
+import kr.or.fms.hq.service.InOutService;
+import kr.or.fms.command.FranModifyCommand;
+import kr.or.fms.command.LogisModifyCommand;
+import kr.or.fms.command.OutRegistCommand;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.command.SupModifyCommand;
+import kr.or.fms.command.buyRequestCommand;
+import kr.or.fms.dto.MenuVO;
+import kr.or.fms.exception.InvalidPasswordException;
+import kr.or.fms.exception.NotFoundIdException;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+import kr.or.fms.hq.dto.OutVO;
+import kr.or.fms.hq.service.BuyGoodsService;
+import kr.or.fms.hq.service.ComListService;
+import kr.or.fms.hq.service.EmpService;
+import kr.or.fms.hq.service.InOutService;
+import kr.or.fms.hq.service.StockListService;
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.service.CodeService;
+import kr.or.fms.service.MenuService;
+import kr.or.fms.sup.dto.SupGoodsVO;
+import kr.or.fms.sup.dto.SupVO;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+@RequestMapping("/hq")
+public class HqController {
+	@Autowired
+	MenuService menuService;
+	
+	@Autowired
+	EmpService empService;
+	
+	@Autowired
+	ComListService comListService;
+	
+	@Autowired
+	StockListService stockListService;
+	
+    @Autowired
+	InOutService inOutService;
+    
+    @Autowired
+    BuyGoodsService buyGoodsService;
+
+    @Autowired
+    CodeService codeService;
+	private static final Logger logger = LoggerFactory.getLogger(HqController.class);
+	
+	@RequestMapping(value="/com/franmodify.do", method=RequestMethod.POST)
+	public String franModify(FranModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		String url = "redirect:/hq/com/frandetail.do";
+		
+		FranVO fran = modifyReq.toFranVO();
+		
+		comListService.modifyFran(fran);
+		
+		rttr.addAttribute("fcode", fran.getFran_code());
+		rttr.addAttribute("from", "modify");
+		
+		return url;
+	}
+	
+	@RequestMapping("/com/logismodify.do")
+	public String logisModify(LogisModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		String url = "redirect:/hq/com/logisdetail.do";
+		
+		LogisVO logis = modifyReq.toLogisVO();
+		comListService.modifyLogis(logis);
+		
+		rttr.addAttribute("lcode", logis.getLogis_code());
+		
+		return url;
+	}
+
+	@RequestMapping("/com/franmodifyForm.do")
+	public ModelAndView FranModifyForm(String fcode, ModelAndView mnv) throws Exception {
+		String url = "hq/Fran_modify";
+		
+		FranVO fran = comListService.getFranForModify(fcode);
+		
+		mnv.addObject("fran", fran);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping("/com/supmodifyForm.do")
+	public ModelAndView SupModifyForm(String scode, ModelAndView mnv) throws Exception {
+		String url = "hq/Sup_modify";
+		
+		 SupVO sup = comListService.getSupForModify(scode);
+		
+		mnv.addObject("sup", sup);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="/com/supmodify.do", method=RequestMethod.POST)
+	public String supModify(SupModifyCommand  modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		String url = "redirect:/hq/com/supdetail.do";
+		
+		SupVO sup = modifyReq.toSupVO();
+	
+		comListService.modifySup(sup);
+		
+		rttr.addFlashAttribute("from", "modify");
+		rttr.addAttribute("scode", sup.getSup_code());
+		return url;
+	}
+	
+	@RequestMapping("/com/frandetail.do")
+	public ModelAndView Frandetail(String fcode, @RequestParam(defaultValue="")String from, HttpServletRequest request, ModelAndView mnv) throws SQLException {
+		
+		String url = "hq/Fran_detail";
+		
+		FranVO fran = null;
+		
+		fran = comListService.getFran(fcode);
+		
+		mnv.addObject("fran", fran);
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	@RequestMapping("/com/logisdetail.do")
+	public ModelAndView Logisdetail(String lcode, HttpServletRequest request, ModelAndView mnv) throws SQLException {
+		
+		String url = "hq/logis_detail";
+		
+		LogisVO logis = null;
+		
+		logis = comListService.getLogis(lcode);
+		
+		mnv.addObject("logis", logis);
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	@RequestMapping("/com/supdetail.do")
+	public ModelAndView supdetail(String scode, @RequestParam(defaultValue="")String from, HttpServletRequest request, ModelAndView mnv) throws SQLException {
+		
+		String url = "hq/Sup_detail";
+		
+		SupVO sup = null;
+	
+		
+		sup = comListService.GetSup(scode);
+		
+		mnv.addObject("sup", sup);
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+		
+	}
+	
+	@RequestMapping(value = "/com/list", method = RequestMethod.GET)
+	public ModelAndView comList(SearchCriteria cri, ModelAndView mnv, String from, HttpServletRequest request) throws SQLException {
+		String url = "hq/FLS_list";
+		if(from!=null && from.equals("fran")) {
+			request.setAttribute("from", "fran");
+		}
+		if(from!=null && from.equals("logis")) {
+			request.setAttribute("from", "logis");
+		}
+		if(from!=null && from.equals("sup")) {
+			request.setAttribute("from", "sup");
+		}
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> franMap = comListService.getFranList(cri);
+		List<FranVO> franList= (List<FranVO>) franMap.get("franList");
+		PageMaker pageMaker1 = (PageMaker) franMap.get("pageMaker1");
+		
+		Map<String, Object> logisMap = comListService.getLogisList(cri);
+		List<LogisVO> logisList= (List<LogisVO>) logisMap.get("logisList");
+		PageMaker pageMaker2 = (PageMaker) logisMap.get("pageMaker2");
+		
+		Map<String, Object> supMap = comListService.getSupList(cri);
+		List<SupVO> supList= (List<SupVO>) supMap.get("supList");
+		PageMaker pageMaker3 = (PageMaker) logisMap.get("pageMaker3");
+		
+		dataMap.put("franList", franList);
+		dataMap.put("pageMaker1", pageMaker1);
+		dataMap.put("logisList", logisList);
+		dataMap.put("pageMaker2", pageMaker2);
+		dataMap.put("supList", supList);
+		dataMap.put("pageMaker3", pageMaker3);
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
+	public String home(Model model) {
+		String url = "hq/index_hq";
+		try {
+			List<MenuVO> menuList = menuService.getMainMenuList();
+			model.addAttribute("menuList", menuList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			url = null;
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String Login(String code, String pwd, HttpSession session, HttpServletRequest request) throws Exception {
+		String url = "redirect:index.do";
+		
+		try {
+			
+			empService.login(code, pwd);
+			//로그인 성공시
+			session.setAttribute("loginUser", empService.getEmp(code));
+			session.setMaxInactiveInterval(20*60);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e; 
+		} catch (NotFoundIdException | InvalidPasswordException e) {
+			request.setAttribute("message", e.getMessage());
+			url = "common/loginFail";
+		} 
+		return url;
+	}
+	
+	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
+	public String main(Model model) {
+		String url = "hq/hqhome";
+		return url;
+	}
+	
+	@RequestMapping(value = "/stock/detail", method = RequestMethod.GET)
+	public ModelAndView stockFran(SearchCriteria cri, ModelAndView mnv, String from, HttpServletRequest request) throws SQLException {
+		String url = "hq/stockFranList";
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> franStockMap= stockListService.getFranStockList(cri);
+		List<FranGoodsDeVO> franStockList= (List<FranGoodsDeVO>) franStockMap.get("franStockList");
+		PageMaker pageMaker = (PageMaker) franStockMap.get("pageMaker");
+
+		
+		dataMap.put("franStockList", franStockList);
+		dataMap.put("pageMaker", pageMaker);
+
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/stock/searchfran.do", method = RequestMethod.POST)
+	public ModelAndView stockSearchFran(@RequestBody Map<String, String> data, ModelAndView mnv, String from, HttpServletRequest request) throws SQLException {
+		String url = "hq/stockFranList";
+		SearchCriteria criMap = new SearchCriteria();
+		criMap.setKeywordMap(data);
+		criMap.setPage(data.get("page"));
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> franStockMap= stockListService.getFranStockSearch(criMap);
+		List<FranGoodsDeVO> franStockList= (List<FranGoodsDeVO>) franStockMap.get("franStockList");
+		PageMaker pageMaker = (PageMaker) franStockMap.get("pageMaker");
+		
+		dataMap.put("franStockList", franStockList);
+		dataMap.put("pageMaker", pageMaker);
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping(value = "/stock/logisdetail", method = RequestMethod.GET)
+	public ModelAndView stockLogis(SearchCriteria cri, ModelAndView mnv, String from, HttpServletRequest request) throws SQLException {
+		String url = "hq/FLS_list";
+		if(from!=null && from.equals("fran")) {
+			request.setAttribute("from", "fran");
+		}
+		if(from!=null && from.equals("logis")) {
+			request.setAttribute("from", "logis");
+		}
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> logisMap = comListService.getLogisList(cri);
+		List<LogisVO> logisList= (List<LogisVO>) logisMap.get("logisList");
+		PageMaker pageMaker2 = (PageMaker) logisMap.get("pageMaker2");
+		
+		dataMap.put("logisList", logisList);
+		dataMap.put("pageMaker2", pageMaker2);
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	// 출고계획
+	@RequestMapping(value = "/inout/Outdetail", method = RequestMethod.GET)
+	public ModelAndView OutPlan(SearchCriteria cri, ModelAndView mnv) throws SQLException {
+		String url = "hq/OutPlanList";
+		
+		Map<String, Object> dataMap = inOutService.getOutList(cri);
+		
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+/*	@ResponseBody
+	@RequestMapping(value = "/inout/outRegist.do", method = RequestMethod.POST)
+	public Map<String, Object> outRegist(@RequestBody Map<String, String> data, ModelAndView mnv, OutRegistCommand regReq, String from, HttpServletRequest request) throws SQLException {
+		
+		// 데이터 insert 로직
+		
+		System.out.println("/inout/outRegist.do 실행.....");
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		int regist = 0;
+		
+ 		OutVO out = regReq.toOutVO();
+ 		regist = inOutService.regist(out);
+		
+		resultMap.put("resultCode", "success");
+		resultMap.put("regist", "regist");
+		
+		//resultMap.put("resultCode", "fail");
+		
+		
+		String url = "hq/OutPlanList";
+		SearchCriteria criMap = new SearchCriteria();
+		criMap.setKeywordMap(data);
+		criMap.setPage(data.get("page"));
+		
+		//inOutService.getOutSearch(cri);
+		Map<String, Object> dataMap= inOutService.getOutSearch(criMap);
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return resultMap;
+	
+	}*/
+	
+	@RequestMapping(value = "/inout/outRegist.do", method = RequestMethod.POST)
+	public ResponseEntity<String> outRegist(@RequestBody OutRegistCommand regReq) throws SQLException {
+		
+		// 데이터 insert 로직
+		
+		ResponseEntity<String> entity=null;
+		
+		
+ 		OutVO out = regReq.toOutVO();
+ 		
+ 		try {
+ 			inOutService.regist(out);
+ 			entity = new ResponseEntity<String>("regist", HttpStatus.OK);
+ 			
+ 		}catch (SQLException e) {
+ 			e.printStackTrace();
+ 			entity = new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+ 		}
+ 		
+		
+ 		return entity;
+	
+	}
+	
+	
+	@RequestMapping("/inout/outmodify.do")
+	public ModelAndView modifyForm(String out_code,ModelAndView mnv)throws SQLException{
+		String url="hq/OutPlanListModify";
+		
+		OutVO out = inOutService.getOutForModify(out_code);
+		
+		mnv.addObject("out",out);				
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/common/loginForm", method = RequestMethod.GET)
+	public String loginForm(@RequestParam(defaultValue="")String error, HttpServletResponse response) {
+		String url = "common/loginForm";
+		if (error.equals("1")) {
+			response.setStatus(302);
+		}
+		return url;
+	}
+	
+	
+	/*//입출고 계획 
+ 	@RequestMapping(value="/inout/plan", method = RequestMethod.GET)
+ 	public ModelAndView inOutList(SearchCriteria cri,ModelAndView mnv) throws SQLException {
+ 		
+ 		String url="hq/outList";
+ 		
+ 		Map<String, Object> dataMap = inOutService.getOutList(cri);
+ 		
+ 		mnv.addObject("dataMap", dataMap);
+ 		mnv.setViewName(url);
+ 	
+ 		return mnv;
+ 	}
+ 	
+ 	// 상세정보
+ 	
+ 	@RequestMapping("/inout/outdetail.do")
+ 	public ModelAndView outdetail(String ocode, @RequestParam(defaultValue="")String from, HttpServletRequest request, ModelAndView mnv) throws SQLException {
+ 		
+ 		String url = "hq/Out_detail";
+ 		
+ 		
+ 		OutVO out = inOutService.getOut(ocode);
+ 		
+ 		
+ 		mnv.addObject("out", out);
+ 		mnv.setViewName(url);
+ 		
+ 		return mnv;
+ 		
+ 		
+ 	}
+ 	// 수정폼
+ 	@RequestMapping("/inout/outmodifyForm.do")
+ 	public ModelAndView OutModifyForm(String ocode, ModelAndView mnv) throws Exception {
+ 		String url = "hq/Out_modify";
+ 		
+ 		OutVO out = inOutService.getOutForModify(ocode);
+ 		
+ 		
+ 		mnv.addObject("out", out);
+ 		mnv.setViewName(url);
+ 		
+ 		return mnv;
+ 	}
+ 	//수정
+ 	@RequestMapping(value="/inout/outmodify.do",method=RequestMethod.POST)
+ 	public String outModify(OutModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+ 		System.out.println("1");
+ 		String url = "redirect:/hq/inout/outdetail.do";
+ 		System.out.println("2");
+ 		
+ 		 OutVO out = modifyReq.toOutVO();
+ 		
+ 		 
+ 		 inOutService.modifyOut(out);
+ 		 
+ 		
+ 		rttr.addFlashAttribute("from", "modify");
+ 		rttr.addAttribute("ocode", out.getOut_code());
+ 		
+ 		return url;
+ 	}
+ 	// 등록
+  	@RequestMapping("/inout/outRegistForm.do")
+  	public String registForm() {
+  		String url = "hq/outRegist";
+  		return url;
+  	}
+  	
+  	@RequestMapping("/inout/outRegist.do")
+  	public String outRegist(OutRegistCommand regReq, RedirectAttributes rttr)throws Exception{
+  		String url = "redirect:/hq/inout/plan";
+  		
+  		OutVO out = regReq.toOutVO();
+  		inOutService.regist(out);
+  		rttr.addFlashAttribute("from", "regist");
+  		return url;
+  	}
+*/
+
+
+}

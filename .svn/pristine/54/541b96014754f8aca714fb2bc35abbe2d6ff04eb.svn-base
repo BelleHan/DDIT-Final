@@ -1,0 +1,21 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+
+public interface LogisStockService {
+	
+	// 물류센터재고리스트조회
+	Map<String,Object> getStockList(SearchCriteria cri)throws SQLException;
+	
+	//창고콤보박스
+	List<String> getWhCombo(String logis_code) throws SQLException;
+	//대분류콤보박스
+	List<String> getLaca() throws SQLException;
+	//소분류콤보박스
+	List<String> getSmca() throws SQLException;
+
+}

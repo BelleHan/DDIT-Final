@@ -1,0 +1,100 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>keyword</title>
+</head>
+<body>
+<!-- 모달 영역 -->
+<div class="modal fade" id="modal-smca" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">소분류</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered smca-list" id="modal-fms-smca">
+				<tr>
+						<th>no</th>
+						<th>분류</th>
+				</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 모달 끝 -->
+<div class="input-group input-padding-bottom col-sm-6">
+	<span class=" search-group col-sm-4">소분류</span>
+	<div class="input-group  input-group-sm  col-sm-7">
+		<input type="text" id="fms-smca" name="fms-smca" class="form-control form-fms-search" value="" >
+		<span class="input-group-append">
+			<button type="button" id="btn-smca" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-caret-down"></i></button>
+		</span>
+	</div>
+</div>
+
+<script>
+//dataArr - 받아오는 데이터, target - 데이터를 받을 대상, templateObject - handlerbars에 컴파일할 대상, removeClass - 메뉴를 뿌리고 기존 메뉴를 지운다. 
+function printData(dataArr, target, templateObject, removeClass){
+	var template = Handlebars.compile(templateObject.html());
+	var html = template(dataArr);
+	$(removeClass).remove();
+	target.append(html);
+}
+</script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+<!-- handlerbars-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script type="text/x-handlerbars-template" id="smca-list-template">
+	{{#each .}}  
+			<tr class="smca" id="smca{{@key}}" onclick="javascript:smcaKey('{{this}}');">
+				<td>{{@key}}</td>
+				<td>{{this}}</td>
+			</tr>
+	{{/each}}
+</script>
+<script>
+	//smca modal
+	$('#btn-smca').on('click', function(){
+		$.ajax({
+			url:'<%=request.getContextPath()%>/keyword/smca.do',
+			type:'get',
+			success:function(smcaList){
+				console.log(smcaList);
+				printData(smcaList, $('.smca-list'), $('#smca-list-template'), $('.smca'))
+			},
+			error:function(error){
+				// alert('데이터를 불러오는데 실패했습니다.');
+			},
+			complete:function(){
+				$('#modal-smca').modal('show');
+			}
+		})
+	});
+	
+	// 물품을 선택하면 해당 값이 키워드로
+	function smcaKey(data){
+		document.querySelector('#fms-smca').value = data;
+		$('#modal-smca').modal('hide');
+	}
+
+	//데이터 검색시 readonly
+	var btntest = document.querySelector('button#btn-smca');
+	btntest.addEventListener('click', function(){
+		$('input#fms-smca').attr('readonly', true);
+	})
+	//데이터 검색 readonly 끝
+</script>
+</body>
+</html>

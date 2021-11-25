@@ -1,0 +1,93 @@
+package kr.or.fms.sup.security;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.logis.security.UserLogis;
+import kr.or.fms.sup.dto.SupVO;
+
+public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler{
+
+	private String savePath = "c:\\log";
+	private String saveFileName = "login_logisUser_log.csv";
+	
+	public void setSavePath(String savePath) {
+		this.savePath = savePath;
+	}
+	public void setSaveFileName(String saveFileName) {
+		this.saveFileName = saveFileName;
+	}
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws ServletException, IOException {
+		//+session만
+		//이거안되면 security못써...
+		//뭐가올지몰라서 userdetail을 했는데
+		//지금은 우리가 만든 user를 넣을거야 ->뭐가들었는지 알아
+		/*UserDetails user = (UserDetails)authentication.getPrincipal();
+		String username = user.getUsername();
+		
+		ApplicationContext ctx = new GenericXmlApplicationContext("classpath:kr/or/ddit/context/root-context.xml");
+		
+		MemberService service = ctx.getBean("memberService",MemberService.class);*/
+		
+		//service가 필요없이 이미 userdetail에 있어
+		//뭐가들었는지알아서 과감하게 casting해버려
+		UserSup user = (UserSup) authentication.getDetails();
+		
+		SupVO loginSup = user.getSupVO();
+		
+		//try-catch도 없어져 -> service가아니니까
+		//username을 준대
+		//근데 이제 이걸 user.java에서 가져와(getMember())
+//		MemberVO loginUser = service.getMember(username);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("loginSup", loginSup);
+		session.setMaxInactiveInterval(60*60);
+		
+		//log작성
+		loginUserlogFile(loginSup, request);
+		
+		super.onAuthenticationSuccess(request, response, authentication);//여기서 redirect도 다해줘
+		
+	}
+
+	private void loginUserlogFile(SupVO loginSup, HttpServletRequest request)throws IOException{
+		//로그인 정보를 스트링으로 저장
+		String tag ="[login:user]";
+		String log = tag+loginSup.getSup_code()+","
+				+request.getRemoteAddr()+","
+				+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		//로그파일 생성
+		File file = new File(savePath);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		String logFilePath = savePath+File.separator+saveFileName;
+		BufferedWriter out = new BufferedWriter(new FileWriter(logFilePath,true));
+		
+		//로그를 기록
+		try {
+			out.write(log);
+			out.newLine();
+		} finally {
+			if(out!=null) out.close();
+		}
+	}
+}

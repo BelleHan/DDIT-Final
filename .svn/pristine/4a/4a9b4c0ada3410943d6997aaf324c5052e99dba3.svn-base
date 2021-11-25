@@ -1,0 +1,22 @@
+package kr.or.fms.logis.dao;
+
+import java.sql.SQLException;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.logis.dto.LogisVO;
+
+public class LogisDAOImpl implements LogisDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public LogisVO selectLogisByCode(String logis_code) throws SQLException {
+		LogisVO logis = session.selectOne("Logis-Mapper.selectLogisByCode", logis_code);
+		return logis;
+	}
+
+}

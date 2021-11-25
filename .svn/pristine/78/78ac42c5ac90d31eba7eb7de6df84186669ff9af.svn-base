@@ -1,0 +1,21 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranReplyVO;
+
+
+public interface ReplyDAO {
+	
+	
+	void insertReply(FranReplyVO reply)throws SQLException;
+	void updateReply(FranReplyVO reply)throws SQLException;
+	void deleteReply(int fran_reply_num)throws SQLException;
+	
+	int selectReplySeqNextValue()throws SQLException;
+	List<FranReplyVO> selectReplyListPage(int fran_notice_num,SearchCriteria cri)throws SQLException;
+	int countReply(int fran_notice_num) throws SQLException;
+	
+}

@@ -1,0 +1,97 @@
+package kr.or.fms.hq.controller;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.command.buyRequestCommand;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+import kr.or.fms.hq.service.BuyGoodsService;
+import kr.or.fms.service.CodeService;
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller 
+@RequestMapping("/hq")
+public class HqGoodsController {
+    
+    @Autowired
+    BuyGoodsService buyGoodsService;
+
+    @Autowired
+    CodeService codeService;
+	private static final Logger logger = LoggerFactory.getLogger(HqController.class);
+	
+
+    @RequestMapping("/goods/manage")
+    public String hqGoodsList(ModelAndView mnv) throws SQLException{
+       String url="hq/goods/list";
+       
+       return url;
+    }
+    
+    @RequestMapping("/goods/buy")
+    public ModelAndView goodsList(String sup_goods_code, SearchCriteria cri, ModelAndView mnv) throws SQLException{
+       String url = "hq/goods/buyGoodsList";
+       
+       Map<String, Object> dataMap = buyGoodsService.getSupGoodsList(cri);
+       
+       mnv.addObject("dataMap", dataMap);
+       mnv.setViewName(url);
+       
+       return mnv;
+    }
+
+    @RequestMapping("/goods/detail")
+    public String detail(@ModelAttribute("sup_goods_code") String sup_goods_code, Model model)throws SQLException{
+    	String url = "hq/goods/detail";
+    	
+    	SupGoodsVO supGoods = buyGoodsService.getBuyGoodsByCode(sup_goods_code);
+    	String supContSt = buyGoodsService.getSupContSt(sup_goods_code);
+    	String codeName = codeService.getCodeName(supContSt);
+    	
+    	model.addAttribute("supGoods", supGoods);
+    	model.addAttribute("codeName", codeName);
+    	return url;
+    }
+
+    @RequestMapping("/goods/request")
+    public String buyReq(buyRequestCommand buyReq)throws SQLException{
+    	String url = "hq/goods/buyReqSuccess";
+    	
+    	BuyGoodsVO buyGoods = buyReq.toBuyGoodsVO();
+    	buyGoodsService.registBuyGoods(buyGoods);
+//    	
+//    	BuyGoodsDeVO buyGoodsDe = buyReq.toBuyGoodsDeVO();
+//    	buyGoodsService.registBuyGoodsDe(buyGoodsDe);
+//    	
+    	return url;
+    }
+
+	
+	@RequestMapping("/goods/buyReqForm")
+	public String buyReqForm(String sup_goods_code, Model model)throws SQLException {
+		String url = "hq/goods/buyReqForm";
+		
+		SupGoodsVO supGoods = buyGoodsService.getBuyGoodsByCode(sup_goods_code);
+    	String supContSt = buyGoodsService.getSupContSt(sup_goods_code);
+    	String codeName = codeService.getCodeName(supContSt);
+    	
+    	model.addAttribute("supGoods", supGoods);
+    	model.addAttribute("codeName", codeName);
+    	return url;
+	}
+	
+
+}

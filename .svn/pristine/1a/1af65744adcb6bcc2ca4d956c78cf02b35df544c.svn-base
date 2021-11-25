@@ -1,0 +1,94 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.hq.dao.StockDAO;
+import kr.or.fms.logis.dto.LogisGoodsDeVO;
+
+public class StockListServiceImpl implements StockListService {
+	
+	private StockDAO stockDAO;
+	public StockDAO getStockDAO() {
+		return stockDAO;
+	}
+	public void setStockDAO(StockDAO stockDAO) {
+		this.stockDAO = stockDAO;
+	}
+
+	@Override
+	public void modify(FranGoodsDeVO franGoods) throws SQLException {
+		stockDAO.updateFranStock(franGoods);
+	}
+
+	@Override
+	public List<FranGoodsDeVO> getFranStockList() throws SQLException {
+		List<FranGoodsDeVO> franStockList = stockDAO.franStockList();
+		return franStockList;
+	}
+
+	@Override
+	public List<FranGoodsDeVO> getFranStockList(Criteria cri) throws SQLException {
+		List<FranGoodsDeVO> franStockList = stockDAO.franStockList(cri);
+		return franStockList;
+	}
+
+	@Override
+	public Map<String, Object> getFranStockList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(stockDAO.franStockListCount(cri));
+		
+		List<FranGoodsDeVO> franStockList = stockDAO.franStockList(cri);
+		dataMap.put("franStockList", franStockList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+
+	@Override
+	public List<LogisGoodsDeVO> getLogisStockList() throws SQLException {
+		List<LogisGoodsDeVO> logisStockList = stockDAO.logisStockList();
+		return logisStockList;
+	}
+
+	@Override
+	public List<LogisGoodsDeVO> getLogisStockList(Criteria cri) throws SQLException {
+		List<LogisGoodsDeVO> logisStockList = stockDAO.logisStockList(cri);
+		return logisStockList;
+	}
+
+	@Override
+	public Map<String, Object> getLogisStockList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(stockDAO.logisStockListCount(cri));
+		
+		List<LogisGoodsDeVO> franStockList = stockDAO.logisStockList(cri);
+		dataMap.put("franStockList", franStockList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+	@Override
+	public Map<String, Object> getFranStockSearch(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		System.out.println("서비스쪽 맵데이터 서치크리테리아맵 : " + cri.getKeywordMap().get("fms_goods"));
+		System.out.println("페이지가 넘어오는지 확인 " + cri.getPage());
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(stockDAO.franStockListCount(cri));
+		
+		List<FranGoodsDeVO> franStockList = stockDAO.franStockList(cri);
+		dataMap.put("franStockList", franStockList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+
+}

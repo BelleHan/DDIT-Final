@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title><sitemesh:write property="title"/></title>
+   
+   <jsp:include page="/WEB-INF/views/include/style.jsp"/>
+   <%@ include file="/WEB-INF/views/include/js.jsp"%>   
+   <sitemesh:write property="head" />
+</head>
+<body class="hold-transition">
+   <div class="wrapper">
+      <!-- Navbar -->
+      <%@ include file="/WEB-INF/views/include/navigation_logis.jsp"%>
+      <!-- /.navbar -->
+	  
+	  <!-- body -->
+      <sitemesh:write property="body" />
+	 <!-- /.body -->
+
+      <!-- /.Footer -->
+   </div>
+   <!-- ./wrapper -->
+</body>
+</html>

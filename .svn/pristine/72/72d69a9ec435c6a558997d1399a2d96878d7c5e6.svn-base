@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Stock-Mapper">
+
+	<sql id="searchFran">	
+		<if test="searchType == 'fln'.toString()">
+			and e.fran_local_num like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'fc'.toString()">
+			and f.fran_code like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'sgl'.toString()">
+			and h.sup_goods_laca like '%'||#{keyword}||'%'
+		</if>		
+		<if test="searchType == 'sgs'.toString()">
+			and h.sup_goods_smca like '%'||#{keyword}||'%'			
+		</if>		
+		<if test="searchType == 'sgn'.toString()">
+			and h.sup_goods_name like '%'||#{keyword}||'%'			
+		</if>		
+	</sql>
+	
+	<select id="franStockList" resultType="franGoodsDe">
+	SELECT
+	    e.fran_local_num 지역,
+	    f.fran_code 가맹점코드,
+	    e.fran_name 가맹점이름,
+	    h.sup_goods_laca 분류1,
+	    h.sup_goods_smca 분류2,
+	    f.hq_goods_code 상품코드,
+	    h.sup_goods_name 상품명,
+	    i.sup_name 공급업체,
+	    f.fran_goods_stock 재고,
+	    f.fran_safe_stock 안전재고,
+	    f.fran_suit_stock 적정재고,
+	    g.goods_delivery_price 입고단가,
+	    g.goods_retail_price 출고단가,
+	    h.sup_goods_attr1 qrCode
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code = f.fran_code
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+	</select>
+	
+	<select id="franStockSearchList" resultType="franGoodsDe">
+	SELECT
+	    e.fran_local_num 지역,
+	    f.fran_code 가맹점코드,
+	    e.fran_name 가맹점이름,
+	    h.sup_goods_laca 분류1,
+	    h.sup_goods_smca 분류2,
+	    f.hq_goods_code 상품코드,
+	    h.sup_goods_name 상품명,
+	    i.sup_name 공급업체,
+	    f.fran_goods_stock 재고,
+	    f.fran_safe_stock 안전재고,
+	    f.fran_suit_stock 적정재고,
+	    g.goods_delivery_price 입고단가,
+	    g.goods_retail_price 출고단가,
+	    h.sup_goods_attr1 qrCode
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code = f.fran_code
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+		AND   e.fran_code is not null
+		<include refid="searchFran" />
+		order by e.fran_code
+	</select>
+	
+	<select id="franStockListCount" resultType="int">
+		select
+		count(*)
+		from franstock
+		where 지역 is not null
+		<include refid="searchFran" />
+	</select>
+</mapper>

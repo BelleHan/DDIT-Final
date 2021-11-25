@@ -1,0 +1,74 @@
+package kr.or.fms.fran.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.or.fms.command.FranReturnReqRegistCommand;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnDetailVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.service.FranApplyService;
+import kr.or.fms.util.GetAttachesAsMultipartFiles;
+
+@Controller
+@RequestMapping("/hq")
+public class FrApplyController {
+	
+	
+	@Autowired
+	FranApplyService franApplyService;
+	
+	@Resource(name="fileUploadPath")
+	private String fileUploadPath;
+	
+	private static final Logger logger = LoggerFactory.getLogger(FrApplyController.class);
+		
+	
+	@RequestMapping("/com/apply")
+  	public String registForm() {
+  		String url = "hq/franApplyForm";
+  		return url;
+  	}
+
+	
+	/*@RequestMapping(value="/com/registSuccess", method=RequestMethod.POST, produces="text/plain; charset=utf-8")
+	public String regist(FranReturnReqRegistCommand registReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String url = "redirect:/fr/return/list.do";
+		
+		ReturnVO returnVO = registReq.toReturnVO();
+		ReturnDetailVO returnDeVO = registReq.toReturnDetailVO();
+
+		List<AttachVO> attachList = GetAttachesAsMultipartFiles.save(registReq.getUploadFile(), fileUploadPath);
+		
+//		pds.setTitle(HTMLInputFilter.htmlSpecialChars(pds.getTitle()));
+		returnVO.setAttachList(attachList);
+		System.out.println("첨부파일리스트=============" + attachList);
+		franReturnService.registFranReturn(returnVO);
+		
+		String returnCode = franReturnService.getSeqCurrValue();
+		
+		returnDeVO.setReturn_code(returnCode);
+		
+		franReturnService.registFranReturnDe(returnDeVO);
+		rttr.addFlashAttribute("from", "regist");
+		
+		return url;
+	}
+	*/
+	
+	
+	
+	
+}

@@ -1,0 +1,119 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dao.AttachDAO;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.dto.FranNoticeVO;
+import kr.or.fms.hq.dao.AppliDAO;
+import kr.or.fms.hq.dto.FranAppliDetailVO;
+import kr.or.fms.hq.dto.FranAppliVO;
+
+public class AppliServiceImpl implements AppliService {
+	
+	private AppliDAO appliDAO;
+	public void setAppliDAO(AppliDAO appliDAO) {
+		this.appliDAO = appliDAO;
+	}
+	
+	private AttachDAO attachDAO;
+	public void setAttachDAO(AttachDAO attachDAO) {
+		this.attachDAO = attachDAO;
+	}
+	
+	@Override
+	public Map<String, Object> getAppliList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+
+		// 현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
+		List<FranAppliDetailVO> appliList = appliDAO.selectAppliCriteria(cri);
+
+		for(FranAppliDetailVO appliVo : appliList) {
+			List<AttachVO> attachList = getAttachByAttach_no(appliVo.getFran_applidoc_code());
+			if(attachList!=null && attachList.size()>0) {
+				appliVo.setAttachList(attachList);
+			}
+			
+		}
+		
+		// 전체 board 개수
+		int totalCount = appliDAO.selectAppliCriteriaTotalCount(cri);
+
+		
+		// PageMaker 생성.
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+
+		dataMap.put("appliList", appliList);
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+	@Override
+	public FranAppliDetailVO read(String fran_applidoc_code) throws SQLException {
+		FranAppliDetailVO appli = appliDAO.selectAppliByFran_applidoc_code(fran_applidoc_code);
+
+		addAttachList(appli);
+
+		return appli;
+	}
+	
+	private void addAttachList(FranAppliDetailVO franAppliDetail) throws SQLException {
+
+		if (franAppliDetail == null)
+			return;
+	
+		String fran_applidoc_code = franAppliDetail.getFran_applidoc_code();
+		List<AttachVO> attachList = attachDAO.selectAttachesByFran_applidoc_code(fran_applidoc_code);
+	
+		franAppliDetail.setAttachList(attachList);
+	}
+
+	@Override
+	public void modify(FranAppliVO franAppli) throws SQLException {
+
+		appliDAO.updateFranRegSt(franAppli);
+	}
+
+	@Override
+	public void modifyAppr(FranAppliVO franAppli) throws SQLException {
+		appliDAO.updateFranAppliApprSt(franAppli);
+		
+	}
+
+	@Override
+	public List<AttachVO> getAttachByAttach_no(String attach_no) throws SQLException {
+		List<AttachVO> attachList = attachDAO.selectAttachesByFran_applidoc_code(attach_no);
+		for (AttachVO attach : attachList) {
+			String file_name = attach.getFile_name();
+			attach.setFile_name(file_name.split("\\$\\$")[1]);
+		}
+		return attachList;
+	}
+
+	@Override
+	public AttachVO getAttachByAno(String attach_no) throws SQLException {
+		AttachVO attach = attachDAO.selectAttachByAno(attach_no);
+
+		return attach;
+	}
+
+	@Override
+	public AttachVO selectAttachDownload(String attach_no) throws SQLException {
+		return attachDAO.selectAttachDownload(attach_no);
+	}
+
+	@Override
+	public void regist(FranNoticeVO frannotice) throws SQLException {
+		appliDAO.insertBoard(frannotice);
+		
+	}
+	
+}

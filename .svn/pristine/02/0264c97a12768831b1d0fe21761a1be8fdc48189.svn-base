@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HqOrder-Mapper">
+
+	<sql id="searchFlag">
+		<if test="keywordMap.apprSt != null and keywordMap.apprSt != ''" >
+			AND FRAN_APPR_ST = #{keywordMap.apprSt}
+		
+		</if>
+		<if test="keywordMap.orderSt != null and keywordMap.orderSt != ''">
+			AND ORDER_ST_CODE = #{keywordMap.orderSt}
+		</if>
+		<if test="keywordMap.franCode != null and keywordMap.franCode != ''">
+			AND FRAN_CODE = #{keywordMap.franCode}
+		</if>
+	</sql>
+	
+	<select id="selectOrderList" resultType="franOrder">
+		SELECT * FROM FRAN_ORDER WHERE 1=1
+		<include refid="searchFlag"/>
+	</select>
+	
+	<select id="selectOrderListCount" resultType="int">
+		select count(*)
+		from fran_order
+		where fran_order_code is not null
+		<include refid="searchFlag"/>  			  				  	
+	</select>
+	
+	<select id="selectFranList" resultType="fran">
+		SELECT FRAN_CODE, FRAN_NAME FROM FRAN ORDER BY FRAN_NAME
+	</select>
+	
+	<select id="selectSearchList" resultType="franOrder">
+		SELECT * 
+		FROM FRAN_ORDER 
+		WHERE FRAN_APPR_ST = '1'
+		AND ORDER_ST_CODE = '1'
+		AND FRAN_CODE = 'F001'
+		AND FRAN_ORDER_DATE BETWEEN '2021/11/01' AND '2021/11/06'
+	</select>
+	
+	<select id="selectSearchListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM FRAN_ORDER 
+		WHERE FRAN_APPR_ST = '1'
+		AND ORDER_ST_CODE = '1'
+		AND FRAN_CODE = 'F001'
+		AND FRAN_ORDER_DATE BETWEEN '2021/11/01' AND '2021/11/06'
+	</select>
+	
+	
+
+</mapper>

@@ -1,0 +1,36 @@
+package kr.or.fms.fran.controller;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.fran.service.FranOrderManageService;
+
+@Controller
+@RequestMapping("fr")
+public class FrOrderManagerController {
+	
+	@Autowired
+	FranOrderManageService service;
+	
+	@RequestMapping("order/manage")
+	public ModelAndView orderManage(SearchCriteria cri, ModelAndView mnv, HttpSession session) throws SQLException {
+		String url = "fr/order/manage";
+		FranVO fran= (FranVO) session.getAttribute("loginFran");
+		System.out.println("세션이 넘어오는지 확인해봅시다." + fran.getFran_code());
+		cri.getKeywordMap().put("fran_code", fran.getFran_code());
+		System.out.println(cri.getKeywordMap().get("fran_code"));
+		Map<String, Object> orderList = service.getOrderList(cri);
+		mnv.addAllObjects(orderList);
+		mnv.setViewName(url);
+		return mnv;
+	}
+}

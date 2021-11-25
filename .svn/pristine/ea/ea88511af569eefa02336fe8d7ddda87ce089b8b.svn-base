@@ -1,0 +1,19 @@
+package kr.or.fms.logis.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.ReturnVO;
+
+public interface ReturnDAO {
+	
+	List<ReturnVO> selectBoardCriteria(SearchCriteria cri) throws SQLException;
+	
+	int selectBoardCriteriaTotalCount(SearchCriteria cri) throws SQLException;
+	
+	ReturnVO selectBoardByRcode(String rcode) throws SQLException;
+	
+	void updateReturnSt(ReturnVO returnVO) throws SQLException;
+
+}

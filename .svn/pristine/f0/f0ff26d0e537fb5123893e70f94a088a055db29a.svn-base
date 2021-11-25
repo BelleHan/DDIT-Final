@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranToFran-Mapper">
+	
+		<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_name" property="hq_goods_name" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<collection property="supGoodsVO" resultMap="supGoods"></collection>
+	</resultMap>
+
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_attr1" property="sup_goods_attr1" />
+		<result column="sup_goods_unit" property="sup_goods_unit" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_laca" property="sup_goods_laca" />
+		<result column="sup_goods_smca" property="sup_goods_smca" />
+		<result column="sup_goods_regdate" property="sup_goods_regdate"/>
+	</resultMap>
+	
+	<select id="selectSearchGoods" resultType="hqGoods">
+<!-- 		select  -->
+<!-- 		hq_goods_name, hq_goods_code   -->
+<!-- 		from hq_goods  -->
+<!-- 		where hq_goods_name like '%'||#{}||'%'' -->
+	</select>
+	
+	<select id="selectSearchFran" parameterType="str">
+         select fran_latitude, fran_longitude 
+         from fran 
+         where fran_local_num = #{fran_local_num}
+	</select>
+	
+	<select id="selectFranLocal" parameterType="str">
+         select fran_local_num 
+         from fran 
+         where fran_code = #{fran_code}
+	</select>
+
+	<select id="searchNearFran" parameterType="fran" resultType="fran">
+		SELECT *
+		FROM (
+		SELECT  FRAN_NAME, FRAN_TEL, fran_latitude, fran_longitude, DISTANCE_WGS84( #{fran_latitude}, #{fran_longitude}, fran_latitude, fran_longitude) AS DISTANCE
+		FROM FRAN)
+		<![CDATA[WHERE DISTANCE <= 5]]>
+		ORDER BY DISTANCE
+	</select>
+<!-- 		SELECT  FRAN_NAME, FRAN_TEL, DISTANCE_WGS84(36.325029177771526, 127.42004956953849, FRAN_LATITUDE, FRAN_LONGITUDE) AS DISTANCE -->
+	<sql id="searchBox">
+		<if test="keywordMap.laca == null or keywordMap.laca.equals('')">
+			  and b.sup_goods_laca = ''			
+		</if>
+		<if test="keywordMap.laca != null and !keywordMap.laca.equals('')">
+			  and b.sup_goods_laca = #{cri.keywordMap.laca}			
+		</if>
+		<if test="keywordMap.smca != null and keywordMap.smca != ''">
+			  and b.sup_goods_smca = #{cri.keywordMap.smca}			
+		</if>
+		<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+			  and b.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectChangeGoods" parameterType="str" resultMap="hqGoods">
+		select 
+		a.hq_goods_code, a.hq_goods_name, b.sup_goods_attr1, b.sup_goods_unit
+		from hq_goods a, sup_goods b 
+		where a.sup_goods_code 
+		in (select sup_goods_code from sup_goods where sup_goods_laca = #{sup_goods_laca})
+	</select>
+
+
+	<select id="searchGoods" resultMap="hqGoods" parameterType="str">
+		select a.hq_goods_code, a.goods_retail_price, b.sup_goods_laca, b.sup_goods_smca, b.sup_goods_name
+		from hq_goods a, sup_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		<include refid="searchBox"></include>
+		 order by b.sup_goods_regdate desc
+	</select>
+
+	<select id="searchGoodsCount" resultType="int">
+		select count(*)
+		from hq_goods a, sup_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		<include refid="searchBox"></include>
+		 order by b.sup_goods_regdate desc
+	</select>
+	
+	<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" resultType="str">
+		SELECT
+	    distinct sup_goods_laca
+		FROM
+	    sup_goods_class
+	    order by sup_goods_laca
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="str">
+	    select 
+	    sup_goods_smca 
+	    from 
+	    sup_goods_class
+	</select>
+	
+	<select id="searchSmca" parameterType="str" resultType="str">
+		select sup_goods_smca 
+		from sup_goods_class 
+		where sup_goods_laca = #{sup_goods_laca}
+	</select>
+</mapper>

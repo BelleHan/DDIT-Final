@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Orderlist-Mapper">
+
+	<select id="getOrderList" resultType="franOrder">
+		SELECT * FROM fran_order 
+		WHERE fran_code is not null 
+		AND fran_code = #{keywordMap.fran_code}
+		<include refid="searchOrderList"/>
+		order by fran_order_date desc
+	</select>
+	<select id="getOrderListCount" resultType="int">
+		SELECT count(fran_code) FROM fran_order 
+		WHERE fran_code is not null 
+		AND fran_code = #{keywordMap.fran_code}
+		<include refid="searchOrderList"/>
+	</select>
+	<select id="getOrderDetail" resultType="franOrderDe">
+		SELECT 
+				a.*
+				, b.hq_goods_code
+				, b.hq_goods_name
+				, b.goods_retail_price
+		FROM 
+				fran_order_detail a
+				, hq_goods b
+		WHERE 	a.fran_order_code is not null
+		and 	a.hq_goods_code = b.hq_goods_code 
+		AND 	a.fran_order_code = #{orderCode}
+	</select>
+	<update id="deleteOrder">
+		DELETE FROM FRAN_ORDER
+		WHERE  FRAN_ORDER_CODE = #{orderCode}
+	</update>
+	<update id="updateOrder">
+		UPDATE 
+            FRAN_ORDER_DETAIL 
+        SET 
+            HQ_GOODS_CODE = #{goods_code}
+            , FRAN_ORDER_QUAN = #{order_quan}
+            , FRAN_ORDER_PRICE = #{order_price} 
+		WHERE  FRAN_ORDER_CODE = #{order_code}
+        AND ORDER_DETAIL_NUM = #{order_detail_num}
+	</update>
+	<sql id="searchOrderList">
+		<if test="keywordMap.startDate != null and !keywordMap.startDate.equals('')">
+			AND <![CDATA[fran_order_date >= #{keywordMap.startDate}]]>
+		</if>
+		<if test="keywordMap.endDate != null and !keywordMap.endDate.equals('')">
+			AND <![CDATA[fran_order_date <= to_date(#{keywordMap.endDate}, 'yyyy-MM-dd')+1]]>
+		</if>
+		<if test="(keywordMap.apprSt1 != null and !keywordMap.apprSt1.equals('')) or (keywordMap.apprSt2 != null and !keywordMap.apprSt2.equals(''))">
+			<trim prefix="AND fran_appr_st in (" suffix=")" suffixOverrides=",">
+				<if test="keywordMap.apprSt1 != null and !keywordMap.apprSt1.equals('')">
+					#{keywordMap.apprSt1},
+				</if>
+				<if test="keywordMap.apprSt2 != null and !keywordMap.apprSt2.equals('')">
+					#{keywordMap.apprSt2},
+				</if>
+			</trim>
+		</if>
+		<if test="(keywordMap.deliSt1 != null and !keywordMap.deliSt1.equals('')) or (keywordMap.deliSt2 != null and !keywordMap.deliSt2.equals(''))">
+			<trim prefix="AND order_deli_se in (" suffix=")" suffixOverrides=",">
+				<if test="keywordMap.deliSt1 != null and !keywordMap.deliSt1.equals('')">
+					#{keywordMap.deliSt1},
+				</if>
+				<if test="keywordMap.deliSt2 != null and !keywordMap.deliSt2.equals('')">
+					#{keywordMap.deliSt2},
+				</if>
+			</trim>
+		</if>
+	</sql>
+</mapper>

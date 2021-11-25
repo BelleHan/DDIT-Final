@@ -1,0 +1,50 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dao.FranListDAO;
+
+public class FranListServiceImpl implements FranListService {
+
+	private FranListDAO franlistDAO;
+
+	public void setFranDAO(FranListDAO franlistDAO) {
+		this.franlistDAO = franlistDAO;
+	}
+
+	@Override
+	public List<FranVO> getFranList() throws SQLException {
+		List<FranVO> franList = franlistDAO.selectFranList();
+		return franList;
+	}
+
+	@Override
+	public List<FranVO> getFranList(Criteria cri) throws SQLException {
+		List<FranVO> franList = franlistDAO.selectFranList(cri);
+		return franList;
+	}
+
+	@Override
+	public Map<String, Object> getFranList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(franlistDAO.selectFranListCount(cri));
+
+		List<FranVO> franList = franlistDAO.selectFranList(cri);
+
+		dataMap.put("franList", franList);
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+	
+}

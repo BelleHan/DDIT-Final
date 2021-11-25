@@ -1,0 +1,149 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<head>
+<meta charset="UTF-8">
+<title>가맹점페이지</title>
+<style>
+th{
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+	<section class="content-header">
+		  	<div class="container-fluid">
+		  		<div class="row md-2">
+		  			<div class="col-sm-6" style="padding-top:10px;">
+		  				<h4>가맹점정보조회 > ${loginFran.fran_name }</h4>  				
+		  			</div>
+		  		</div>
+		  	</div>
+		  	<hr>
+	</section>
+	
+	<div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+	            <div class="card" >
+	              <div class="card-header border-0"  style="background-color:#E6E6E6;">
+	              	<i class="fas fa-info-circle float-left" style="padding:4px 5px 0 0; "></i><span class="card-title" style="font-size:18px;"><b>가맹점정보</b></span>
+	              </div>
+	                <div class="col-sm-12" style="padding:0;">
+						<!-- 가맹점정보내용 -->
+						<table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:15px;">
+	<!-- 		                <thead> -->
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2">가맹점명</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${loginFran.fran_name}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2">점주명</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${loginFran.fran_owner}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2">운영상태</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1" style="border-right: none; ">
+				                	<button type="button" class="btn btn-block btn-warning btn-sm" style="width:60px;">
+					                	<c:if test="${loginFran.fran_st eq 1}">운영</c:if>
+					                	<c:if test="${loginFran.fran_st eq 2}">휴점</c:if>
+					                	<c:if test="${loginFran.fran_st eq 3}">폐점</c:if>
+					                	<c:if test="${loginFran.fran_st eq 4}">승인대기</c:if>
+				                	</button>
+				                </td>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2" style="border-left: none;">
+				                	<button type="button" class="btn btn-primary" id="registBtn" onclick="OpenWindow('changeForm.do','변경신청',730,630);" style="width:150px;float:right;" >변경신청</button>
+				                </td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2">전화번호</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${loginFran.fran_tel}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2">이메일</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${loginFran.fran_email}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="2"><i class="fas fa-map-marker"></i>&nbsp;주소</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${loginFran.fran_zip} &nbsp;${loginFran.fran_addr}&nbsp;${loginFran.fran_detail_addr}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc col-sm-2" tabindex="0" aria-controls="example2"  colspan="2">면적</th>
+				                <td class="sorting_asc col-sm-4" tabindex="0" aria-controls="example2"  colspan="1">${loginFran.fran_area}</td>
+				                <th class="sorting_asc col-sm-2" tabindex="0" aria-controls="example2"  colspan="1">점포구분</th>
+				                <td class="sorting_asc col-sm-4" tabindex="0" aria-controls="example2"  colspan="1">
+				                	<c:if test="${loginFran.fran_se eq 1}">임대</c:if>
+				                	<c:if test="${loginFran.fran_se eq 2}">임대</c:if>
+				                </td>
+			                </tr>
+	<!-- 		                </tbody> -->
+	<!-- 		                </tbody> -->
+			              </table>
+	                <!-- /.d-flex -->
+	              </div>
+	            </div>
+	            <!-- /.card -->
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 가맹점정보-->
+          
+  			<div class="col-lg-6">
+	            <div class="card" >
+	              <div class="card-header border-0"  style="background-color:#E6E6E6;">
+	              	<i class="fas fa-file-contract float-left" style="padding:4px 5px 0 0; "></i><span class="card-title" style="font-size:18px;"><b>가맹점계약정보</b></span>
+	              </div>
+	                <div class="col-sm-12" style="padding:0;">
+                  	<!-- 가맹점계약정보내용 -->
+						<table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:15px;">
+	<!-- 		                <thead> -->
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1" style="width:120px;">계약번호</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${franContInfo.fran_cont_code}</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1">계약일</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">
+				                	<fmt:formatDate value="${franContInfo.fran_cont_start }" pattern="yyyy-MM-dd" /> 
+				                	&nbsp;- &nbsp;<fmt:formatDate value="${franContInfo.fran_cont_end }" pattern="yyyy-MM-dd" /> 
+				                </td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1">담당자</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${franEmp.emp_name }</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1">담당자번호</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3">${franEmp.emp_tel }</td>
+			                </tr>
+			                <tr role="row">
+				                <th class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="1"><i class="fas fa-paperclip"></i>&nbsp;계약서</th>
+				                <td class="sorting_asc" tabindex="0" aria-controls="example2"  colspan="3"></td>
+			                </tr>
+	<!-- 		                </tbody> -->
+	<!-- 		                </tbody> -->
+			              </table>
+               		 </div>
+                <!-- /.d-flex -->
+
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    
+
+        
+        
+
+</body>
+</html>

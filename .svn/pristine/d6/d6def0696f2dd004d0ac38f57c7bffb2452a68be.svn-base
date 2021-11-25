@@ -1,0 +1,56 @@
+package kr.or.fms.fran.dto;
+
+public class FranOrderDe {
+	private String fran_order_code;	//가맹점발주코드
+	private String hq_code;			//본사코드
+	private String sup_goods_code;  //공급업체물품코드
+	private int fran_order_quan;	//발주수량
+	private int fran_order_price;	//발주금액
+	private int fran_appr_quan;		//발주승인수량
+	private int fran_deliver_se;	//발주배송구분
+	public String getFran_order_code() {
+		return fran_order_code;
+	}
+	public void setFran_order_code(String fran_order_code) {
+		this.fran_order_code = fran_order_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public int getFran_order_quan() {
+		return fran_order_quan;
+	}
+	public void setFran_order_quan(int fran_order_quan) {
+		this.fran_order_quan = fran_order_quan;
+	}
+	public int getFran_order_price() {
+		return fran_order_price;
+	}
+	public void setFran_order_price(int fran_order_price) {
+		this.fran_order_price = fran_order_price;
+	}
+	public int getFran_appr_quan() {
+		return fran_appr_quan;
+	}
+	public void setFran_appr_quan(int fran_appr_quan) {
+		this.fran_appr_quan = fran_appr_quan;
+	}
+	public int getFran_deliver_se() {
+		return fran_deliver_se;
+	}
+	public void setFran_deliver_se(int fran_deliver_se) {
+		this.fran_deliver_se = fran_deliver_se;
+	}
+	
+	
+	
+}

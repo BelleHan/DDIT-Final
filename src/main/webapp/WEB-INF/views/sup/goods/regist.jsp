@@ -1,0 +1,198 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">물품등록</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <!-- form start -->
+             <div class="card-body">
+           	 <form role="form" method="post" action="regist.do" name="registForm">
+                  <div class="form-group row">
+                    <label for="sup_goods_name" class="col-sm-2 col-form-label">
+                    		<span style="color:red;font-weight:bold;">*</span>물품명</label>
+                    
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="sup_goods_name" name="sup_goods_name">
+                    </div>
+                  </div><!-- 물품명 -->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_code" class="col-sm-2 col-form-label">
+                    		<span style="color:red;font-weight:bold;">*</span>물품코드</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_code" name="sup_goods_code">
+                    </div>
+                    <label for="sup_goods_price" class="col-sm-2 col-form-label">
+                    		<span style="color:red;font-weight:bold;">*</span>납품가</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_price" name="sup_goods_price">
+                    </div>
+                  </div><!--납품가, 납품일자-->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_laca" class="col-sm-2 col-form-label">
+                    	<span style="color:red;font-weight:bold;">*</span>대분류</label>
+                    <div class="col-sm-4">
+<!--                       <input type="text" class="form-control" id="inputPassword3"> -->
+	                    <select class="form-control" id="sup_goods_laca" name="sup_goods_laca">
+	                          <option>대분류</option>
+	                          <option>식품류</option>
+	                          <option>주방용품</option>
+	                          <option>생활용품</option>
+	                          <option>인테리어</option>
+	                   </select>
+                    </div>
+                    <label for="sup_goods_smca" class="col-sm-2 col-form-label">
+                    	<span style="color:red;font-weight:bold;">*</span>물품종류</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_smca" name="sup_goods_smca">
+                    </div>
+                  </div><!--대분류, 물품종류-->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_attr2" class="col-sm-2 col-form-label">포장재질</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr2" name="sup_goods_attr2">
+                    </div>
+                    <label for="sup_goods_attr3" class="col-sm-2 col-form-label">물품재질</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr3" name="sup_goods_attr3">
+                    </div>
+                  </div><!--포장재질, 물품재질-->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_attr1" class="col-sm-2 col-form-label">용량</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr1" name="sup_goods_attr1">
+                    </div>
+                    <label for="sup_goods_unit" class="col-sm-2 col-form-label">단위</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_unit" name="sup_goods_unit">
+                    </div>
+                  </div><!--용량, 단위 -->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_attr4" class="col-sm-2 col-form-label">가로</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr4" name="sup_goods_attr4">
+                    </div>
+                    <label for="sup_goods_attr5" class="col-sm-2 col-form-label">세로</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr5" name="sup_goods_attr5">
+                    </div>
+                  </div><!--가로,세로-->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_attr6" class="col-sm-2 col-form-label">높이</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr6" name="sup_goods_attr6">
+                    </div>
+                    <label for="sup_goods_attr7" class="col-sm-2 col-form-label">무게</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="sup_goods_attr7" name="sup_goods_attr7">
+                    </div>
+                  </div><!--높이, 무게-->
+                  
+                  <div class="form-group row">
+                    <label for="sup_goods_attr8" class="col-sm-2 col-form-label">제품특성</label>
+                    
+                    <div class="col-sm-10">
+	                  <textarea class="form-control" id="sup_goods_attr8" name="sup_goods_attr8"
+	                  	 rows="5" placeholder="원재료 및 함유량, 재질 등 물품의 특성에 대해 작성하시오." ></textarea>
+                    </div>
+                  </div><!-- 물품명 -->
+                  <input type="hidden" name="sup_goods_img" />
+				  <div class="input-group mb-3">
+				   <label for="sup_goods_img" class="col-sm-2 col-form-label"><span style="color:red;font-weight:bold;">*</span>물품이미지</label>
+<!-- 					<div class="mailbox-attachments clearfix" style="text-align: center;"> -->
+<!-- 						<div class="mailbox-attachment-icon has-img" id="pictureView" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto; "></div> -->
+<!-- 						<div class="mailbox-attachment-info"> -->
+<!-- 							<div class="input-group input-group-sm"> -->
+<!-- 								<label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">파일선택</label> -->
+<!-- 								<input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled/> -->
+<!-- 								<span class="input-group-append-sm">											 -->
+<!-- 									<button type="button" class="btn btn-info btn-sm btn-append" onclick="upload_go();">업로드</button>											 -->
+<!-- 								</span> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+	              <div class="input-group mb-3">
+	               <label for="sup_goods_img" class="col-sm-2 col-form-label"><span style="color:red;font-weight:bold;">*</span>물품이미지</label>
+	               <div class="mailbox-attachments clearfix col-sm-10" >
+	                  <div class="mailbox-attachment-icon has-img col-sm-4 float-left" id="pictureView" style="border: 1px solid #D8D8D8; height: 200px; width: 140px; margin: 0 auto; "></div>
+	<!--                   <div class="mailbox-attachment-info col-sm-4"> -->
+	                     <div class="input-group input-group-sm  col-sm-6">
+                        <label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">파일선택</label>
+                        <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled/>
+                        <span class="input-group-append-sm">                                 
+                         <button type="button" class="btn btn-info btn-sm btn-append" onclick="upload_go();">업로드</button>                                 
+                        </span>
+                     </div>
+<!--                   </div> -->
+               </div>
+           	   </div>
+				</div>
+                  
+               </form>
+              </div> <!-- /.card-body -->
+            
+                <!-- /.card-footer -->
+                <div class="card-footer row">
+                    <label for="exampleInputFile" class="col-sm-3 col-form-label"></label>
+					<button type="button" class="col-sm-3 btn btn-danger float-right" id="cancelBtn" style="margin-right: 10px;" onclick="CloseWindow();">취소</button>
+					<button type="button" class="col-sm-3 btn btn-info" id="registBtn" onclick="regist_go();">등록</button>
+                    <label for="exampleInputFile" class="col-sm-3 col-form-label"></label>
+                </div>
+      		 </div>
+            <!-- /.card -->
+            
+</div>
+
+
+<form role="imageForm" action="upload/picture.do" method="post" enctype="multipart/form-data">
+	<input id="inputFile" name="pictureFile" type="file" class="form-control" onchange="picture_go();"
+			style="display:none;">
+	<input id="oldFile" type="hidden" name="oldPicture" value="" />
+	<input type="hidden" name="checkUpload" value="0" />	
+</form>
+
+
+<jsp:include page="../js/regist_js.jsp" />
+
+<script>
+function regist_go(){
+	var form = document.registForm;
+	if(form.sup_goods_name.value==""){
+		alert("물품명 입력은 필수입니다.");
+		return;
+	}
+	if(form.sup_goods_price.value==""){
+		alert("납품가 입력은 필수입니다.");
+		return;
+	}
+	if(form.sup_goods_laca.value==""){
+		alert("대분류 선택은 필수입니다.");
+		return;
+	}
+	if(form.sup_goods_smca.value==""){
+		alert("물품종류 입력은 필수입니다.");
+		return;
+	}
+	form.submit();
+}
+
+
+</script>
+</body>
+</html>

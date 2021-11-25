@@ -1,0 +1,25 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranNoticeVO;
+import kr.or.fms.hq.dto.FranAppliDetailVO;
+import kr.or.fms.hq.dto.FranAppliVO;
+
+public interface AppliDAO {
+	
+	List<FranAppliDetailVO> selectAppliCriteria(SearchCriteria cri) throws SQLException;
+	int selectAppliCriteriaTotalCount(SearchCriteria cri) throws SQLException;
+
+	FranAppliDetailVO selectAppliByFran_applidoc_code(String fran_applidoc_code) throws SQLException;
+	
+	//등록상태변경
+	void updateFranRegSt(FranAppliVO franAppli) throws SQLException;
+	void updateFranAppliApprSt(FranAppliVO franAppli) throws SQLException;
+	
+	//임시등록게시글 인서트
+	void insertBoard(FranNoticeVO frannotice) throws SQLException;
+
+}

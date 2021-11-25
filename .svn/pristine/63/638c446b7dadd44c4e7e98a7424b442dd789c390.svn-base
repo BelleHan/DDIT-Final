@@ -1,0 +1,57 @@
+package kr.or.fms.command;
+
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import kr.or.fms.dto.ReturnVO;
+
+public class FranReturnReqRegistCommand {
+
+	private String return_code;
+	private String fran_code;
+	private String return_title;
+	private String return_reason;
+	private List<MultipartFile> file_location;
+	
+	public String getReturn_code() {
+		return return_code;
+	}
+	public void setReturn_code(String return_code) {
+		this.return_code = return_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getReturn_title() {
+		return return_title;
+	}
+	public void setReturn_title(String return_title) {
+		this.return_title = return_title;
+	}
+	public String getReturn_reason() {
+		return return_reason;
+	}
+	public void setReturn_reason(String return_reason) {
+		this.return_reason = return_reason;
+	}
+	public List<MultipartFile> getFile_location() {
+		return file_location;
+	}
+	public void setFile_location(List<MultipartFile> file_location) {
+		this.file_location = file_location;
+	}
+	
+	public ReturnVO toReturnVO() {
+		ReturnVO returnVO = new ReturnVO();
+		returnVO.setReturn_code(this.return_code);
+		returnVO.setFran_code(this.fran_code);
+		returnVO.setReturn_title(this.return_title);
+		returnVO.setReturn_reason(this.return_reason);
+		
+		return returnVO;
+	}
+}

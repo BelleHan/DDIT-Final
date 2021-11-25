@@ -1,0 +1,25 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.sup.dto.SupVO;
+
+public interface SupListDAO {
+	
+	// 공급업체 조회
+	SupVO selectSupByCode(String scode) throws SQLException;
+	// 공급업체 수정
+	void updateSup(SupVO sup) throws SQLException;
+	//공급업체리스트 조회
+	List<SupVO> selectSupList()throws SQLException;
+	List<SupVO> selectSupList(Criteria cri)throws SQLException;
+	List<SupVO> selectSupList(SearchCriteria cri)throws SQLException;
+	
+	// 검색 결과의 전체 리스트 개수
+	int selectSupListCount(SearchCriteria cri) throws SQLException;
+
+}

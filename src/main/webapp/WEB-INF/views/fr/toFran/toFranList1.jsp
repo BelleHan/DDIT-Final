@@ -1,0 +1,372 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="lacaList" value="${dataMap.lacaList }" />
+<c:set var="smcaList" value="${dataMap.smcaList }" />
+<c:set var="keyword" value="${dataMap.keyword }" />
+<c:set var="goodsList" value="${dataMap.goodsList }" />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>여러개 마커 표시하기</title>
+    
+</head>
+<body>
+<div style="height:94vh;overflow-y:scroll;overflow-x:hidden;">
+
+<script src="/fms/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+
+<input type="hidden" name ="franLati" id="franLati" value="${franLatitude }"/>
+<input type="hidden" name ="franLogi" id="franLogi" value="${franLongitude }"/>
+
+<c:forEach var="nearFranList" items="${nearFranList }">
+	<input type="hidden" name="fran_name" value="${nearFranList.fran_name }"/>
+	<input type="hidden" name="fran_tel" value="${nearFranList.fran_tel }"/>
+ 	<input type="hidden" name="appr_deal_fran" value="${nearFranList.fran_code }"/>
+	<input type="hidden" name="fran_latitude" value="${nearFranList.fran_latitude }"/>
+	<input type="hidden" name="fran_longitude" value="${nearFranList.fran_longitude }"/>
+</c:forEach>
+
+<div class="card-header border-0">
+	<i class="fas fa-carrot float-left" style="padding:4px 5px 0 0;"></i> <span class="card-title" style="font-size:18px;"><b>당장거래(가맹점간거래)</b></span>
+</div>
+
+<!-- 가맹점간 거래 주의사항 -->
+<div class="info-box" style="margin: 0 15px 10px 10px; padding-top: 15px;background-color:#f3eaea;">
+   <div class="info-box-content" style="font-size: 14px;">
+     <span class="info-box-text">*반경 5km이내 가맹점 정보가 조회됩니다.</span>
+     <span class="info-box-text">*가맹점 간 거래는 물품당 최대 10개 까지 요청가능합니다.</span>
+     <span class="info-box-text">*당일 요청 승낙 가맹점이 없을 시, 물품요청이 자동으로 취소됩니다.</span>
+     <span class="info-box-text">*재고요청버튼 클릭 시, 반경 5km이내 가맹점들에게 재고가 요청됩니다.</span>
+   </div>
+  <!-- /.info-box-content -->
+</div>
+
+<div class="row">
+	<!-- 지도 -->
+	<div id="map" style="width:75%;height:450px; padding:15px;"></div>
+	
+	<!-- 가맹점들정보 -->
+	<div id="franInfo col-sm-3" style="height:450px;overflow-y:scroll;overflow-x:hidden;width:24%;border:1px solid #E6E6E6;padding:5px;margin:0 5px;">
+		<div class="float-right" style="padding:2px 5px; font-size:13px;">검색 결과 :<b>${nearFranList.size()}</b>건</div>
+		<c:forEach var="nearFranList" items="${nearFranList }">
+			<div class="info-box">
+	              <div class="info-box-content">
+	                <span class="info-box-text" style="font-size: 15px;color:#0404B4">&nbsp;<b>${nearFranList.fran_name }(${nearFranList.fran_code })</b></span>
+	                <span class="info-box-text" style="font-size: 13px;"><i class="fas fa-phone-alt" style="font-size: 12px;"></i>&nbsp;${nearFranList.fran_tel }</span>
+	                <span class="info-box-text" style="font-size: 13px;"><i class="fas fa-map-marker-alt" style="font-size: 12px;"></i>&nbsp;${nearFranList.fran_addr }${nearFranList.fran_detail_addr }</span>
+	              </div>
+	              <!-- /.info-box-content -->
+            </div>
+		</c:forEach>
+	</div>
+</div>
+
+<!-- 재고요청 현황 -->
+<div class="card-header border-0" style="padding: 5px 0px 0px 10px;">
+	<i class="fas fa-hands-helping float-left" style="padding:4px 5px 0 0;"></i><span class="card-title" style="font-size:16px;"><b>거래요청내역</b></span>
+</div>
+<div>
+  	<div class="card-body" style="height:250px;overflow-y:scroll;overflow-x:hidden;padding:5px;">
+		<table class="table table-bordered text-center table-hover" style="font-size:0.9em;">
+			<thead>
+			<tr style="font-size:0.9em; height:25px;line-height:0.5;">
+				<th style="width:10%;">거래코드</th>
+				<th style="width:10%;">요청가맹점</th>
+				<th style="width:20%;">물품코드</th>
+				<th style="width:30%;">물품명</th>
+				<th style="width:10%;">요청개수(개)</th>
+				<th style="width:20%;">요청상태</th>
+			</tr>				
+			</thead>
+			<tbody>
+			<c:if test="${empty franDealList }" >
+				<tr style="height:25px;">
+					<td colspan="5">
+						<strong>요청내역이 없습니다.</strong>
+					</td>
+				</tr>
+			</c:if>						
+			<c:forEach items="${franDealList }" var="franDealList" >
+			   
+				<tr style="font-size:0.9em;height: 20px;">
+					<td>${franDealList.fran_deal_code}</td>
+					<td style="font-size:1.1em;color:#0404B4"><b>${franDealList.appr_deal_fran}</b></td>
+					<td>${franDealList.hq_goods_code}</td>
+					<td>${franDealList.hqGoodsVO.hq_goods_name}</td>
+					<td style="color:red;"><b>${franDealList.deal_quan}</b></td>
+					<td>
+						<c:if test="${franDealList.deal_st eq 1}">
+							<button type="button" class="btn btn-warning btn-sm" style="height:22px;padding:0px 5px;font-size: 12px;margin:0;"><b>재고요청중</b></button>
+						</c:if>
+						<c:if test="${franDealList.deal_st eq 2}">
+							<button type="button" class="btn btn-danger btn-sm " style="height:22px;padding:0px 5px;font-size: 12px;"><b>거래진행중</b></button>
+						</c:if>
+						<c:if test="${franDealList.deal_st eq 3}">
+							<button type="button" class="btn btn-secondary btn-sm " style="height:22px;padding:0px 5px;font-size: 12px;"><b>요청거절</b></button>
+						</c:if>
+						<c:if test="${franDealList.deal_st eq 4}">
+							<button type="button" class="btn btn-success btn-sm " style="height:22px;padding:0px 5px;font-size: 12px;"><b>거래완료</b></button>
+						</c:if>
+					</td>
+				</tr>
+			   
+			</c:forEach>
+		</tbody>				
+	</table>				
+	</div>
+</div>
+<!-- 재고요청현황리스트 끝 -->
+
+<div class="card" style="margin-right:15px;">
+    <div class="card-body" style="padding:0;">
+		<form id="searchFrom" action = "list.do" method="get">
+			<div class="card" style="margin-bottom:0px;">
+				<div class="card-body search-body" style="height: auto; padding:11px;">
+					<div class="search-group row">
+						<div class="card-header border-0" style="padding: 6px 0px 0px 10px;">
+							<i class="fas fa-search float-left" style="padding:4px 5px 0 0;"></i><span class="card-title" style="font-size:16px;"><b>검색</b></span>
+						</div>
+						<div class="input-group  col-md-3">
+							<label style="padding: 6px 10px 0px 20px;">대분류</label>
+							<select class="form-control" name="laca" id="idLaca"  style="text-align-last: center;border-radius: 5px;" onchange="getSmcaList();">
+								<c:if test="${!empty lacaList}">
+							  		<option value="">전체 </option>
+							  		<c:forEach var ="lacaList" items="${lacaList}">
+							  			<option value="${lacaList}" <c:if test="${map.laca eq lacaList}">selected</c:if> >${lacaList}</option>
+							  		</c:forEach>
+							  	</c:if>						
+						  	</select>
+						</div>
+						<div class="input-group  col-md-3">
+							<label style="padding: 6px 10px 0px 5px;">소분류</label>
+							<select class="form-control" name="smca" id="idSmca"  style="text-align-last:center;border-radius: 5px;">
+						  		<c:if test="${!empty smcaList}">
+						  		<option value="" >전체</option>
+						  		<c:forEach var ="smcaList" items="${smcaList}">
+						  			<option value="${smcaList}"  <c:if test="${map.smca eq smcaList}">selected</c:if> >${smcaList}</option>
+						  		</c:forEach>
+					  			</c:if>
+						  	</select>						
+						</div>
+						<div class="input-group  col-md-3">
+							<input class="form-control" type="text" name="keyword" placeholder="물품명을 입력하세요." value="${param.keyword }"/>
+						</div>
+				       	<div class="input-group col-md-2">
+				       			<span class="input-group-append">
+									<button class="btn btn-primary" type="submit"  data-card-widget="search" style="border-radius: 5px;"><i class="fa fa-fw fa-search"></i></button>
+								</span>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </form>
+	    
+	     <form id="registFranToFran" action="request.do" method="get">
+		    <c:forEach var="nearFranList" items="${nearFranList }">
+			 	<input type="hidden" name="appr_deal_fran" value="${nearFranList.fran_code }"/>
+			</c:forEach>
+			<input type="hidden" id="hq_goods_code" name="hq_goods_code" value=""/>
+			<input type="hidden" id="goods_delivery_price" name="goods_delivery_price" value=""/>
+			<input type="hidden" id="deal_quan" name="deal_quan" value="" />
+			<input type="hidden" id="hq_goods_name" name="hq_goods_name" value="" />
+		 </form>
+	    
+	  	  <div class="card-body" style="height:250px;overflow-y:scroll;overflow-x:hidden;padding:5px;">
+				<table class="table table-bordered text-center table-hover" style="font-size:0.9em;">
+					<thead style="line-height:0.5;">
+					<tr style="font-size:0.9em; height:25px;">
+						<th style="width:10%;">물품코드</th>
+						<th style="width:10%;">대분류</th>
+						<th style="width:10%;">소분류</th>
+						<th style="width:30%;">물품명(용량)</th>
+						<th style="width:10%;">물품가(원)</th>
+						<th style="width:10%;">수량</th>
+						<th>요청</th>
+					</tr>				
+					</thead>
+					<tbody>
+					<c:if test="${empty goodsList }" >
+						<tr style="height:25px;">
+							<td colspan="7">
+								<strong>해당 내용이 없습니다.</strong>
+							</td>
+						</tr>
+					</c:if>						
+					<c:forEach items="${goodsList }" var="goodsList" >
+					   
+						<tr style="font-size:0.9em;height:25px;">
+							<td>${goodsList.hq_goods_code}
+							<input type="hidden" name = "hq_goods_code" id="goods_code" value="${goodsList.hq_goods_code}"/>
+							<input type="hidden" name = "goods_delivery_price" id="goods_price" value="${goodsList.goods_delivery_price }"/>
+							<input type="hidden" name = "hq_goods_name" id="hq_goods_name" value="${goodsList.hq_goods_name }"/>
+							</td>
+							<td>${goodsList.supGoodsVO.sup_goods_laca }</td>
+							<td>${goodsList.supGoodsVO.sup_goods_smca }</td>
+							<td style="text-align:left; overflow: hidden;white-space: nowrap; text-overflow: ellipsis;" >
+									${goodsList.hq_goods_name }(${goodsList.supGoodsVO.sup_goods_attr1 }${goodsList.supGoodsVO.sup_goods_unit })</td>
+							<td><fmt:formatNumber value="${goodsList.goods_delivery_price }" pattern="#,###"></fmt:formatNumber> </td>
+							<td>
+								<input type="number" value="" id="goodsNum" name="deal_quan"/>
+							</td>
+							<td>
+								<button type="button" class="btn btn-warning btn-sm goodsRequestBtn" style="height:25px;padding:0px 5px;font-size: 13px;"><b>재고요청</b></button>
+							</td>
+						</tr>
+					   
+					</c:forEach>
+					</tbody>				
+				</table>				
+			</div>
+			<div class="card-footer">
+<%-- 				<%@ include file="/WEB-INF/views/common/paginationGoods.jsp" %>				 --%>
+			</div>
+			
+        
+	  </div>
+	          <!-- /.d-flex -->
+	          
+	  
+
+</div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e26f20f65854509ef0ad219ccf4f626d"></script>
+<script>
+
+$(function(){
+	$("button.goodsRequestBtn").on("click", function(){
+		var param =  $("#hq_goods_name", $(this).parent().parent()).val();
+		var param2 = $("#goodsNum", $(this).parent().parent()).val();
+
+		if(confirm("요청 물품 : "+param+"\n요청 개수 : "+param2+"개 \n인근 가맹점에 재고요청 하시겠습니까?")==true){
+		
+		
+		$("#deal_quan",$("#registFranToFran")).val( $("#goodsNum", $(this).parent().parent()).val() )
+		$("#hq_goods_code",$("#registFranToFran")).val( $("#goods_code", $(this).parent().parent()).val() )
+		$("#goods_delivery_price",$("#registFranToFran")).val( $("#goods_price", $(this).parent().parent()).val() )
+		
+		$('form[id="registFranToFran"]').submit();
+		
+		}
+	});
+	
+});
+
+
+// 지도를 표시할 div  
+var mapContainer = document.getElementById('map'), 
+    mapOption = { 
+        // 지도의 중심좌표
+        center: new kakao.maps.LatLng($("#franLati").val(),$("#franLogi").val()),
+        // 지도의 확대 레벨
+        level: 8
+    };
+
+// 지도를 생성합니다
+var map = new kakao.maps.Map(mapContainer, mapOption);
+ 
+// 마커를 표시할 위치와 title 객체 배열입니다 
+var positions = [
+	<c:forEach var="nearFranList" items="${nearFranList }" varStatus="st">
+	<c:if test="${st.count>1}">,</c:if>
+	{
+		content : '${nearFranList.fran_name }',
+        latlng: new kakao.maps.LatLng(${nearFranList.fran_latitude },${nearFranList.fran_longitude })
+    }
+	</c:forEach>
+];
+
+
+
+// 마커 이미지의 이미지 주소입니다
+var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+    
+for (var i = 0; i < positions.length; i ++) {
+    
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35); 
+    
+    // 마커 이미지를 생성합니다    
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        image : markerImage // 마커 이미지 
+    });
+    
+    
+    
+    //마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+    	content:positions[i].content//인포윈도우에 표시할 내용
+    });
+    
+ 	// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+}
+	//인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+	function makeOverListener(map, marker, infowindow) {
+	    return function() {
+	        infowindow.open(map, marker);
+	    };
+	}
+	
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	function makeOutListener(infowindow) {
+	    return function() {
+	        infowindow.close();
+	    };
+	}
+//지도에 표시할 원을 생성합니다
+var circle = new kakao.maps.Circle({
+    center : new kakao.maps.LatLng(36.32502918,127.4200496),  // 원의 중심좌표 입니다 
+    radius: 5000, // 미터 단위의 원의 반지름입니다 
+    strokeWeight: 3, // 선의 두께입니다 
+    strokeColor: '#75B8FA', // 선의 색깔입니다
+    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'dashed', // 선의 스타일 입니다
+    fillColor: '#CFE7FF', // 채우기 색깔입니다
+    fillOpacity: 0.7  // 채우기 불투명도 입니다   
+}); 
+
+
+//지도에 원을 표시합니다 
+circle.setMap(map); 
+
+</script>
+<script type="text/javascript">
+	function getSmcaList(){
+		var form = $('#searchFrom');
+		var url = "<%=request.getContextPath()%>/fr/goods/searchSmca";
+		var param = $("#idLaca option:selected").val();
+		
+		$.ajax({
+			url : url,
+			type : 'post',
+			data : param,
+			contentType : 'application/json',
+			success	:function(data){
+				var res = "<option vlaue=''>전체</option>";
+				console.log(data);
+				$.each(data,function(i,v){
+					res += "<option value='"+data[i]+"'>"+data[i]+"</option>"
+				})
+				$('#idSmca').html(res);
+
+			}
+		});
+	}
+</script>
+
+</body>
+</html>

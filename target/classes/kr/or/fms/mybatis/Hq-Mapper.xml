@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Hq-Mapper">
+
+	<select id="selectEmp" parameterType="str" resultType="hqEmp">
+		select
+		*
+		from hq_emp
+		where emp_no=#{code}
+	</select>
+	
+	<sql id="search">	
+		<if test="searchType == 'i'.toString()">
+			and fran_owner like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'p'.toString()">
+			and fran_code like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'e'.toString()">
+			and fran_tel like '%'||#{keyword}||'%'			
+		</if>		
+	</sql>
+	
+	<select id="selectFranList" resultType="fran">
+		select *
+		from fran
+	</select>
+	
+	<select id="selectSearchFranList" resultType="fran">
+		select
+		*
+		from fran
+		where fran_code is not null
+		<include refid="search" />
+		order by fran_code desc
+	</select>
+	
+	<select id="selectFranListCount" resultType="int">
+		select
+		count(*)
+		from fran
+		where fran_code is not null
+		<include refid="search" />
+	</select>
+	
+	<select id="selectFranByCode" parameterType="str" resultType="fran">
+		select
+		*
+		from fran
+		where fran_code=#{fran_code}
+	</select>
+	
+	<select id="selectLogisList" resultType="logis">
+		select *
+		from logis
+	</select>
+	
+	<select id="selectSearchLogisList" resultType="logis">
+		select
+		*
+		from logis
+		where logis_code is not null
+<!-- 		<include refid="search" /> -->
+		order by logis_code desc
+	</select>
+	
+	<select id="selectLogisListCount" resultType="int">
+		select
+		count(*)
+		from logis
+		where logis_code is not null
+<!-- 		<include refid="search" /> -->
+	</select>
+	
+	<select id="selectLogisByCode" parameterType="str" resultType="logis">
+		select
+		*
+		from logis
+		where logis_code=#{logis_code}
+	</select>
+	
+	<select id="selectSupList" resultType="sup">
+		select *
+		from sup
+	</select>
+	
+	<select id="selectSearchSupList" resultType="sup">
+		select
+		*
+		from sup
+		where sup_code is not null
+<!-- 		<include refid="search" /> -->
+		order by sup_code desc
+	</select>
+	
+	<select id="selectSupListCount" resultType="int">
+		select
+		count(*)
+		from sup
+		where sup_code is not null
+<!-- 		<include refid="search" /> -->
+	</select>
+	
+		<select id="selectSupByCode" parameterType="str" resultType="sup">
+		select
+		*
+		from sup
+		where sup_code=#{sup_code}
+	</select>
+	
+	
+	
+	
+	<update id="updateFran" parameterType="fran">
+		update fran 
+		set 
+		fran_name=#{fran_name}, 
+		fran_owner=#{fran_owner}, 
+		fran_tel=#{fran_tel}, 
+		fran_addr=#{fran_addr},
+		fran_st=#{fran_st}, 
+		fran_reg_st=#{fran_reg_st},
+        fran_area=#{fran_area}, 
+        fran_gtn=#{fran_gtn}, 
+        fran_rent_charge=#{fran_rent_charge}, 
+        fran_manage_cost=#{fran_manage_cost}, 
+        fran_se=#{fran_se}
+		where fran_code=#{fran_code}
+	</update>
+	
+	<update id="updateLogis" parameterType="logis">
+		update logis 
+		set 
+		logis_local_num=#{logis_local_num},
+		logis_tel=#{logis_tel},
+		logis_contract_st=#{logis_contract_st},
+        logis_owner=#{logis_owner},
+        logis_name=#{logis_name},
+        logis_reg_st=#{logis_reg_st},
+        logis_email=#{logis_email},
+        logis_zip=#{logis_zip},
+        logis_addr=#{logis_addr},
+        logis_detail_addr=#{logis_detail_addr},
+        logis_business_no=#{logis_business_no}
+		where logis_code=#{logis_code}
+	</update>
+	<update id="updateSup" parameterType="sup">
+		update sup 
+		set 
+		sup_code=#{sup_code}, sup_name=#{sup_name}, sup_local_num=#{sup_local_num}, sup_owner=#{sup_owner}, sup_tel=#{sup_tel}, sup_email=#{sup_email},
+        sup_business_no=#{sup_business_no}, sup_zip=#{sup_zip}, sup_addr=#{sup_addr}, sup_detail_addr=#{sup_detail_addr}, sup_prod=#{sup_prod}, 
+        sup_contract_st=#{sup_contract_st}, sup_reg_st=#{sup_reg_st}
+		where sup_code=#{sup_code}
+	</update>
+	
+	<!-- 출고계획 -->
+	<!-- <select id="selectOutList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		
+	</select>
+	상세조회
+	<select id="selectOutByCode" resultType="out" parameterType="str">
+		select *
+		from out
+		where out_code=#{out_code}
+	</select>
+	출고계획 페이징처리
+	
+	<select id="selectOutListCount" resultType="int">
+		select 
+		count(*)
+		from out
+		where out_code is not null
+		
+	</select>
+	
+	<update id="insertOutPlan" parameterType="out">
+		insert 
+		into
+		out(out_code, hq_goods_code, logis_code, out_loca_type, out_loca, out_date, out_st, out_num)
+		values
+		(#{out_code}, #{hq_goods_code}, #{logis_code}, #{out_loca_type}, #{out_loca}, #{out_date}, #{out_st}, #{out_num})
+	</update>
+	
+	<update id="updateOut" parameterType="out">
+		update out
+		set
+		out_loca_type=#{out_loca_type}, out_loca=#{out_loca}, out_date=#{out_date}, out_st=#{out_st}, out_num=#{out_num}
+		where out_code=#{out_code}
+	
+	</update>
+	
+	<select id="selectOutSeqNext" resultType="String">
+		select seq_out.nextval as out_code from dual
+	</select> -->
+	
+</mapper>

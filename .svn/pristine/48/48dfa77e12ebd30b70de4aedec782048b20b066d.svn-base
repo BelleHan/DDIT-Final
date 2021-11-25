@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>가맹점 신청</title>
+</head>
+<body>
+		<div class="card card-primary">
+              <div class="card-header" >
+                <h3 class="card-title" style="margin-left: 45%;">가맹점 신청</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form>
+                <div class="card-body">
+                  <div>
+                  	<span style="color:red;font-weight:bold; margin-left: 90%;">필수입력*</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="fran_owner">이름</label><span style="color:red;font-weight:bold;">*</span>
+                    <input type="text" class="form-control" id="fran_owner" name="fran_owner">
+                  </div>
+                  <div class="form-group">
+							 <label for="fran_tel">연락처</label><span style="color:red;font-weight:bold;">*</span>
+							<div>	
+								<div>
+									<select style="width:100px;" name="fran_tel" id="fran_tel" class="form-control float-left">
+										<option value="">-선택-</option>
+										<option value="010">010</option>
+										<option value="011">011</option>
+										<option value="017">017</option>
+										<option value="018">018</option>
+									</select>							
+									<label class="float-left" style="padding: 0; text-align: center; font-weight: bold; font-size: 20px;">&nbsp;-&nbsp;</label>										
+									<input style="width:95px;" name="phone" type="text" class="form-control float-left" />
+									<label class="float-left" style="padding: 0; text-align: center; font-weight: bold; font-size: 20px;">&nbsp;-&nbsp;</label>
+									<input style="width:95px;" name="phone" type="text" class="form-control float-left" />						
+								</div>
+							</div>
+						</div>
+                  <div class="form-group" style="margin-top:50px;">
+							<label for="fran_email" style="font-size:0.9em;">이메일</label><span style="color:red;font-weight:bold;">*</span>
+							<div>
+								<input name="fran_email" type="email" class="form-control" id="fran_email"
+										placeholder="example@naver.com">
+							</div>
+						</div>
+                  <div class="form-group" style="margin-top:10px;">
+							<label for="fran_se" style="font-size:0.9em;">점포구분</label><span style="color:red;font-weight:bold;">*</span>
+							<div>
+								 <label for="fran_se">본인</label>
+								<input name="fran_se" type="checkbox" id="fran_se" style="margin-left: 5px;">
+								 <label for="fran_se" style="margin-left:5px;">임대</label>
+								<input name="fran_se" type="checkbox" id="fran_se" style="margin-left: 5px;">
+							</div>
+						</div>
+						
+						
+						
+						
+						
+                 
+                  
+                  
+                  
+                  <div class="form-group" style="margin-top:32px;">
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                	</div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary" style="width: 70px;">신청</button>
+                  <button type="button" id="cancelBtn" onclick="CloseWindow();"
+										class="btn btn-primary ">&nbsp;&nbsp;&nbsp;취 &nbsp;&nbsp;소&nbsp;&nbsp;&nbsp;</button>
+                </div>
+              </form>
+            </div>
+</body>
+</html>

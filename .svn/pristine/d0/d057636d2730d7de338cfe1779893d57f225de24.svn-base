@@ -1,0 +1,15 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranOrder;
+import kr.or.fms.fran.dto.FranOrderDe;
+
+public interface FranOrderManagerDAO {
+	
+	public List<FranOrder> getOrderList(SearchCriteria cri) throws SQLException;
+	public int getOrderListCount(SearchCriteria cri) throws SQLException;
+	public List<FranOrderDe> getOrderDetail(String orderCode) throws SQLException;
+}

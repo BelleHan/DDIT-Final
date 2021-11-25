@@ -1,0 +1,111 @@
+package kr.or.fms.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.dao.KeywordDAO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.logis.dto.LogisWhVO;
+import kr.or.fms.sup.dto.SupVO;
+
+public class KeywordServiceImpl implements KeywordService {
+
+	private KeywordDAO keywordDAO;
+	public void setKeywordDAO(KeywordDAO keywordDAO) {
+		this.keywordDAO = keywordDAO;
+	}
+
+	@Override
+	public List<HqGoodsVO> goods() throws SQLException {
+		List<HqGoodsVO> goodsList = keywordDAO.goods();
+		return goodsList;
+	}
+
+	@Override
+	public List<String> local() throws SQLException{
+		List<String> localList = keywordDAO.local();
+		return localList;
+	}
+	@Override
+	public List<LogisVO> logis() throws SQLException{
+		List<LogisVO> logisList = keywordDAO.logis();
+		return logisList;
+	}
+	@Override
+	public List<FranVO> fran() throws SQLException{
+		List<FranVO> franList = keywordDAO.fran();
+		return franList;
+	}
+	@Override
+	public List<SupVO> sup() throws SQLException{
+		List<SupVO> supList = keywordDAO.sup();
+		return supList;
+	}
+	@Override
+	public List<String> laca() throws SQLException{
+		List<String> lacaList = keywordDAO.laca();
+		return lacaList;
+	}
+	@Override
+	public List<String> smca() throws SQLException{
+		List<String> smcaList = keywordDAO.smca();
+		return smcaList;
+	}
+
+	@Override
+	public List<LogisVO> log() throws SQLException {
+		List<LogisVO> logList = keywordDAO.log();
+		return logList;
+	}
+
+	@Override
+	public List<HqGoodsVO> hq() throws SQLException {
+		List<HqGoodsVO> hqList = keywordDAO.hq();
+		return hqList;
+	}
+
+	@Override
+	public List<FranVO> outFran() throws SQLException {
+		List<FranVO> outFranList = keywordDAO.outFran();
+		return outFranList;
+	}
+
+	@Override
+	public List<LogisVO> outLogis() throws SQLException {
+		List<LogisVO> outLogisList = keywordDAO.outLogis();
+		return outLogisList;
+	}
+	
+	@Override
+	public List<LogisWhVO> wh(String fmsLogis) throws SQLException {
+		List<LogisWhVO> whList = keywordDAO.wh(fmsLogis);
+		return whList;
+	}
+	@Override
+	public List<LogisWhVO> whcn(String fmsLogis) throws SQLException {
+		List<LogisWhVO> whList = keywordDAO.whcn(fmsLogis);
+		return whList;
+	}
+////////////////////////////////////////////////////////////////
+	@Override
+	public List<LogisWhVO> logisWh() throws SQLException {
+		List<LogisWhVO> logisWhList = keywordDAO.logisWh();
+		return logisWhList;
+	}
+
+	@Override
+	public HqGoodsVO goodsde(String code) throws SQLException {
+		HqGoodsVO goods = keywordDAO.goodsDe(code);
+		return goods;
+	}
+
+	@Override
+	public LogisWhVO getlogisGoods(Map<String, String> data) throws SQLException {
+		LogisWhVO logisGoods = keywordDAO.readLogisGoods(data);
+		return logisGoods;
+	}
+
+}

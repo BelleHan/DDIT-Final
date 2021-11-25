@@ -1,0 +1,22 @@
+package kr.or.fms.dto;
+									/* 배송 */
+import java.util.Date;
+									
+public class DeliveryVO {
+	
+	private String delivery_code;	//배송코드
+	private Date delivery_date;		//배송시작일
+	
+	public String getDelivery_code() {
+		return delivery_code;
+	}
+	public void setDelivery_code(String delivery_code) {
+		this.delivery_code = delivery_code;
+	}
+	public Date getDelivery_date() {
+		return delivery_date;
+	}
+	public void setDelivery_date(Date delivery_date) {
+		this.delivery_date = delivery_date;
+	}
+}

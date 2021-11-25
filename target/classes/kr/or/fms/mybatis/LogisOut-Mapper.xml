@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LogisOut-Mapper">
+	<sql id="map">	
+		<if test="keywordMap.out_code!=null and !keywordMap.out_code.equals('')">
+			and out_loca = #{keywordMap.out_code}			
+		</if>
+		<if test="keywordMap.fms_st!=null and !keywordMap.fms_st.equals('')">
+			and out_st = #{keywordMap.fms_st}			
+		</if>
+		<if test="keywordMap.start_date!=null and !keywordMap.start_date.equals('')">
+		    and <![CDATA[out_date >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null and !keywordMap.end_date.equals('')">
+			and <![CDATA[out_date <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	
+	<select id="outList" resultType="out">
+	SELECT 
+		*
+	FROM
+	    
+	    (
+	    SELECT 
+	        DISTINCT A.OUT_CODE,
+	                    A.LOGIS_CODE,
+	                    A.OUT_LOCA_TYPE,
+	                    A.OUT_LOCA,
+	                    B.FRAN_NAME OUT_LOCA_NAME,
+	                    A.OUT_DATE,
+	                    A.OUT_ST
+	    FROM 
+	        OUT A, FRAN B, LOGIS C
+	    WHERE 
+	        OUT_CODE IS NOT NULL
+	    AND A.OUT_LOCA = B.FRAN_CODE
+	    UNION ALL
+	    SELECT 
+	        DISTINCT A.OUT_CODE,
+	                    A.LOGIS_CODE,
+	                    A.OUT_LOCA_TYPE,
+	                    A.OUT_LOCA,
+	                    C.LOGIS_NAME OUT_LOCA_NAME,
+	                    A.OUT_DATE,
+	                    A.OUT_ST
+	    FROM 
+	        OUT A, FRAN B, LOGIS C
+	    WHERE 
+	        OUT_CODE IS NOT NULL
+	    AND A.OUT_LOCA = C.LOGIS_CODE
+	    )
+	WHERE LOGIS_CODE = #{keywordMap.logis_code}
+	ORDER BY OUT_DATE DESC
+	<include refid="map"/>
+	</select>
+	
+	<select id="outListCount" resultType="int">
+		select count(distinct out_code)
+		from out
+		where out_code is not null
+		and logis_code = #{keywordMap.logis_code}
+		<include refid="map"/>
+	</select>
+	
+	<select id="outLocaFran" resultType="out">
+	SELECT 
+		DISTINCT B.FRAN_NAME
+       , A.OUT_LOCA 
+       
+	FROM
+		OUT A, FRAN B
+  	WHERE 
+       	A.OUT_LOCA = B.FRAN_CODE
+    AND A.LOGIS_CODE = #{logiscode}
+	</select>
+	<select id="outLocaLogis" resultType="out">
+	SELECT 
+		DISTINCT B.LOGIS_NAME
+       	, A.OUT_LOCA 
+       
+	FROM
+       	OUT A, LOGIS B
+  	WHERE 
+       	A.OUT_LOCA = B.LOGIS_CODE
+    AND	A.LOGIS_CODE = #{logiscode}
+	</select>
+	
+	<select id="getDetail" resultType="out" parameterType="str">
+		select A.*, B.HQ_GOODS_NAME
+		from 
+        (
+         
+        SELECT 
+            A.OUT_CODE,
+            A.LOGIS_CODE,
+            A.OUT_LOCA_TYPE,
+            A.OUT_LOCA,
+            A.HQ_GOODS_CODE,
+            B.FRAN_NAME OUT_LOCA_NAME,
+            A.OUT_DATE,
+            A.OUT_ST
+        FROM 
+            OUT A, FRAN B, LOGIS C
+        WHERE 
+            OUT_CODE IS NOT NULL
+        AND A.OUT_LOCA = B.FRAN_CODE
+        UNION ALL
+        SELECT 
+            A.OUT_CODE,
+            A.LOGIS_CODE,
+            A.OUT_LOCA_TYPE,
+            A.OUT_LOCA,
+            A.HQ_GOODS_CODE,
+            C.LOGIS_NAME OUT_LOCA_NAME,
+            A.OUT_DATE,
+            A.OUT_ST
+        FROM 
+            OUT A, FRAN B, LOGIS C
+        WHERE 
+            OUT_CODE IS NOT NULL
+        AND A.OUT_LOCA = C.LOGIS_CODE
+        ORDER BY OUT_CODE
+        ) A
+        , HQ_GOODS B
+		WHERE A.HQ_GOODS_CODE = B.HQ_GOODS_CODE
+		AND A.OUT_CODE=#{out_code}
+		ORDER BY A.HQ_GOODS_CODE
+	</select>
+	
+	<update id="updateOut" parameterType="map">
+		update out
+		set
+		out_num=#{out_num}
+		where out_code=#{out_code}
+		and hq_goods_code=#{hq_goods_code}	
+	</update>
+	
+
+	
+
+</mapper>

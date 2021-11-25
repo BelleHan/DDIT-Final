@@ -1,0 +1,371 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<head>
+<title>발주신청</title>
+</head>
+<style>
+/* 리스트 css */
+
+.container-fluid{
+	margin-top: 20px;
+}
+.container-fluid .card{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.card bg-light{
+ 	cursor: move;
+
+}
+
+.container {
+  background-color: #b5c1dc57;
+}
+
+.draggable.dragging {
+  opacity: 0.5;
+}
+
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#cbx_chkAll").click(function() {
+			if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+			else $("input[name=chk]").prop("checked", false);
+		});
+		
+		$("input[name=chk]").click(function() {
+			var total = $("input[name=chk]").length;
+			var checked = $("input[name=chk]:checked").length;
+			
+			if(total != checked) $("#cbx_chkAll").prop("checked", false);
+			else $("#cbx_chkAll").prop("checked", true); 
+		});
+	});
+</script>
+<body>
+<script src="<%=request.getContextPath() %>/resources/js/common_kjy.js"></script>
+<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>발주관리</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>발주관리
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	발주요청
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<hr>
+</section>
+<div class="row">
+<!-- 		<div class="col-2 column" > -->
+<!-- 		</div> -->
+		<div class="col-8 column" >
+<!-- 			  <button type="button" class="btn btn-primary float-sm-right">물품추가</button> -->
+			  <button type="button" class="btn btn-block btn-warning btn-xs">물품추가</button>
+		</div>
+<!-- 		<div class="col-2 column" > -->
+<!-- 		</div> -->
+		<div class="col-4 column" >
+<!-- 			  <button type="button" class="btn btn-primary float-sm-right">발주요청</button> -->
+			  <button type="button" class="btn btn-block btn-primary btn-xs">발주요청</button>
+		</div>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<!-- 세로 리스트 박스 -->
+		<div class="col-4 column" >
+		    <div class="info-box" style="height: 100px;">
+
+              <div class="info-box-content" >
+                <span class="info-box-text" style="padding-left: 15px;"><b>자동발주</b></span>
+				<div class="row">
+					<div class="col-sm-6">
+		                  <a href="#" class="nav-link">
+		                    <i class="fas fa-history"></i> 이전발주
+		                  </a>
+					</div>
+					<div class="col-sm-6">
+		                  <a href="#" class="nav-link">
+		                    <i class="fas fa-thumbs-up"></i> 추천발주
+		                  </a>
+					</div>
+				 </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <div class="card text-white bg-primary mb-3 no-move">
+			<div class="card-header">Header</div>
+			<div class="card-body">
+			<h5 class="card-title">card 1</h5>
+			<p class="card-text">no-move</p>
+			</div>
+	</div>
+
+		<!-- 각 카드 리스트 박스 -->
+		</div>
+		
+		<!-- 세로 리스트 박스 --><!-- 물품목록 -->
+		<div class="col-4 container">
+			<div class="info-box"  style="height: 100px; margin-bottom: 5px;">
+	<!--               <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span> -->
+					<div class="col-sm-9">
+					 	<div class="form-group row">
+							<span class=" search-group col-sm-4">대분류</span>
+							<div class="input-group input-group-sm col-sm-8">
+								<input type="text" id="fms-laca" name="keyword" onkeyup="enterkey();" class="form-control form-fms-search" value="">
+								<span class="input-group-append">
+									<button type="button" id="btn-laca" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+								</span>
+							</div>
+						</div>
+					 	<div class="form-group row">
+							<span class=" search-group col-sm-4">소분류</span>
+							<div class="input-group input-group-sm col-sm-8">
+								<input type="text" id="fms-smca" name="keyword2" onkeyup="enterkey();" class="form-control form-fms-search" value="" >
+								<span class="input-group-append">
+									<button type="button" id="btn-smca" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+								</span>
+							</div>
+						</div>
+					</div>
+	                <div class="info-box-content">
+					 	<div class="col-sm-3" style="margin:auto 0;">
+			               <button  onclick="list_go_buyGoods(1);" type="button" id="btn-search" 
+							class="btn btn-block btn-outline-secondary btn-lg btn-fms-search" style="font-size: 15px; width:65px; text-align: center; padding-left: 9px;">search</button>
+		              	</div>
+		             </div>
+	              <!-- /.info-box-content -->
+             </div>
+             <!-- infobox(검색조건) -->
+             
+            <div class="row" style="padding:0 10px;">
+            	<div class="col-sm-4" >
+				     <input type="checkbox" value="" id="check_all"><label for="check_all">전체선택</label>
+            	</div>
+				<div class="col-sm-8" style="text-align: right;">
+		     		<span>검색결과 <span style="color:red;"><b> ${orderGoodsList.size()} </b></span>개 </span>
+				</div>
+            </div>
+            
+
+		   <c:forEach items="${orderGoodsList }" var="orderGoods" varStatus="st">
+				<!-- 전체검색결과 -->
+				
+			 
+				<div data-target="order${orderGoods.hq_goods_code}" id="order_div${orderGoods.hq_goods_code}" class="card bg-light mb-3 mb-3 draggable" draggable="true" name="droptarget">
+					<div class="card-header">
+						<input type="checkbox" value="" id="check1" name="chk"><label for="check1"></label>
+						<b>${orderGoods.hq_goods_name} &nbsp; (${orderGoods.supGoodsVO.sup_goods_attr1}${orderGoods.supGoodsVO.sup_goods_unit})</b>
+	               		<button type="button" style="visibility:hidden;" class="close" data-dismiss="alert" aria-hidden="true" onclick='deleteDiv()' >×</button>
+					</div>
+					<div class="card-body">
+	<!-- 					<h5 class="card-title">card 3</h5> -->
+						<div class="card-text">
+							<div class="row">
+								<div class="product-image col-sm-3" id="pictureView" view-id="imgView${st.count }" data-id="${orderGoods.hq_goods_code}"></div>
+		
+							
+								<table class="product-image col-sm-9" style="font-size: 13px;">
+			            			<tr>
+			            				<th class="col-sm-4">단가(원)</th>
+			            				<td>${orderGoods.goods_delivery_price}<b>원</b></td>
+	<!-- 		            				<th class="col-sm-4">수량(개)</th> -->
+	<!-- 		            				<td><input type="text" class="form-control" id="goods_num" name="goods_num" onkeyup='call()'></td> -->
+			            			</tr>
+			            			<tr>
+			            				<th class="col-sm-4">수량(개)</th>
+			            				<td><input data-target="orderNum" type="text" class="form-control" id="goods_num" name="goods_num" onkeyup='call()'></td>
+			            			</tr>
+			            			<tr>
+			            				<th class="col-sm-4">금액(원)</th>
+			            				<td>
+			            					<input data-target="orderPrice" type="text" class="form-control" id="good_pur_price" name="good_pur_price" placeholder="단가(원)*수량(개)" onclick='call()' >
+										</td>
+			            			</tr>
+			            		</table>
+							</div>
+							<br>
+		            		<div class="row" style="margin: 0 auto;">
+		            			<div class="col-sm-6">
+				              		<input type="checkbox" value="" id="check1" checked="checked" name="generalorder" onclick='checkOnlyOne(this)'>
+				                				 <label for="check1"></label>
+		          					<span><b>일반발주 </b><i class="fas fa-truck"></i></span>
+		            			</div>
+		            			<div class="col-sm-6">
+			          				<input type="checkbox" value="" id="check1" name="shotorder" onclick='checkOnlyOne(this)'>
+			            				 <label for="check1"></label>
+			          				<span><b>총알발주 </b><i class="fas fa-space-shuttle"></i></span>
+		            			</div>
+		            		</div>
+						</div>
+					</div>
+				</div>
+					<input data-target="orderGoods" type="hidden" name="goods_code" id="goods_code" value="${orderGoods.supGoodsVO.sup_goods_code }"/>
+				 <script>
+	              	 HqGoodsPicture(document.querySelector('[view-id="imgView${st.count }"]'),'${orderGoods.supGoodsVO.sup_goods_img}','<%=request.getContextPath()%>');
+		         </script>
+		         <script>
+					function deleteDiv() {
+					  const div = document.getElementById('order_div${orderGoods.hq_goods_code}');
+					  
+					  div.remove();
+					} 
+		         </script>
+				</c:forEach>
+		</div>
+		
+				<!-- 세로 리스트 박스 -->
+		
+		<div class="col-4 column container" style="border: 1px solid #cecece; border-radius: 5px;">
+		<!-- 각 카드 리스트 박스 -->
+			 <div class="d-flex justify-content-between">
+                  <h3 class="card-title">발주목록</h3>
+<!--                   <a href="javascript:void(0);">View Report</a> -->
+             </div>
+               
+            <div class="row" style="padding:0 10px;">
+            	<div class="col-sm-4" >
+				     <input type="checkbox" value="" id="check_all"><label for="check_all">전체선택</label>
+            	</div>
+				<div class="col-sm-8" style="text-align: right;">
+		     		<span>선택물품개수 <span style="color:red;"><b> </b></span>개 </span>
+				</div>
+            </div>
+             <!-- 발주할 물품개수 -->
+            
+			<div class="draggable" draggable="true">
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+<form name="orderProduct" action="<%=request.getContextPath()%>/fr/order/move.do" method="post">
+	
+</form>
+
+<script>
+function dragend() {
+var goods_code = $("#goods_code").val();
+
+alert(goods_code);
+}
+
+function call(){
+	var num = document.getElementById('goods_num');
+	var price = document.getElementById('good_pur_price');
+	price.value = parseInt(num.value=="" ? 0:num.value) * parseInt(${orderGoods.goods_delivery_price}); 
+}
+/**
+ * http://usejsdoc.org/
+ */
+const draggables = document.querySelectorAll(".draggable");
+const containers = document.querySelectorAll(".container");
+
+
+draggables.forEach(draggable => {
+  draggable.addEventListener("dragstart", () => {
+    draggable.classList.add("dragging");
+    
+  });
+
+  draggable.addEventListener("dragend", () => {
+    draggable.classList.remove("dragging");
+  });
+});
+
+containers.forEach(container => {
+  container.addEventListener("dragover", e => {
+    e.preventDefault();
+    const draggable = document.querySelector(".dragging");
+    container.appendChild(draggable);
+  });
+});
+ 
+function getDragAfterElement(container, x) {
+  const draggableElements = [
+    ...container.querySelectorAll(".draggable:not(.dragging)"),
+  ];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = x - box.left - box.width / 2;
+      // console.log(offset);
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY },
+  ).element;
+}
+
+containers.forEach(container => {
+  container.addEventListener("dragover", e => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(container, e.clientX);
+    console.log(afterElement)
+    const draggable = document.querySelector(".dragging");
+    container.appendChild(draggable);
+  });
+});
+
+containers.forEach(container => {
+  container.addEventListener("dragover", e => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(container, e.clientX);
+    const draggable = document.querySelector(".dragging");
+    if (afterElement === undefined) {
+      container.appendChild(draggable);
+    } else {
+      container.insertBefore(draggable, afterElement);
+    }
+   
+  });
+});
+
+$(".draggable").on("click", "#check_all", function () {
+  var checked = $(this).is(":checked");
+
+  if(checked){
+  	$(this).parents(".draggable").find('input').prop("checked", true);
+  } else {
+  	$(this).parents(".draggable").find('input').prop("checked", false);
+  }
+});
+
+
+
+
+</script>
+<script>
+function submitOrder() {
+	$('form[name="orderProduct"]').submit();
+}
+window.onload=function(){
+	$('div[data-target="order"]').dragend(function(event){
+		
+	})
+	
+}
+
+</script>
+</body>

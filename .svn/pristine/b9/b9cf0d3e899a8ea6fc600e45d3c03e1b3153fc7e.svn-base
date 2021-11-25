@@ -1,0 +1,31 @@
+package kr.or.fms.hq.controller;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.service.AppliService;
+
+@Controller
+@RequestMapping("/hq")
+public class AppliController {
+
+	@Autowired
+	AppliService appliService;
+	@RequestMapping("/com/regist")
+	public ModelAndView list(SearchCriteria cri, ModelAndView mnv)throws SQLException{
+		String url="hq/franappli/list";		
+		
+		Map<String,Object> dataMap = appliService.getAppliList(cri);
+		
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+}

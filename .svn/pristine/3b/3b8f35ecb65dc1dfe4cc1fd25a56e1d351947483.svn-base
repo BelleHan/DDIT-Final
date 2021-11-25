@@ -1,0 +1,42 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.fran.dto.FranOrderDe;
+import kr.or.fms.fran.dto.FranOrderDeVO;
+import kr.or.fms.fran.dto.FranOrderVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public interface FranOrderService {
+
+	//목록조회(페이징)
+	Map<String, Object> getOrderGoodsSearchList(SearchCriteria cri, String fran_local_num)throws SQLException;
+
+	//검색 적용한 물품리스트
+	List<HqGoodsVO> getSearchOrderList(HqGoodsVO hqGoods) throws SQLException;
+//	//목록조회
+//	List<HqGoodsVO> getOrderGoodsList() throws SQLException;
+//	
+	//대분류콤보박스
+	List<String> getLaca() throws SQLException;
+	//소분류콤보박스
+	List<String> getSmca() throws SQLException;
+	//대분류 적용시 소분류
+	List<String> searchSmca(String sup_goods_laca)throws SQLException;
+	
+	//발주등록
+	void registFranOrder(FranOrderVO franOrder) throws SQLException;
+	//발주상세등록
+	void registFranOrderDe(FranOrderDeVO franOrderDe)throws SQLException;
+	//발주코드조회
+	String getFranOrderCode()throws SQLException;
+		
+	// 추천 발주 리스트
+	List<FranGoodsDeVO> getRecList(FranVO fran) throws SQLException;
+	
+}

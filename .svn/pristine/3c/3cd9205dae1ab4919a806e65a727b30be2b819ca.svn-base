@@ -1,0 +1,58 @@
+package kr.or.fms.sup.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.sup.dto.SupGoodsClassVO;
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public interface SupGoodsDAO {
+
+	/*
+	//공급업체 물품 상세조회
+	SupGoodsVO selectSupGoodsDetail(String sup_goods_code) throws SQLException;
+	
+	//공급업체별 물품리스트 조회(session값)
+	List<SupGoodsVO> selectSupGoodsBySupCode(String sup_code)throws SQLException;
+	List<SupGoodsVO> selectSupGoodsBySupCode(Criteria cri)throws SQLException;
+	List<SupGoodsVO> selectSupGoodsBySupCode(SearchCriteria cri)throws SQLException;
+	
+	//검색결과의 전체 리스트 개수
+	int selectSupGoodsListCount(SearchCriteria cri) throws SQLException;
+	*/
+	//------------------------------------------------------------------
+	
+	//검색조건 list
+	List<SupGoodsVO> selectGoodsCriteria(SearchCriteria cri) throws SQLException;
+	
+	//검색한 총 list수
+	int selectGoodsCriteriaTotalCount(SearchCriteria cri) throws SQLException;
+	//대분류콤보박스
+	List<String> selectLaca(String sup_code) throws SQLException;
+	//소분류콤보박스
+	List<String> selectSmca() throws SQLException;
+	//대분류 선택 시 대분류에 맞는 소분류 출력
+	List<String> searchSmca(String sup_goods_laca)throws SQLException;
+	
+	//물품검색시 자신의 물품list만 출력
+	List<SupGoodsVO> selectSupGoods(String sup_code) throws SQLException;
+
+
+	//하나의 list
+	SupGoodsVO selectSupGoodsByCode(String sup_goods_code) throws SQLException;
+
+	//개별등록
+	void insertSupGoods(SupGoodsVO supGoods) throws SQLException;
+
+	//일괄등록
+	void insertExcelSupGoods(List<SupGoodsVO> supGoodsList)throws SQLException;
+	
+	void updateSupGoods(SupGoodsVO supGoods) throws SQLException;
+
+	//전체 대분류
+	List<String> selectGoodsLaca()throws SQLException;
+	//전체 소분류
+	List<String> selectGoodsSmca()throws SQLException;
+}

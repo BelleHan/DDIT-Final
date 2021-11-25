@@ -1,0 +1,50 @@
+package kr.or.fms.sup.dto;
+
+public class SupApplidocVO {
+
+	private String sup_applidoc_code;	//공급업체신청서코드
+	private String sup_code;
+	private String hq_code;
+	private String sup_appli_date;		//신청일자
+	private String sup_appli_st;		//신청승인상태
+	private String attach_no;			//첨부파일일련번호
+	
+	public String getSup_applidoc_code() {
+		return sup_applidoc_code;
+	}
+	public void setSup_applidoc_code(String sup_applidoc_code) {
+		this.sup_applidoc_code = sup_applidoc_code;
+	}
+	public String getSup_code() {
+		return sup_code;
+	}
+	public void setSup_code(String sup_code) {
+		this.sup_code = sup_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getSup_appli_date() {
+		return sup_appli_date;
+	}
+	public void setSup_appli_date(String sup_appli_date) {
+		this.sup_appli_date = sup_appli_date;
+	}
+	public String getSup_appli_st() {
+		return sup_appli_st;
+	}
+	public void setSup_appli_st(String sup_appli_st) {
+		this.sup_appli_st = sup_appli_st;
+	}
+	public String getAttach_no() {
+		return attach_no;
+	}
+	public void setAttach_no(String attach_no) {
+		this.attach_no = attach_no;
+	}
+	
+	
+}

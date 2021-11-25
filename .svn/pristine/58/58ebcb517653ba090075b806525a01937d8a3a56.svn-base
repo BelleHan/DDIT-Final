@@ -1,0 +1,45 @@
+package kr.or.fms.fran;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranOrder;
+import kr.or.fms.hq.dao.StockDAO;
+import kr.or.fms.hq.dto.FranStockVO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokOrderList {
+	SearchCriteria cri = new SearchCriteria();
+	@Autowired
+	SqlSession session;
+	
+	@Autowired
+	StockDAO stockDAO;
+	
+	@Test
+	public void stockSearchList() throws SQLException {
+		cri.getKeywordMap().put("fran_code", "F001");
+		int cnt = 0;
+		System.out.println(cri.getKeywordMap().get("fran_code"));
+		cnt = session.selectOne("Orderlist-Mapper.getOrderListCount", cri);
+		System.out.println(cnt);
+//		List<FranOrder> list = session.selectList("Order-Mapper.getOrderList", cri);
+//		System.out.println(list.size());
+	}
+
+}

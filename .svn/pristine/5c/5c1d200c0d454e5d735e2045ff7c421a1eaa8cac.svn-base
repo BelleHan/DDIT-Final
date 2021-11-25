@@ -1,0 +1,299 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>공급업체 홈</title>
+<style>
+.divbox{
+	float:left;
+	margin-top: 20px;
+}
+.li{
+	list-style-type:none; 
+	
+}
+.li li{
+	float: left;
+
+}
+
+.list {
+	list-style: none;
+}
+#datediv{
+	display: inline-block;
+	text-align: center;
+}
+
+</style>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <!-- 차트 링크 --> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+   <!-- 정보차트 -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+   <div class="row">
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #e5a259; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">구매요청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            </div>
+            <!-- /.info-box-content -->
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+               <div class="card card-danger">
+              <div class="card-header" style="background-color: #e5a259; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">미입금</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            </div>
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+               <div class="card card-danger">
+              <div class="card-header" style="background-color: #e5a259; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">회수요청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            </div>
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+            <canvas id="deptChart" width="350" height="350"></canvas>
+               <script>
+               var ctx = document.getElementById("deptChart");
+               var deptChart = new Chart(ctx,{   //차트 선언
+                  type: 'bar',  //차트타입
+                  data: {   //차트 데이터 object 배열
+                     labels: ["원두","카라멜","두유","녹차","컵"],   //라벨 배열
+                     datasets: [{//데이터 object 배열
+                        label: '2020년',
+                        data: [175, 124, 87, 167, 150],   //데이터 넣는 곳
+                        backgroundColor: [
+                           'rgba(153, 102, 205, 0.2)',
+                           'rgba(153, 102, 205, 0.2)',
+                           'rgba(153, 102, 205, 0.2)',
+                           'rgba(153, 102, 205, 0.2)',
+                           'rgba(153, 102, 205, 0.2)'
+                        ],
+                        borderColor: [
+                           'rgba(153, 102, 205, 1)',
+                           'rgba(153, 102, 205, 1)',
+                           'rgba(153, 102, 205, 1)',
+                           'rgba(153, 102, 205, 1)',
+                           'rgba(153, 102, 205, 1)'
+                        ],
+                        borderWidth: 1
+                     },
+                     {   
+                        label: '2021년',
+                        data: [160, 110, 100, 157, 171],   //데이터 넣는 곳
+                        backgroundColor: [
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        ],
+                        borderColor: [
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)',
+                        	'rgba(153, 102, 205, 1)'
+                        ],
+                        borderWidth: 1
+                     }]
+                  },
+                  options: {   //옵션: 추가하고 싶은 옵션이 있을때 사용
+                     title:{
+                        display:true,
+                        text: '전년대비 판매량',
+                        fontSize: 18
+                     },
+                     layout:{
+                        padding:20
+                     },
+                     scales:{
+                        yAxes:[{
+                           ticks:{
+                              beginAtZero:true
+                           }
+                        }]
+                     }
+                  }
+               });
+                  
+               </script>
+            </div>
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+               <canvas id="deptMonthChart" width="350" height="350"></canvas>
+               <script>
+               var ctx = document.getElementById("deptMonthChart");
+               var deptMonthChart = new Chart(ctx,{   //차트 선언
+                  type: 'doughnut',  //차트타입
+                  data: {   //차트 데이터 object 배열
+                     labels: ["원두","카라멜","녹차","우유"],   //라벨 배열
+                     datasets: [{   //데이터 object 배열
+                        label: '',
+                        data: [19, 10, 3, 5,],
+                        backgroundColor: [
+                           'rgba(11, 156, 49, 0.2)',
+                           'rgba(255, 206, 86, 0.2)',
+                           'rgba(255, 140, 0, 0.2)',
+                           'rgba(255, 99, 132, 0.2)'
+                        ],
+                        borderColor: [
+                           'rgba(11, 156, 49, 1)',
+                           'rgba(255, 206, 86, 1)',
+                           'rgba(255, 140, 0, 1)',
+                           'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                     }]
+                  },
+                  options: {   //옵션: 추가하고 싶은 옵션이 있을때 사용
+                     title:{
+                        display:true,
+                        text: '인기물품',
+                        fontSize: 18
+                     },
+                     layout:{
+                        padding:20
+                     }
+                  }
+               });
+               </script>
+            </div>
+         </div>
+         <!-- /.info-box -->
+      </div>
+      <div class="col-md-4 col-12">
+         <div class="info-box">
+            <div class="info-box-content">
+               <canvas id="deptYearChart" width="350" height="350"></canvas>
+               <script>
+               var ctx = document.getElementById("deptYearChart");
+               var deptYearChart = new Chart(ctx,{   //차트 선언
+                  type: 'bar',  //차트타입
+                  data: {   //차트 데이터 object 배열
+                     labels: ["1월","2월","2월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],   //라벨 배열
+                     datasets: [{//데이터 object 배열
+                        label: '당월',
+                        data: [15, 18, 12, 7, 9, 10, 11, 15, 18, 12, 7, 9],   //데이터 넣는 곳
+                        backgroundColor: [
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)',
+                           'rgba(54, 162, 235, 0.2)'
+                        ],
+                        borderColor: [
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)',
+                           'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                     },
+                     {   
+                        label: '전월대비',
+                        data: [12, 19, 3, 5, 2, 12, 19, 3, 5, 2, 12, 19],   //데이터 넣는 곳
+                        backgroundColor: [
+                           'rgba(255, 99, 132, 0)'
+                        ],
+                        borderColor: [
+                           'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1,
+                        type:'line'
+                     }]
+                  },
+                  options: {   //옵션: 추가하고 싶은 옵션이 있을때 사용
+                     title:{
+                        display:true,
+                        text: '월별 공급량 추이',
+                        fontSize: 18
+                     },
+                     layout:{
+                        padding:20
+                     },
+                     scales:{
+                        yAxes:[{
+                           ticks:{
+                              beginAtZero:true
+                           }
+                        }]
+                     }
+                  }
+               });
+                  
+               </script>
+            </div>
+         </div>
+         <!-- /.info-box -->
+      </div>
+   </div>
+</body>
+</html>

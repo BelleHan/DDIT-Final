@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Order-Mapper">
+
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_name" property="hq_goods_name" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="goods_delivery_price" property="goods_delivery_price" />
+		
+		<collection property="supGoodsVO" resultMap="supGoods"></collection>
+	</resultMap>
+
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_img" property="sup_goods_img" />
+		<result column="sup_goods_attr1" property="sup_goods_attr1" />
+		<result column="sup_goods_attr3" property="sup_goods_attr3" />
+		<result column="sup_goods_unit" property="sup_goods_unit" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+	</resultMap>
+	
+	<select id="selectOrderGoods" resultMap="hqGoods">
+		select a.*, b.hq_goods_name, b.goods_delivery_price, b.hq_goods_code
+		from sup_goods a, hq_goods b
+		where a.sup_goods_code = b.sup_goods_code
+	</select>
+	
+	<select id="selectOrderGoodsCount" resultType="int">
+		select count(b.hq_goods_name)
+ 		from sup_goods a, hq_goods b
+ 		where a.sup_goods_code = b.sup_goods_code
+	</select>
+	
+	<update id="updateFranOrder" parameterType="str">
+		insert into 
+        fran_order(fran_order_code, order_detail_num, fran_code, fran_order_price, order_deli_se)
+     	values('FROR'||to_char(sysdate,'YYMMDD'), lpad(ORDER_DETAIL_SEQ.nextval, 4, '0'), #{fran_code}, #{fran_order_price},#{fran_deli_se});
+	</update>
+	
+	<update id="updateFranOrderDe" parameterType="str">
+		insert into 
+        fran_order_detail(fran_order_code, hq_goods_code, order_detail_num, fran_order_quan, fran_order_price)
+     	values(#{fran_order_code}, #{hq_goods_code},#{order_detail_num},#{fran_order_quan}, #{fran_order_price});
+	</update>
+</mapper>

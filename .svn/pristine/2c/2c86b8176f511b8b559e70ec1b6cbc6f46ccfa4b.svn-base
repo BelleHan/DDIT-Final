@@ -1,0 +1,105 @@
+package kr.or.fms.command;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import kr.or.fms.hq.dto.BuyGoodsDeVO;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+
+public class buyRequestCommand {
+
+	private String sup_goods_name;
+	private String sup_goods_code;
+	private String sup_name;
+	private String sup_code;
+	private Date pur_arrive_date;
+	private String pur_arrive_loc;
+	private int goods_num;
+	private int goods_pur_price;
+	private String pur_note;
+	
+	private int good_num;
+	
+	public String getSup_goods_name() {
+		return sup_goods_name;
+	}
+	public void setSup_goods_name(String sup_goods_name) {
+		this.sup_goods_name = sup_goods_name;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getSup_name() {
+		return sup_name;
+	}
+	public void setSup_name(String sup_name) {
+		this.sup_name = sup_name;
+	}
+	public String getSup_code() {
+		return sup_code;
+	}
+	public void setSup_code(String sup_code) {
+		this.sup_code = sup_code;
+	}
+	public Date getPur_arrive_date() {
+		return pur_arrive_date;
+	}
+	
+	public void setPur_arrive_date(String pur_arrive_date) {
+		try {
+			SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+			this.pur_arrive_date = transFormat.parse(pur_arrive_date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	public String getPur_arrive_loc() {
+		return pur_arrive_loc;
+	}
+	public void setPur_arrive_loc(String pur_arrive_loc) {
+		this.pur_arrive_loc = pur_arrive_loc;
+	}
+	public int getGoods_num() {
+		return goods_num;
+	}
+	public void setGoods_num(int goods_num) {
+		this.goods_num = goods_num;
+	}
+	public int getGoods_pur_price() {
+		return goods_pur_price;
+	}
+	public void setGoods_pur_price(int goods_pur_price) {
+		this.goods_pur_price = goods_pur_price;
+	}
+	public String getPur_note() {
+		return pur_note;
+	}
+	public void setPur_note(String pur_note) {
+		this.pur_note = pur_note;
+	}
+	
+	public int getGood_num() {
+		return good_num;
+	}
+	public void setGood_num(int good_num) {
+		this.good_num = good_num;
+	}
+
+	public BuyGoodsVO toBuyGoodsVO() {
+		BuyGoodsVO buyGoods = new BuyGoodsVO();
+		
+		buyGoods.setGoods_pur_price(this.goods_pur_price);
+		buyGoods.setPur_arrive_date(this.pur_arrive_date);
+		buyGoods.setPur_arrive_loc(this.pur_arrive_loc);
+		buyGoods.setPur_note(this.pur_note);
+		buyGoods.setGoods_pur_quan(this.goods_num);
+		buyGoods.setSup_goods_code(this.sup_goods_code);
+		
+		return buyGoods;
+	}
+	
+}

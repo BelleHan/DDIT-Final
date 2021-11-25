@@ -1,0 +1,12 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.logis.dto.LogisVO;
+
+public interface LogisService {
+	
+	//logis조회
+	LogisVO getLogis(String logis_code)throws SQLException;
+
+}

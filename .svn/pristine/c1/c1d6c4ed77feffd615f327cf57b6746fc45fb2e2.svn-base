@@ -1,0 +1,54 @@
+package kr.or.fms.logis.dto;
+
+import java.util.Date;
+
+public class LogisContractInfoVO {
+	
+	private String logis_contract_code;
+	private String hq_code;
+	private String logis_code;
+	private int attach_no;
+	private Date logis_contract_start;
+	private Date logis_contract_end;
+	
+	public String getLogis_contract_code() {
+		return logis_contract_code;
+	}
+	public void setLogis_contract_code(String logis_contract_code) {
+		this.logis_contract_code = logis_contract_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getLogis_code() {
+		return logis_code;
+	}
+	public void setLogis_code(String logis_code) {
+		this.logis_code = logis_code;
+	}
+	public int getAttach_no() {
+		return attach_no;
+	}
+	public void setAttach_no(int attach_no) {
+		this.attach_no = attach_no;
+	}
+	public Date getLogis_contract_start() {
+		return logis_contract_start;
+	}
+	public void setLogis_contract_start(Date logis_contract_start) {
+		this.logis_contract_start = logis_contract_start;
+	}
+	public Date getLogis_contract_end() {
+		return logis_contract_end;
+	}
+	public void setLogis_contract_end(Date logis_contract_end) {
+		this.logis_contract_end = logis_contract_end;
+	}
+	
+	
+	
+	
+}

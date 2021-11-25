@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Keyword-Mapper">
+
+	<select id="hqGoods" resultType="hqgoods">
+		select
+		a.hq_goods_code,
+		a.sup_goods_code,
+		b.sup_goods_name,
+		c.sup_name,
+		a.goods_retail_price,
+		a.last_update
+		from hq_goods a, sup_goods b, sup c
+		where a.sup_goods_code = b.sup_goods_code
+		and b.sup_code = c.sup_code
+		order by a.hq_goods_code 
+	</select>
+	
+	<select id="local" resultType="str">
+		select distinct(logis_local_num)
+		from logis
+	</select>
+	
+	<select id="logis" resultType="logis">
+		select logis_code, logis_name, logis_owner, logis_addr, logis_detail_addr
+		from logis
+	</select>
+	
+	<select id="fran" resultType="fran">
+		select fran_code, fran_name, fran_owner, fran_addr, fran_detail_addr
+		from fran
+	</select>
+	
+	<select id="sup" resultType="sup">
+		select sup_code, sup_name, sup_owner, sup_addr, sup_detail_addr
+		from sup
+	</select>
+	<select id="laca" resultType="str">
+		select distinct(sup_goods_laca)
+		from sup_goods
+		where sup_goods_laca is not null
+	</select>
+	<select id="smca" resultType="str">
+		select distinct(sup_goods_smca)
+		from sup_goods
+		where sup_goods_smca is not null
+	</select>
+	
+	<!-- 출고계획 -->
+	<select id="log" resultType="logis">
+		select logis_code, logis_name, logis_owner, logis_addr, logis_detail_addr
+		from logis
+	</select>
+	
+	<select id="hq" resultType="hqGoods">
+		select hq_goods_code, hq_goods_name 
+		from hq_goods
+	</select>
+	<select id="hqgoodsDetail" parameterType="str" resultType="hqGoods">
+		select hq_goods_code, hq_goods_name 
+		from hq_goods
+		where hq_goods_code = #{hq_goods_code}
+	</select>
+	<select id="outFran" resultType="fran">
+		select fran_code, fran_addr, fran_detail_addr, fran_name, fran_owner
+		from fran
+	</select>
+	<select id="outLogis" resultType="logis">
+		select logis_code, logis_name, logis_owner, logis_addr, logis_detail_addr
+		from logis
+	</select>
+	<select id="wh" resultType="logisWh">
+		SELECT DISTINCT WH_CODE, WH_NAME
+		FROM LOGIS_WH
+		WHERE LOGIS_CODE = #{logis_code}
+	</select>
+	<select id="whcn" resultType="logisWh">
+		SELECT DISTINCT WH_CODE, WH_NAME
+		FROM LOGIS_WH
+		WHERE LOGIS_CODE = #{logis_code}
+	</select>
+	
+	<!--  -->
+	<select id="logisWh" resultType="logisWh">
+		select wh_code, wh_name, wh_area, wh_st
+		from logis_wh
+	</select>
+	
+	<select id="readLogisGoods" resultType="logisWh">
+		SELECT 
+		        A.HQ_GOODS_CODE
+		        , A.LOGIS_GOODS_STOCK
+		        , A.LOGIS_CODE
+		        , B.SUP_GOODS_NAME
+		        , B.SUP_GOODS_CODE
+		        , B.SUP_GOODS_IMG
+		FROM 
+				LOGIS_WH A, SUP_GOODS B, HQ_GOODS C
+		WHERE	A.HQ_GOODS_CODE = C.HQ_GOODS_CODE
+			AND B.SUP_GOODS_CODE = C.SUP_GOODS_CODE
+		    AND A.LOGIS_CODE = #{logisCode}
+		    AND A.WH_CODE = #{whCode}
+		    AND A.HQ_GOODS_CODE = #{hgGoods}
+	</select>
+	
+</mapper>

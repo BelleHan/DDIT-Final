@@ -1,0 +1,60 @@
+package kr.or.fms.dto;
+
+public class DeliveryDeVO {
+
+	private String delivery_code;			//배송코드
+	private String delivery_no;				//운송장번호
+	private String delivery_zip;			//배송지우편번호
+	private String delevery_addr;			//배송지주소
+	private String delevery_detail_addr;	//배송지상세주소
+	private String delevery_st;				//배송지배송상태
+	private String delevery_end_date;		//배송완료일
+	
+	public String getDelivery_code() {
+		return delivery_code;
+	}
+	public void setDelivery_code(String delivery_code) {
+		this.delivery_code = delivery_code;
+	}
+	public String getDelivery_no() {
+		return delivery_no;
+	}
+	public void setDelivery_no(String delivery_no) {
+		this.delivery_no = delivery_no;
+	}
+	public String getDelivery_zip() {
+		return delivery_zip;
+	}
+	public void setDelivery_zip(String delivery_zip) {
+		this.delivery_zip = delivery_zip;
+	}
+	public String getDelevery_addr() {
+		return delevery_addr;
+	}
+	public void setDelevery_addr(String delevery_addr) {
+		this.delevery_addr = delevery_addr;
+	}
+	public String getDelevery_detail_addr() {
+		return delevery_detail_addr;
+	}
+	public void setDelevery_detail_addr(String delevery_detail_addr) {
+		this.delevery_detail_addr = delevery_detail_addr;
+	}
+	public String getDelevery_st() {
+		return delevery_st;
+	}
+	public void setDelevery_st(String delevery_st) {
+		this.delevery_st = delevery_st;
+	}
+	public String getDelevery_end_date() {
+		return delevery_end_date;
+	}
+	public void setDelevery_end_date(String delevery_end_date) {
+		this.delevery_end_date = delevery_end_date;
+	}
+	
+	
+	
+	
+	
+}

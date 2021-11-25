@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranAppli-Mapper">
+
+	<select id="selectSearchAppliList"	resultType="franAppliDetail">
+	SELECT
+	    d.fran_applidoc_code,
+	    c.fran_reg_st,
+	    c.fran_owner,
+	    c.fran_addr,
+	    d.fran_appli_date,
+	    d.fran_applidoc_appr_st,
+	    d.fran_memo
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code
+	order by d.fran_appli_date desc
+	</select>
+	
+	<select id="selectSearchAppliListCount" resultType="int">
+	SELECT
+	    count(*)
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code   
+	</select>
+	
+	<select id="selectAppliList" resultType="franAppliDetail">
+	SELECT
+	    d.fran_applidoc_code,
+	    c.fran_reg_st,
+	    c.fran_owner,
+	    d.fran_appli_date,
+	    d.fran_applidoc_appr_st
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code		
+	</select>
+	
+	<select id="selectAppliByFran_applidoc_code"  resultType="franAppliDetail">
+	SELECT
+	    a.fran_owner,
+	    a.fran_tel,
+	    a.fran_email,
+	    a.fran_code,
+	    a.fran_se,
+	    a.fran_zip,
+	    a.fran_detail_addr,
+	    a.fran_addr,
+	    a.dedicated_area,
+	    a.land_area,
+	    a.floor,
+	    a.fran_gtn,
+	    a.fran_rent_charge,
+	    a.fran_manage_cost,
+	    b.attach_no,
+	    b.fran_applidoc_code,
+	    b.fran_memo,
+	    b.fran_applidoc_appr_st,
+	    b.fran_appli_date
+	FROM
+	    fran_applidoc b,
+	    fran a
+	WHERE
+	    a.fran_code = b.fran_code
+	    and b.fran_applidoc_code = #{fran_applidoc_code}
+	</select>
+	
+	<update id="updateFranRegSt" parameterType="franAppli">
+		UPDATE
+		FRAN
+		SET
+		FRAN_REG_ST = #{fran_reg_st}
+		WHERE FRAN_CODE = (
+							SELECT FRAN_CODE 
+							FROM FRAN_APPLIDOC 
+							WHERE FRAN_APPLIDOC_CODE = #{fran_applidoc_code})
+	</update>
+	
+	<update id="updateFran_applidoc_appr_St" parameterType="franAppli">
+	update
+	fran_applidoc
+	set
+	FRAN_APPLIDOC_APPR_ST = #{fran_applidoc_appr_st}
+	where FRAN_CODE = (
+						SELECT
+						FRAN_CODE
+						FROM FRAN_APPLIDOC
+						WHERE FRAN_APPLIDOC_CODE = #{fran_applidoc_code})
+	</update>
+	
+  	<update id="insertFranNotice" parameterType="franNotice">
+	INSERT
+	INTO
+	fran_notice(fran_notice_num, fran_applidoc_code, fran_code, fran_notice_title, emp_no, emp_name, fran_notice_date)
+	VALUES
+		(
+			  NOTICE_SEQ.NEXTVAL
+			, #{fran_applidoc_code}
+			, #{fran_code}
+			, (SELECT substr(FRAN_ADDR, 1,6) FROM FRAN WHERE FRAN_CODE = #{fran_code})||' 게시글'
+			, #{emp_no}
+			, #{emp_name}
+			, sysdate
+		)
+	</update>
+	
+</mapper>

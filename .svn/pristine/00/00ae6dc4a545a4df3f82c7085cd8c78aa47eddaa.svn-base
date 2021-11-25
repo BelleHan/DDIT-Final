@@ -1,0 +1,217 @@
+package kr.or.fms.fran.service;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dao.AttachDAO;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnDetailVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.dao.FranReturnDAO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class FranReturnServiceImpl implements FranReturnService {
+	
+	private FranReturnDAO franReturnDAO;
+	public void setFranReturnDAO(FranReturnDAO franReturnDAO) {
+		this.franReturnDAO = franReturnDAO;
+	}
+	
+	private AttachDAO attachDAO;
+	
+	public void setAttachDAO(AttachDAO attachDAO) {
+		this.attachDAO = attachDAO;
+	}
+
+	@Override
+	public Map<String, Object> getReturnList(SearchCriteria cri) throws SQLException {
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+
+		// 현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
+		List<ReturnVO> franReturnList = franReturnDAO.selectBoardCriteria(cri);
+
+		for(ReturnVO rtnVo : franReturnList) {
+			List<AttachVO> attachList = getAttachByAttach_no(rtnVo.getReturn_code());
+			if(attachList!=null && attachList.size()>0) {
+				rtnVo.setAttachList(attachList);
+			}
+			
+		}
+		
+		
+		// 전체 board 개수
+		int totalCount = franReturnDAO.selectBoardCriteriaTotalCount(cri);
+
+		// PageMaker 생성.
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+
+		dataMap.put("franReturnList", franReturnList);
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+
+	}
+
+	@Override
+	public ReturnVO getReturn(String return_code) throws SQLException {
+		
+		ReturnVO returnDetail = franReturnDAO.selectReturnByReturn_code(return_code);
+		return returnDetail;
+
+	}
+
+	@Override
+	public void modify(ReturnVO returnVO) throws SQLException {
+		
+		franReturnDAO.updateReturnSt(returnVO);
+		
+	}
+
+	@Override
+	public void registFranReturn(ReturnVO returnVO) throws SQLException {
+//		String return_code = "RE"+franReturnDAO.getSeqNextValue();
+
+//		returnVO.setReturn_code(return_code);
+		franReturnDAO.insertFranReturn(returnVO);
+		String attachSeq = franReturnDAO.getSeqCurrValue();
+		if (returnVO.getAttachList() != null)
+			for (AttachVO attach : returnVO.getAttachList()) {
+				attach.setFile_no(attachSeq);
+				attach.setFile_register(returnVO.getFran_code());
+				attachDAO.insertAttach(attach);
+			}
+		
+	}
+	
+	@Override
+	public void registFranReturnDe(ReturnDetailVO returnDeVO) throws SQLException {
+//		String return_code = "RE"+franReturnDAO.getSeqNextValue();
+//		
+//		returnDeVO.setReturn_code(return_code);
+		franReturnDAO.insertFranReturnDe(returnDeVO);
+		
+//		if (returnVO.getAttachList() != null)
+//			for (AttachVO attach : returnVO.getAttachList()) {
+////				attach.setReturn_code(return_code);
+//				attach.setFile_register(returnVO.getFran_code());
+//				attachDAO.insertAttach(attach);
+//			}
+		
+	}
+
+	@Override
+	public List<HqGoodsVO> getGoodsList(String goods) throws SQLException {
+
+		List<HqGoodsVO> goodsList = franReturnDAO.selectGoodsList(goods);
+		
+		return goodsList;
+		
+	}
+
+	@Override
+	public String getSeqCurrValue() throws SQLException {
+		String return_code = franReturnDAO.getSeqCurrValue();
+		return return_code;
+	}
+
+	@Override
+	public ReturnVO read(String return_code) throws SQLException {
+		ReturnVO returnVO = franReturnDAO.selectReturnByReturn_code(return_code);
+//		pdsDAO.increaseViewCnt(pno);
+
+		addAttachList(returnVO);
+
+		return returnVO;
+	}
+	
+	private void addAttachList(ReturnVO returnVO) throws SQLException {
+
+		if (returnVO == null)
+			return;
+	
+		String return_code = returnVO.getReturn_code();
+		List<AttachVO> attachList = attachDAO.selectAttachesByReturn_code(return_code);
+	
+		returnVO.setAttachList(attachList);
+	}
+
+	@Override
+	public List<AttachVO> getAttachByAttach_no(String attach_no) throws SQLException {
+		List<AttachVO> attachList = attachDAO.selectAttachByAttach_no(attach_no);
+		for (AttachVO attach : attachList) {
+			String file_name = attach.getFile_name();
+			attach.setFile_name(file_name.split("\\$\\$")[1]);
+		}
+		return attachList;
+	}
+
+	@Override
+	public void removeAttachByAttach_no(String attach_no) throws SQLException {
+		attachDAO.deleteAttach(attach_no);
+		
+	}
+
+	@Override
+	public AttachVO selectAttachDownload(String attach_no) throws SQLException {
+		
+		return attachDAO.selectAttachDownload(attach_no);
+	}
+
+	@Override
+	public void remove(String return_code) throws SQLException {
+		franReturnDAO.deleteFranReturn(return_code);
+		List<AttachVO> attachList = attachDAO.selectAttachByAttach_no(return_code);
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
+				File target = new File(attach.getFile_location(), attach.getFile_name());
+				if (target.exists()) {
+					target.delete();
+				}
+			}
+		}
+		attachDAO.deleteAttach(return_code);
+	}
+
+	@Override
+	public void updateFranReturn(ReturnVO returnVO) throws SQLException {
+		franReturnDAO.updateFranReturn(returnVO);
+		//returnVO.getReturn_code();
+		//-------------------------
+		String attachSeq = franReturnDAO.getSeqCurrValue();
+		
+		if (returnVO.getAttachList() != null)
+			for (AttachVO attach : returnVO.getAttachList()) {
+				attach.setFile_no(attachSeq);
+				attach.setFile_register(returnVO.getFran_code());
+				attachDAO.insertAttach(attach);
+			}
+	}
+
+	@Override
+	public void updateFranReturnDe(ReturnDetailVO returnDeVO) throws SQLException {
+		franReturnDAO.updateFranReturnDe(returnDeVO);
+		
+	}
+
+	@Override
+	public AttachVO getAttachByAno(String attach_no) throws SQLException {
+		AttachVO attach = attachDAO.selectAttachByAno(attach_no);
+
+		return attach;
+	}
+
+	@Override
+	public void deleteFranReturnModi(String attach_no) throws SQLException {
+		attachDAO.deleteAttachModi(attach_no);
+		
+	}
+
+}

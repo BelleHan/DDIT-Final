@@ -1,0 +1,138 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.OutVO;
+
+public class OutDAOImpl implements OutDAO{
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+	
+	
+	@Override
+	public void insertOutPlan(OutVO out) throws SQLException {
+		session.update("Out-Mapper.insertOutPlan", out);
+		
+	}
+
+	@Override
+	public OutVO selectOutByCode(String ocode) throws SQLException {
+		OutVO out = session.selectOne("Out-Mapper.selectOutByCode", ocode);
+		return out;
+	}
+
+	@Override
+	public List<OutVO> selectOutList(SearchCriteria cri) throws SQLException {
+		
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);	
+		
+		List<OutVO> outList = session.selectList("Out-Mapper.selectOutList",cri,rowBounds);
+		return outList;
+	}
+
+	@Override
+	public void updateOut(OutVO out) throws SQLException {
+		session.update("Out-Mapper.updateOut",out);
+		
+	}
+
+	@Override
+	public int selectOutListCount(SearchCriteria cri) throws SQLException {
+		int count = 0;
+		count = session.selectOne("Out-Mapper.selectOutListCount",cri);
+		return count;
+	}
+
+
+	@Override
+	public String selectOutSeqNext() throws SQLException {
+		String seq_num=
+				session.selectOne("Out-Mapper.selectOutSeqNext");
+		return seq_num;
+		
+	}
+
+
+	@Override
+	public List<OutVO> selectOutList() throws SQLException {
+		List<OutVO> outList = session.selectList("Out-Mapper.selectOutList");
+		return outList;
+	}
+
+
+	@Override
+	public List<OutVO> selectOutList(Criteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+	
+		List<OutVO> outList = session.selectList("Out-Mapper.OutSearchList",null,rowBounds);
+		
+		return outList;
+	}
+
+///////////////////////////////////////////////////////////////////
+	@Override
+	public List<OutVO> outTakingList() throws SQLException {
+		List<OutVO> outTakingList = session.selectList("Out-Mapper.outTakingList");
+		return outTakingList;
+	}
+	
+	@Override
+	public List<OutVO> outTakingList(Criteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<OutVO> outTakingList = session.selectList("Out-Mapper.outTakingSearchList",null,rowBounds);
+		return outTakingList;
+	}
+
+	@Override
+	public List<OutVO> outTakingList(SearchCriteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		List<OutVO> outTakingList = session.selectList("Out-Mapper.outTakingSearchList",cri, rowBounds);
+		return outTakingList;
+	}
+
+	
+
+	@Override
+	public List<OutVO> getOutTakingDetail(String ocode) throws SQLException {
+		List<OutVO> outDetail = session.selectList("Out-Mapper.getOutTakingDetail", ocode);
+		return outDetail;
+	}
+
+
+	@Override
+	public int outTakingSearchCount(SearchCriteria cri) throws SQLException {
+		int count = 0;
+		
+		try {
+			count = session.selectOne("Out-Mapper.outTakingSearchCount", cri);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(count + "<<<<<<<<<<<<<<<<< count");
+		
+		return count;
+	}
+
+
+	
+
+}

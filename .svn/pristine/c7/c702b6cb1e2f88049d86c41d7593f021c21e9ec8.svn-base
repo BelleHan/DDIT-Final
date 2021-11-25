@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div class="col-sm-12" style="padding:10px 20px 0px 5px;">
+	<form enctype="multipart/form-data" action="<%=request.getContextPath()%>/sup/goods/excelExport" method="post">
+		<button type="submit" class="btn btn-primary float-sm-right" id="formExportBtn">엑셀다운로드</button>
+	</form>
+<!-- 				 onclick="OpenWindow('registForm.do','물품등록',800,750);">물품등록</button>	
+		 -->
+</div>
+
+
+<div>
+	<form enctype="multipart/form-data" method="post" name="excelUpForm" id="excelUpForm" action="excelImport.do" >
+		<input type="file" id="excelFile" name="excleFile" value="엑셀 업로드" />
+		<input type="submit" value="업로드"/>
+	</form>
+</div>
+
+<script type="text/javascript">
+	function call(){
+		alert(this.value)
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+package kr.or.fms.logis.dao;
+
+import java.sql.SQLException;
+
+import kr.or.fms.logis.dto.LogisVO;
+
+public interface LogisDAO {
+
+	//물류센터조회
+	LogisVO selectLogisByCode(String logis_code)throws SQLException;
+}

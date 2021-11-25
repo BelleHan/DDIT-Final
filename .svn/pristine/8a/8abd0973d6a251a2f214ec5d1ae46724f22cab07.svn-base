@@ -1,0 +1,34 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.hq.dto.FranStockVO;
+import kr.or.fms.hq.dto.LogisStockVO;
+import kr.or.fms.logis.dto.LogisGoodsDeVO;
+
+public interface StockDAO {
+	//가맹점재고조회
+	List<FranStockVO> franStockList()throws SQLException;
+	List<FranStockVO> franStockList(Criteria cri)throws SQLException;
+	List<FranStockVO> franStockList(SearchCriteria cri)throws SQLException;
+	
+	// 검색 결과의 전체 리스트 개수
+	int franStockListCount(SearchCriteria cri) throws SQLException;
+
+	// 발주량제한
+	void updateFranStock(FranStockVO franGoods) throws SQLException;
+	
+	//물류센터재고조회
+	List<LogisStockVO> logisStockList()throws SQLException;
+	List<LogisStockVO> logisStockList(Criteria cri)throws SQLException;
+	List<LogisStockVO> logisStockList(SearchCriteria cri)throws SQLException;
+	
+	// 검색 결과의 전체 리스트 개수
+	int logisStockListCount(SearchCriteria cri) throws SQLException;
+	
+	
+}

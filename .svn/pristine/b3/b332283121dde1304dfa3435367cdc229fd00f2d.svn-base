@@ -1,0 +1,19 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+
+import kr.or.fms.fran.dto.FranContractInfoVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqEmpVO;
+
+public interface FranDAO {
+
+	//가맹점 정보조회(가맹점페이지)
+	FranContractInfoVO selectFranInfo(String fran_code)throws SQLException;
+	
+	//가맹점 조회
+	FranVO selectFranBycode(String fran_code)throws SQLException;
+	
+	HqEmpVO selectFranEmp(String fran_code)throws SQLException;
+
+}

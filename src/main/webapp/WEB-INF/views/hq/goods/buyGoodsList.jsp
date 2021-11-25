@@ -1,0 +1,301 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="buyGoodsList" value="${dataMap.buyGoodsList }" />
+<c:set var="lacaList" value="${dataMap.lacaList }" />
+<c:set var="smcaList" value="${dataMap.smcaList }" />
+<c:set var="keyword" value="${dataMap.keyword }" />
+
+<head>
+<style>
+div.row {
+	margin: 0;
+}
+div .product-image{
+	margin-left:57px;
+}
+</style>
+</head>
+
+<title>공지목록</title>
+
+<body>
+	<c:if test="${from eq 'regist' }" >
+		<script>
+			alert("등록되었습니다.");
+			window.opener.location.reload();			
+			window.close();
+		</script>
+	</c:if>
+	<script src="<%=request.getContextPath() %>/resources/js/common_kjy.js"></script>
+	 <!-- Main content -->
+	 
+    <section class="content" >		
+		 <!-- Main content -->
+		
+		
+	    <form id="searchFrom" action = "buy.do" method="get">
+			<div class="card" style="margin-bottom:0px; padding-left: 190px;">
+				<div class="card-body search-body" style="height: auto;">
+					<div class="search-group row">
+						<div class="input-group  col-md-3">
+							<label style="padding: 6px 10px 0px 10px;">대분류</label>
+							<select class="form-control" name="laca" id="idLaca"  style="text-align-last: center;border-radius: 5px;" onchange="getSmcaList();">
+								<c:if test="${!empty lacaList}">
+							  		<option value="">전체 </option>
+							  		<c:forEach var ="lacaList" items="${lacaList}">
+							  			<option value="${lacaList}" <c:if test="${map.laca eq lacaList}">selected</c:if> >${lacaList}</option>
+							  		</c:forEach>
+							  	</c:if>						
+						  	</select>
+						</div>
+						<div class="input-group  col-md-3">
+							<label style="padding: 6px 10px 0px 5px;">소분류</label>
+							<select class="form-control" name="smca" id="idSmca"  style="text-align-last:center;border-radius: 5px;">
+						  		<c:if test="${!empty smcaList}">
+						  		<option value="" >전체</option>
+						  		<c:forEach var ="smcaList" items="${smcaList}">
+						  			<option value="${smcaList}"  <c:if test="${map.smca eq smcaList}">selected</c:if> >${smcaList}</option>
+						  		</c:forEach>
+					  			</c:if>
+						  	</select>						
+						</div>
+						<div class="input-group  col-md-3">
+							<input class="form-control" type="text" name="keyword" placeholder="물품명을 입력하세요." value="${param.keyword }"/>
+						</div>
+				       	<div class="input-group col-md-2">
+				       			<span class="input-group-append">
+									<button class="btn btn-primary" type="submit"  data-card-widget="search" style="border-radius: 5px;"><i class="fa fa-fw fa-search"></i></button>
+								</span>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </form>
+		<!--card-body(검색창)  -->
+
+			<div style="font-size:13px; height:80vh;overflow-y:scroll;overflow-x:hidden ">
+				<div class="row" style="">
+	<!-- 				<button type="button" class="btn btn-primary float-sm-right" id="registBtn" onclick="OpenWindow('registForm.do','물품등록',800,750);">물품등록</button>				 -->
+					 
+					 
+					 <!-- <button type="button" class="btn btn-primary float-sm-right" style="height:28px; margin-bottom: 10px; padding:0px 8px;"
+					 onclick="OpenWindow('compareGoods.do','물품상세비교',800,700);">
+				 	<span style="font-size:14px;">상품비교</span>
+					 </button> -->
+					 
+					 <button type="button" class="btn btn-primary float-right" style="height:28px; margin-bottom: 10px; margin-top:5px;padding:0px 8px;  margin-left: 1143px;"
+					 onclick="fn_compareProduct()">
+					 	<span style="font-size:14px;">선택상품비교</span>
+					 </button>
+					 
+					 
+	<!-- 				<button type="button" class="btn btn-block btn-primary btn-sm">상품비교</button> -->
+				</div>
+				
+<!-- -------------------------------------------------------------------- -->
+		<c:if test="${empty buyGoodsList}">
+			<div>해당내용이 없습니다.</div>
+
+		</c:if>
+		
+		<div class="row" id="GoodsList" style="font-size:13px;">
+			<c:forEach items="${buyGoodsList}" var="goodsList">
+		         <div class="col-md-4">
+		           <!-- Box Comment -->
+		           <div class="card card-widget" >
+		             <div class="card-header" style="font-size:15.5px; background: #E6E6E6; padding-bottom:3px;">
+		             	<input type="checkbox" data-target="checkGoods" name="checkGoodsDe" id="checkGoodsDe_${goodsList.sup_goods_code}" value="${goodsList.sup_goods_code}"
+		             		sup_goods_code="${goodsList.sup_goods_code}"
+		             	>
+		             	
+		                 <span class="username">
+		                 	<label for="checkGoodsDe_${goodsList.sup_goods_code}"><b>${goodsList.sup_goods_name}(${goodsList.sup_goods_code})</b></label></span>
+		               <!-- /.user-block -->
+		             </div>
+		             
+					
+		             <!-- /.card-header -->
+		             <div class="row">
+		             <div class="card-body col-4" style="padding: 5px 20px;" >
+		  				<div class="product-image col-sm-2" id="pictureView" onclick="location.href='detail.do?sup_goods_code=${goodsList.sup_goods_code}';"
+									style="height:150px; margin:5px; background-image:url('<%=request.getContextPath()%>/sup/goods/getPicture.do?sup_goods_img=${goodsList.sup_goods_img}');background-repeat:no-repeat;background-position:center;background-size:cover;"></div>
+		  				
+		             </div>
+		             <!-- /.card-body -->
+		             <div class="card-body col-8 card-comments" style="padding-top: 30px;" >
+		               <div class="card-comment" style="padding:0;">
+		                 <!-- User image -->
+		                 <div class="form-group row">
+		                 	<div class="username col-sm-4">
+		                 		업체명
+		                 	</div>
+		                 	<div class="col-sm-8">
+		                 		${goodsList.supVO.sup_name}
+		                 	</div>
+		                 </div>
+		                 <div class="form-group row">
+		                 	<div class="username col-sm-4">
+		                 		대분류
+		                 	</div>
+		                 	<div class="col-sm-8">
+		                 		${goodsList.sup_goods_laca}
+		                 	</div>
+		                 </div>
+		                 <div class="form-group row">
+		                 	<div class="username col-sm-4">
+		                 		물품명
+		                 	</div>
+		                 	<div class="col-sm-8">
+		                 		${goodsList.sup_goods_name}
+		                 	</div>
+		                 </div>
+		                 <div class="form-group row">
+		                 	<div class="username col-sm-4">
+		                 		납품가(원)
+		                 	</div>
+		                 	<div class="col-sm-8">
+		                 		<fmt:formatNumber value="${goodsList.sup_goods_price}" pattern="#,###"></fmt:formatNumber> 
+		                 	</div>
+		                 </div>
+		                 <div class="form-group row">
+		                 	<div class="username col-sm-4">
+		                 		용량(단위)
+		                 	</div>
+		                 	<div class="col-sm-8">
+		                 		${goodsList.sup_goods_attr1} ${goodsList.sup_goods_unit}
+		                 	</div>
+		                 </div>
+		               </div>
+		             </div>
+		           <!-- /.card -->
+		         </div>
+             </div>
+	         </div>
+		         <!-- /.col -->
+			</c:forEach>
+        </div>
+        
+        
+        
+	</div>
+        <!-- -------------------------------------------------------------------- -->
+		<div class="card-footer">
+			<%@ include file="/WEB-INF/views/common/paginationGoods.jsp" %>				
+		</div>
+</section><!-- /.content -->
+
+<!-- <form id="searchForm"> -->
+<!-- 	<input type="hidden" name="laca" id="goodlaca"> -->
+<!-- 	<input type="hidden" name="smca" id="goodsmca"> -->
+<!--    	<input type="hidden" name="keyword" id="goodname"> -->
+<!-- </form> -->
+
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+<script>
+	var goods=[];
+	$("input[name='checkGoodsDe[]']:checked",opener.document).each(function(i){
+		goods.push($(this).val());
+		$("#checkGoodsDe").append("<span>"+goods[i]+"</span>")
+	});
+	
+	//check된 애들 가져오기
+	window.onload=function(){
+		$('input[data-target="checkGoods"]').change(function(event){
+
+			if($(this).prop("checked")){
+				var input = $('<input>').attr({
+					type: "hidden",
+					sup_goods_code : $(this).attr("sup_goods_code"),
+				});
+				$('form[name=""]')
+			}
+		})
+	}
+
+</script>
+
+<script>
+	function getSmcaList(){
+		var form = $("#searchFrom");
+		var param = $("#idLaca option:selected").val();
+		var url = "<%=request.getContextPath()%>/hq/goods/searchSmca";
+		
+		$.ajax({
+			url : url,
+			type : "post",
+			data : param,
+			contentType : 'application/json',
+			success : function(data){
+				var res = "<option value=''>전체</option>";
+				console.log(data);
+				$.each(data,function(i,v){
+					res += "<option value='"+data[i]+"'>"+data[i]+"</option>"
+				});
+				$("#idSmca").html(res);
+			}
+		})
+		
+	}
+
+</script>
+<script>
+	function fn_compareProduct(){
+		/* $("input[name='checkGoodsDe[]']:checked",opener.document).each(function(i){
+			goods.push($(this).val());
+			$("#checkGoodsDe").append("<span>"+goods[i]+"</span>")
+		}); */
+		
+		
+		var param = "";	
+		$("input[name=checkGoodsDe]:checked").each(function(index, item){
+			
+// 			alert($(item).val());
+			if(param != ""){
+				param += ","+$(item).val();
+			}else{
+				param += "goodsDe="+$(item).val();	
+			}
+// 			alert(param);
+		});
+		var url = 'compareGoods.do?' + param;
+		OpenWindow(url,'물품상세비교',900,550);
+	}
+
+</script>
+<form name = "goodsDe" action="<%=request.getContextPath() %>/sup/goods/detail" method="post"></form>
+
+<script>
+// 	window.onload=function(){
+// 		$('#idLaca').change(function(event){
+// 			alert($(this).val());
+// 			searchList();
+// 		});
+// 		$('#idSmca').change(function(event){
+// 			alert($(this).val());
+// 			searchList();
+// 		});
+// 		$('input[name="goodsname"]').change(function(event){
+// 			alert($(this).val());
+// 			searchList();
+// 		});
+// 	}
+	
+// 	function searchList(){
+// 		var searchForm = $("#searchForm").get(0);
+// 		$("#goodlaca").val($('select[name="laca"]').val());
+// 		$("#goodsmca").val($('select[name="smca"]').val());
+// 		$("#goodname").val($('input[name="goodsname"]').val());
+// 		searchForm.submit();
+// 	}
+
+
+</script>
+</body>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+		<!-- login user log path -->
+	<bean id="loginUserLogSavePath" class="java.lang.String">
+		<constructor-arg value="${login.logisUser.log}" />
+	</bean>
+	
+	<bean id="loginUserLogSaveFileName" class="java.lang.String">
+		<constructor-arg value="login_logis_log.csv"/>
+	</bean>
+	<!-- DAO	 -->
+	<bean id="buyGoodsDAO" class="kr.or.fms.hq.dao.BuyGoodsDAOImpl"
+		p:sqlSession-ref="sqlSession"
+		/>
+	<bean id="codeDAO" class="kr.or.fms.dao.CodeDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="logisDAO" class="kr.or.fms.logis.dao.LogisDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franDAO" class="kr.or.fms.fran.dao.FranDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franOrderDAO" class="kr.or.fms.fran.dao.FranOrderDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<!-- Service	 -->
+	<bean id="buyGoodsService" class="kr.or.fms.hq.service.BuyGoodsServiceImpl"
+		p:buyGoodsDAO-ref="buyGoodsDAO"
+		p:supGoodsDAO-ref="supGoodsDAO"
+	/>
+	<bean id="codeService" class="kr.or.fms.service.CodeServiceImpl"
+		p:codeDAO-ref="codeDAO"/>
+	<bean id="logisService" class="kr.or.fms.logis.service.LogisServiceImpl"
+		p:logisDAO-ref="logisDAO"/>
+	<bean id="franService" class="kr.or.fms.fran.service.FranServiceImpl"
+		p:franDAO-ref="franDAO"/>
+	<bean id="franOrderService" class="kr.or.fms.fran.service.FranOrderServiceImpl"
+		p:franOrderDAO-ref="franOrderDAO"/>
+	
+</beans>
+
+
+
+
+
+
+

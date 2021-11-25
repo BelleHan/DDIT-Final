@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LogisIn-Mapper">
+	<sql id="map">	
+		<if test="keywordMap.in_loca !=null and !keywordMap.in_loca .equals('')">
+			and in_loca = #{keywordMap.in_loca}			
+		</if>
+		<if test="keywordMap.fms_st!=null and !keywordMap.fms_st.equals('')">
+			and in_st = #{keywordMap.fms_st}			
+		</if>
+		<if test="keywordMap.start_date!=null and !keywordMap.start_date.equals('')">
+		    and <![CDATA[in_date_schedule >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null and !keywordMap.end_date.equals('')">
+			and <![CDATA[in_date_schedule <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	
+	<select id="inList" resultType="inLogisVO">
+		select 
+	   			goods_pur_code,
+	   			sup_goods_code,
+			    logis_code,
+			    wh_code,
+			    in_date,
+			    in_date_schedule,
+			    in_st,
+			    in_loca
+		from
+				in_list
+		where
+				GOODS_PUR_CODE is not null
+			and logis_code = #{keywordMap.logis_code}
+		<include refid="map"/>
+		order by in_date desc
+	</select>
+	
+	<select id="inListCount" resultType="int">
+		select count(distinct GOODS_PUR_CODE)
+		from in_list
+		where GOODS_PUR_CODE is not null
+		and logis_code = #{keywordMap.logis_code}
+		<include refid="map"/>
+	</select>
+	
+	<select id="inWh" resultType="logisWh">
+		SELECT *
+		FROM LOGIS_WH
+		WHERE LOGIS_CODE = #{logiscode}
+	</select>
+	<select id="inSup" resultType="inGoods">
+		SELECT 
+	        	distinct B.SUP_CODE
+	        	, C.SUP_NAME
+		FROM
+		        IN_LIST A,  SUP_GOODS B, SUP C
+		WHERE
+		        A.SUP_GOODS_CODE = B.SUP_GOODS_CODE
+		AND		B.SUP_CODE = C.SUP_CODE
+	    AND		A.LOGIS_CODE = #{logiscode}
+	</select>
+	
+	<select id="getDetail" resultType="inLogisVO" parameterType="str">
+		SELECT 
+				TBLA.*, TBLB.*
+		FROM (
+		        SELECT 
+			   			GOODS_PUR_CODE,
+			   			SUP_GOODS_CODE,
+					    LOGIS_CODE,
+					    WH_CODE,
+					    IN_DATE,
+					    IN_DATE_SCHEDULE,
+					    IN_NUM,
+					    IN_NUM_SCHEDULE,
+					    IN_ST,
+					    IN_LOCA
+				FROM
+						IN_LIST
+				WHERE 
+						GOODS_PUR_CODE=#{GOODS_PUR_CODE}
+		        ) TBLA,
+		        (
+		        SELECT
+		                SUP_GOODS_CODE,
+		                HQ_GOODS_NAME
+		        FROM
+		                HQ_GOODS 
+		        ORDER BY SUP_GOODS_CODE
+		        ) TBLB
+		WHERE
+		    	TBLA.SUP_GOODS_CODE = TBLB.SUP_GOODS_CODE
+		
+	</select>
+	
+	<update id="updatein" parameterType="map">
+		update in_list
+		set
+		in_num=#{in_num}
+		where GOODS_PUR_CODE=#{goods_pur_code}
+		and sup_goods_code=#{sup_goods_code}	
+	</update>
+	
+</mapper>

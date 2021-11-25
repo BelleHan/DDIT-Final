@@ -1,0 +1,82 @@
+package kr.or.fms.fran.dto;
+									/* 가맹점신청서 */
+import java.util.Date;
+import java.util.List;
+
+import kr.or.fms.dto.AttachVO;
+
+public class FranAppliDocVO {
+
+	private String fran_applidoc_code;		//가맹점신청서코드
+	private String fran_code;				//가맹점코드
+	private String hq_code;					//본사코드
+	private int attach_no;					//첨부파일일련번호
+	private int fran_applidoc_appr_st;		//신청서승인상태
+	private Date fran_appli_date;			//신청일자
+	private String fran_memo;				//상제내용
+	
+	
+	private FranVO franVO;
+	private List<AttachVO> attachList;
+	
+	
+	public FranVO getFranVO() {
+		return franVO;
+	}
+	public void setFranVO(FranVO franVO) {
+		this.franVO = franVO;
+	}
+	public List<AttachVO> getAttachList() {
+		return attachList;
+	}
+	public void setAttachList(List<AttachVO> attachList) {
+		this.attachList = attachList;
+	}
+	public String getFran_memo() {
+		return fran_memo;
+	}
+	public void setFran_memo(String fran_memo) {
+		this.fran_memo = fran_memo;
+	}
+	
+	public String getFran_applidoc_code() {
+		return fran_applidoc_code;
+	}
+	public void setFran_applidoc_code(String fran_applidoc_code) {
+		this.fran_applidoc_code = fran_applidoc_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public int getAttach_no() {
+		return attach_no;
+	}
+	public void setAttach_no(int attach_no) {
+		this.attach_no = attach_no;
+	}
+	public int getFran_applidoc_appr_st() {
+		return fran_applidoc_appr_st;
+	}
+	public void setFran_applidoc_appr_st(int fran_applidoc_appr_st) {
+		this.fran_applidoc_appr_st = fran_applidoc_appr_st;
+	}
+	public Date getFran_appli_date() {
+		return fran_appli_date;
+	}
+	public void setFran_appli_date(Date fran_appli_date) {
+		this.fran_appli_date = fran_appli_date;
+	}
+	
+	
+	
+	
+}

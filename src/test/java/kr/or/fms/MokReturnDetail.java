@@ -1,0 +1,68 @@
+package kr.or.fms;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.dao.AttachDAO;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.dao.FranReturnDAO;
+import kr.or.fms.fran.service.FranReturnService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokReturnDetail {
+	
+	@Autowired
+	SqlSession session;
+	
+	@Autowired
+	FranReturnDAO dao;
+	
+	@Autowired
+	FranReturnService franReturnService;
+	
+	@Autowired
+	AttachDAO attachDAO;
+	
+	@Test
+	public void selectReturnByRcode() throws SQLException {
+		ReturnVO returnVO = new ReturnVO();
+		String return_code = "RE0102";
+		returnVO = franReturnService.read(return_code);
+		String attach_no = returnVO.getReturn_code();
+		List<AttachVO> attachList = attachDAO.selectAttachByAttach_no(return_code);
+		
+		/*List<AttachVO> attachByAttach_no = franReturnService.getAttachByAttach_no(attach_no);
+		
+		if (from != null && from.equals("list")) {
+			returnVO = franRetunService.read(return_code);
+			url = "redirect:/return/detail.do?return_code=" + return_code;
+		} else {
+			returnVO = franRetunService.getReturn(return_code);
+		}
+		System.out.println("------------"+ attachByAttach_no.size());
+		
+		// 파일명 재정의
+		if (returnVO != null) {
+			returnVO.setAttachList(attachByAttach_no);
+			List<AttachVO> attachList = returnVO.getAttachList();
+			if (attachList != null) {
+				for (AttachVO attachVO : attachList) {
+					System.out.println(attachVO.getFile_name());
+				}
+			}
+		}*/
+		
+	}
+
+}

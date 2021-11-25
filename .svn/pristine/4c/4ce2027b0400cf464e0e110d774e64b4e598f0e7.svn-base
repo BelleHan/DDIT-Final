@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.search-group{
+	text-align: right;
+}
+.input-group{
+	float: left;
+}
+.search-hidden{
+	display: none;
+}
+.modal-dialog{
+	mairgin: 1em;
+}
+.modal-content{
+	width : 150%;
+	display: inline-block; 
+	vertical-align: middle;
+}
+table.keyword-list {
+	text-align: center;
+}

@@ -1,0 +1,27 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.fran.dao.FranDAO;
+import kr.or.fms.fran.dto.FranVO;
+
+public class FranServiceImpl implements FranService {
+
+	private FranDAO franDAO;
+	public void setFranDAO(FranDAO franDAO) {
+		this.franDAO = franDAO;
+	}
+	
+	@Override
+	public FranVO getFranInfo(String fran_code) throws SQLException {
+		FranVO franInfo = franDAO.selectFranInfo(fran_code);
+		return franInfo;
+	}
+
+	@Override
+	public FranVO getFran(String fran_code) throws SQLException {
+		FranVO fran = franDAO.selectFranBycode(fran_code);
+		return fran;
+	}
+
+}

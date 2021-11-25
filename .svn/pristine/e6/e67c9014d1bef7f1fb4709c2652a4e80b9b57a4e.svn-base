@@ -1,0 +1,14 @@
+package kr.or.fms.sup.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.exception.InvalidPasswordException;
+import kr.or.fms.exception.NotFoundIdException;
+
+public interface SupService {
+	
+	// 공급업체 로그인
+	void login(String sup_code, String sup_pwd) throws SQLException, NotFoundIdException, 
+	InvalidPasswordException;
+
+}

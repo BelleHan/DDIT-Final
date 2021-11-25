@@ -1,0 +1,38 @@
+package kr.or.fms.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.service.KeywordService;
+
+@Controller
+@RequestMapping("/keyword")
+public class KeywordController {
+	
+	@Autowired
+	KeywordService keywordService;
+	
+	@RequestMapping("/hqgoods.do")
+	public String hqGoods(Model model) {
+		String url = "common/keyword";
+		try {
+			List<HqGoodsVO> goodsList = keywordService.goods();
+			model.addAttribute("goodsList", goodsList);
+			for (HqGoodsVO hqGoodsVO : goodsList) {
+				System.out.println(hqGoodsVO.getSup_goods_name());
+				System.out.println(hqGoodsVO.getHq_code());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return url;
+	}
+}

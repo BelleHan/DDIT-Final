@@ -1,0 +1,26 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public interface FranOrderDAO {
+
+	//발주상품리스트(페이징,검색)
+	List<HqGoodsVO> orderGoodsCriteriaList(SearchCriteria cri) throws SQLException;
+	
+	//발주리스트개수
+	int selectOrderGoodsCount(SearchCriteria cri)throws SQLException;
+	
+	//대분류콤보박스
+	List<String> selectLaca() throws SQLException;
+	//소분류콤보박스
+	List<String> selectSmca() throws SQLException;
+	//발주상품리스트
+//	List<HqGoodsVO> orderGoodsList() throws SQLException;
+	
+	
+}
+

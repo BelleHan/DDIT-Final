@@ -1,0 +1,24 @@
+/**
+ * http://usejsdoc.org/
+ */
+function HqGoodsPicture(targetObj, fileName,contextPath){ //(대상, 이미지파일명)
+	console.log('1234');
+	targetObj.style.backgroundImage="url('"+contextPath+"/sup/goods/getPicture.do?sup_goods_img="+fileName+"')";
+	targetObj.style.backgroundPosition="center";
+	targetObj.style.backgroundRepeat="no-repeat";
+	targetObj.style.backgroundSize="cover";
+	targetObj.style.width="80px";
+	targetObj.style.height="120px";
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+function dragOver(ev) {
+  ev.preventDefault();
+}
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}

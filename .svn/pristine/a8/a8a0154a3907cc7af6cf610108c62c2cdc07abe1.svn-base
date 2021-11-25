@@ -1,0 +1,27 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.ReturnVO;
+
+public interface FranReturnDAO {
+	
+	List<ReturnVO> selectBoardCriteria(SearchCriteria cri) throws SQLException;
+	
+	int selectBoardCriteriaTotalCount(SearchCriteria cri) throws SQLException;
+	
+	ReturnVO selectBoardByRcode(String rcode) throws SQLException;
+	
+	void updateReturnSt(ReturnVO returnVO) throws SQLException;
+	
+	void insertFranReturn(ReturnVO returnvo)throws SQLException;
+	void updateFranReturn(ReturnVO returnvo)throws SQLException;
+	void deleteFranReturn(String rcode)throws SQLException;
+	//viewcnt  증가
+	void increaseViewCnt(int pno)throws SQLException;
+	//pds_seq.nextval 가져오기
+	int getSeqNextValue() throws SQLException;
+
+}

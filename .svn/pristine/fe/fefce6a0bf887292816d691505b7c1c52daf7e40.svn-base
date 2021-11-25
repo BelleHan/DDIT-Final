@@ -1,0 +1,63 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.logis.dao.LogisStockDAO;
+import kr.or.fms.logis.dto.LStockVO;
+
+public class LogisStockServiceImpl implements LogisStockService {
+	
+	private LogisStockDAO stockDAO;
+	public LogisStockDAO getStockDAO() {
+		return stockDAO;
+	}
+	public void setStockDAO(LogisStockDAO stockDAO) {
+		this.stockDAO = stockDAO;
+	}
+
+	@Override
+	public Map<String, Object> getStockList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		// 현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
+		List<LStockVO> stockList = stockDAO.selectStockCriteria(cri);
+		// 전체 board 개수
+		int totalCount = stockDAO.selectStockCriteriaTotalCount( cri);
+		
+		//List<String> whComboList = stockDAO.selectWhCombo(logis_code);
+		List<String> lacaList = stockDAO.selectLaca();
+		List<String> smcaList = stockDAO.selectSmca();
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		dataMap.put("logisStock", stockList);
+		dataMap.put("pageMaker", pageMaker);
+		dataMap.put("lacaList", lacaList);
+		dataMap.put("smcaList", smcaList);
+		
+		return dataMap;
+	}
+	@Override
+	public List<String> getWhCombo(String logis_code) throws SQLException {
+		List<String> whComboList = stockDAO.selectWhCombo(logis_code);
+		return whComboList;
+	}
+	@Override
+	public List<String> getLaca() throws SQLException {
+		List<String> lacaList = stockDAO.selectLaca();
+		return lacaList;
+	}
+	@Override
+	public List<String> getSmca() throws SQLException {
+		List<String> smcaList = stockDAO.selectSmca();
+		return smcaList;
+	}
+	
+}

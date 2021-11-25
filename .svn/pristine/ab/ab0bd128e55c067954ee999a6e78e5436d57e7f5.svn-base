@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HqOrder-Mapper">
+
+	<sql id="searchFlag">
+		<if test="keywordMap.apprSt != null and keywordMap.apprSt != ''" >
+			AND FRAN_APPR_ST = #{keywordMap.apprSt}
+		
+		</if>
+		<if test="keywordMap.orderSt != null and keywordMap.orderSt != ''">
+			AND ORDER_ST_CODE = #{keywordMap.orderSt}
+		</if>
+		<if test="keywordMap.franCode != null and keywordMap.franCode != ''">
+			AND FRAN_CODE = #{keywordMap.franCode}
+		</if>
+		<if test="keywordMap.startDate != null and keywordMap.startDate != '' and keywordMap.endDate != null and keywordMap.endDate != ''">
+			AND FRAN_ORDER_DATE BETWEEN #{keywordMap.startDate} AND #{keywordMap.endDate}
+		</if>
+	</sql>
+	
+	<resultMap type="logis" id="logis">
+		<result column="logis_code" property="logis_code" />
+		<result column="logis_local_num" property="logis_local_num" />
+	</resultMap>
+	
+	<resultMap type="fran" id="fran">
+		<result column="fran_local_num" property="fran_local_num" />
+		<result column="fran_code" property="fran_code" />
+	</resultMap>
+	
+	<resultMap type="logisWh" id="logisWh">
+		<result column="logis_code" property="logis_code" />
+		<result column="logis_suit_stock" property="logis_suit_stock" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+	</resultMap>
+	
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="hq_goods_name" property="hq_goods_name" />
+	</resultMap>
+	
+	<resultMap type="franOrder" id="franOrder">
+		<result column="fran_order_code" property="fran_order_code" />
+		<result column="fran_appr_st" property="fran_appr_st" />
+		<result column="fran_order_date" property="fran_order_date" />
+	</resultMap>
+	
+	<resultMap type="franOrderDe" id="franOrderDe">
+		<result column="fran_order_code" property="fran_order_code" />
+		<result column="order_detail_num" property="order_detail_num" />
+		<result column="order_detail_st" property="order_detail_st" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="fran_order_quan" property="fran_order_quan" />
+		<result column="fran_order_price" property="fran_order_price" />
+		<result column="avail_num" property="avail_num" />
+		<collection property="hqGoodsVO" resultMap="hqGoods" />
+		<collection property="franOrderVO" resultMap="franOrder" />
+		<collection property="logisWhVO" resultMap="logisWh" />
+		<collection property="franVO" resultMap="fran" />
+		<collection property="logisVO" resultMap="logis" />
+	</resultMap>
+
+	
+	<select id="selectOrderList" resultType="franOrder">
+		SELECT * FROM FRAN_ORDER WHERE 1=1
+		<include refid="searchFlag"/>
+		order by fran_order_date desc
+	</select>
+	
+	<select id="selectOrderListCount" resultType="int">
+		select count(*)
+		from fran_order
+		where fran_order_code is not null
+		<include refid="searchFlag"/>  			  				  	
+	</select>
+	
+	<select id="selectFranList" resultType="fran">
+		SELECT FRAN_CODE, FRAN_NAME FROM FRAN WHERE APPLICATION_RESULT = '1' ORDER BY FRAN_NAME
+	</select>
+	
+	<select id="selectOrderDetail" parameterType="str" resultMap="franOrderDe">
+		SELECT distinct A.FRAN_ORDER_CODE, A.ORDER_DETAIL_NUM, A.HQ_GOODS_CODE, B.HQ_GOODS_NAME, A.FRAN_ORDER_QUAN, A.FRAN_ORDER_PRICE, A.ORDER_DETAIL_ST
+		FROM FRAN_ORDER_DETAIL A, HQ_GOODS B, FRAN_ORDER C
+		WHERE A.HQ_GOODS_CODE = B.HQ_GOODS_CODE
+		AND A.FRAN_ORDER_CODE = #{FRAN_ORDER_CODE}
+	</select>
+	
+	<select id="selectOrderDetailQuick" resultMap="franOrderDe">
+		select distinct a.fran_order_code, a.order_detail_num, b.hq_goods_code, 
+       		   b.hq_goods_name, a.fran_order_price, a.fran_order_quan, 
+		       (select nvl(max(ceil(0.01*(logis_suit_stock))),0) 
+		        from logis_wh 
+		        where logis_code in (select a.logis_code 
+		                                from logis a, fran b 
+		                                where a.logis_local_num = b.FRAN_LOCAL_NUM
+		                                and b.fran_code = #{fran_code}) 
+		                                and hq_goods_code = b.hq_goods_code) avail_num
+		from fran_order_detail a, hq_goods b
+		where b.hq_goods_code in a.hq_goods_code
+		and a.hq_goods_code = b.hq_goods_code
+		and a.fran_order_code = #{fran_order_code}
+		and a.order_detail_st = '1'
+	</select>
+
+	<update id="updateQuickList" parameterType="franOrderDe">
+		UPDATE FRAN_ORDER_DETAIL SET ORDER_DETAIL_ST = '2' 
+		WHERE FRAN_ORDER_CODE = #{fran_order_code} AND ORDER_DETAIL_NUM = #{order_detail_num}
+	</update>
+	
+	<update id="updateApprSt" parameterType="franOrder">
+		update fran_order set fran_appr_st = #{fran_appr_st} where fran_order_code = #{fran_order_code}
+	</update>
+
+	<insert id="insertOutQuick">
+		INSERT INTO OUT (OUT_CODE, HQ_GOODS_CODE, LOGIS_CODE, OUT_LOCA_TYPE, OUT_LOCA, OUT_DATE_SCHEDULE, OUT_NUM) 
+		VALUES('RC0'||SEQ_OUT.nextVal,#{hq_goods_code},(select a.logis_code 
+				                                        from logis a, fran b 
+				                                        where a.logis_local_num = b.fran_local_num
+				                                        and b.fran_code = #{fran_code}),'2',#{fran_code},sysdate+1,#{fran_order_quan})
+	</insert>
+	
+	<insert id="insertOutList1">
+		INSERT INTO OUT (OUT_CODE, HQ_GOODS_CODE, LOGIS_CODE, OUT_LOCA_TYPE, OUT_LOCA, OUT_DATE_SCHEDULE, OUT_NUM) 
+		VALUES('RC0'||SEQ_OUT.nextVal,#{hq_goods_code},'L002','1',(select a.logis_code 
+				                                                    from logis a, fran b 
+				                                                    where a.logis_local_num = b.fran_local_num
+				                                                    and b.fran_code = #{fran_code}),sysdate+1,#{fran_order_quan})
+	</insert>
+	
+	<insert id="insertOutList2">
+		INSERT INTO OUT (OUT_CODE, HQ_GOODS_CODE, LOGIS_CODE, OUT_LOCA_TYPE, OUT_LOCA, OUT_DATE_SCHEDULE, OUT_NUM) 
+		VALUES('RC0'||SEQ_OUT.nextVal,#{hq_goods_code},(select a.logis_code 
+				                                        from logis a, fran b 
+				                                        where a.logis_local_num = b.fran_local_num
+				                                        and b.fran_code = #{fran_code}),'2',#{fran_code},sysdate+4,#{fran_order_quan})
+	</insert>
+	
+	
+
+</mapper>

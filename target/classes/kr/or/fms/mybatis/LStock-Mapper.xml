@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LStock-Mapper">
+   
+   <!-- 재고목록출력(해당물류센터) -->
+   <select id="selectSearchStockList" resultType="logisStock">
+   
+<!--    <include refid="Common-Mapper.pageHeader"></include> -->
+   
+   SELECT
+       e.logis_safe_stock,
+       e.logis_suit_stock,
+       e.logis_goods_stock,
+       e.wh_name,
+       f.sup_goods_name,
+       f.sup_goods_smca,
+       f.sup_goods_laca,
+       d.goods_max_order,
+       d.hq_goods_code,
+        e.logis_code
+   FROM
+       logis_wh e,
+       hq_goods d,
+       sup_goods f
+   WHERE
+         d.hq_goods_code = e.hq_goods_code
+    AND   f.sup_goods_code = d.sup_goods_code
+    AND   e.logis_code = #{keywordMap.logis_code}
+   <if test="keywordMap.wh != null and keywordMap.wh != ''">
+           and e.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.laca != null and keywordMap.laca != ''">
+        and f.sup_goods_laca = #{keywordMap.laca}         
+   </if>
+   <if test="keywordMap.smca != null and keywordMap.smca != ''">
+        and f.sup_goods_smca = #{keywordMap.smca}         
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+        and f.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+      
+      
+<!--       <include refid="Common-Mapper.pageFooter"></include> -->
+
+   </select>
+   
+   <!-- 재고목록총갯수(해당물류센터) -->
+   <select id="selectSearchStockListCount" resultType="int">
+	SELECT 
+	   count(*)
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+	   c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+	    AND   c.logis_code = #{keywordMap.logis_code}
+	<if test="keywordMap.wh != null and keywordMap.wh != ''">
+	    AND d.wh_name = #{keywordMap.wh}
+	</if>
+	<if test="keywordMap.laca != null and keywordMap.laca != ''">
+	    AND f.sup_goods_laca = #{keywordMap.laca}			
+	</if>
+	<if test="keywordMap.smca != null and keywordMap.smca != ''">
+		AND f.sup_goods_smca = #{keywordMap.smca}			
+	</if>
+	<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+		AND f.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+	</if>
+	</select>
+   
+   <!-- 창고 콤보박스  -->
+   <select id="whCombo" resultType="logisWh">
+   SELECT
+       distinct b.wh_name
+   FROM
+       logis_wh b,
+       logis a
+   WHERE
+       a.logis_code = b.logis_code
+       and a.logis_code = #{logis_code}
+       order by b.wh_name
+   </select>
+   
+   <!-- 대분류 콤보박스 -->
+   <select id="lacaCombo" resultType="logisStock">
+   SELECT
+      distinct sup_goods_laca
+   FROM
+       sup_goods
+       order by sup_goods_laca
+   </select>
+   
+   <!-- 소분류 콤보박스 -->
+   <select id="smcaCombo" resultType="logisStock">
+   SELECT
+      distinct sup_goods_smca
+   FROM
+       sup_goods
+       order by sup_goods_smca
+   </select>
+   
+   <select id="selectStockByHq_goods_code"  parameterType="logisWh" resultType="logisWh">
+		SELECT
+			* 
+		FROM
+			logis_wh 
+		WHERE
+			hq_goods_code=#{hq_goods_code}
+        AND wh_name=#{wh_name}
+        and logis_code = #{logis_code}
+	</select>
+	
+	<update id="updateStock" parameterType="logisWh">
+	UPDATE
+	logis_wh
+	SET
+	logis_goods_stock = #{logis_goods_stock}, logis_safe_stock = #{logis_safe_stock}, logis_suit_stock = #{logis_suit_stock}
+	WHERE
+	hq_goods_code = #{hq_goods_code}
+	AND
+	wh_name = #{wh_name}
+	AND logis_code = #{logis_code}
+	</update>
+	
+	<!-- 재고실사 -->
+	<select id="selectSearchTakingList" resultType="logisStockTaking">
+	SELECT 
+    	TBLA.*, TBLB.*
+	FROM
+	(	
+			    SELECT
+				DISTINCT K.TAKING_CODE
+					    ,K.WH_CODE
+					    ,J.WH_NAME
+					    ,TO_CHAR(TAKING_DATE, 'YYYY-MM-DD') TDATE
+			            ,K.TAKING_ST ST_NUM
+			    FROM
+					     LOGIS_STOCK_TAKING K
+					    ,LOGIS_WH J
+					    ,HQ_GOODS L
+			    WHERE
+			              J.LOGIS_CODE = K.LOGIS_CODE
+			    AND   J.WH_CODE = K.WH_CODE
+			    AND   L.HQ_GOODS_CODE = K.HQ_GOODS_CODE
+			    AND   L.HQ_GOODS_CODE = J.HQ_GOODS_CODE
+			    AND   K.LOGIS_CODE = #{keywordMap.logis_code}
+   <if test="keywordMap.wh != null and keywordMap.wh != ''">
+           		AND j.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+     	   		AND l.hq_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+				ORDER by TDATE DESC )TBLA,
+	(   SELECT
+    	    COM_GROUP_CODE 
+        	, COM_CODE ST_NUM
+        	, COM_NAME ST
+    	FROM
+        	COM_CODE
+    	WHERE
+        	COM_GROUP_CODE = 'TAKING_ST')TBLB
+		WHERE
+		 TBLA.ST_NUM = TBLB.ST_NUM
+   </select>
+	
+	<select id="selectSearchTakingListCount" resultType="int">
+	SELECT
+	     count(DISTINCT K.TAKING_CODE)   
+	FROM
+	     logis_stock_taking k
+	    ,logis_wh j
+	    ,hq_goods l
+	WHERE
+	          j.logis_code = k.logis_code
+	    AND   j.wh_code = k.wh_code
+	    AND   l.hq_goods_code = k.hq_goods_code
+	    AND   l.hq_goods_code = j.hq_goods_code
+	    and   k.logis_code = #{keywordMap.logis_code}
+	<if test="keywordMap.wh != null and keywordMap.wh != ''">
+           and j.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+     	   and l.hq_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+	ORDER by k.taking_date desc
+	</select>
+	
+	<select id="selectTakingList" resultType="logisStockTaking">
+	SELECT
+	     distinct k.taking_code
+	    ,k.wh_code
+	    ,j.wh_name
+	    ,k.taking_date   
+	FROM
+	     logis_stock_taking k
+	    ,logis_wh j
+	    ,hq_goods l
+	WHERE
+	          j.logis_code = k.logis_code
+	    AND   j.wh_code = k.wh_code
+	    AND   l.hq_goods_code = k.hq_goods_code
+	    AND   l.hq_goods_code = j.hq_goods_code
+	    
+	    and   k.logis_code = #{keywordMap.logis_code}
+	ORDER by k.taking_date desc		
+	</select>
+	
+	<select id="selectTakingCodeDetail" resultType="logisStockTaking">
+	SELECT
+	   DISTINCT i.computer_stock,
+	    i.actual_stock,
+	    i.adjust_quantity,
+	    
+	    i.deff_quantity,
+	    i.hq_goods_code,
+	    j.hq_goods_name,
+	    j.hq_goods_code,
+	    h.logis_goods_stock
+	FROM
+	    logis_stock_taking i,
+	    logis_wh h,
+	    hq_goods j
+	WHERE
+	      h.hq_goods_code = i.hq_goods_code
+	AND   j.hq_goods_code = h.hq_goods_code
+	AND	  h.logis_code = #{logis_code}
+    AND   h.wh_code = #{wh_code}
+	AND   i.taking_code = #{taking_code}
+	</select>
+	
+	<select id="selectTakingCodeDetailCriteriaTotalCount" resultType="int">
+	SELECT
+	    count(*)
+	FROM
+	    logis_stock_taking i,
+	    logis_wh h,
+	    hq_goods j
+	WHERE
+	      h.hq_goods_code = i.hq_goods_code
+	AND   j.hq_goods_code = h.hq_goods_code
+	AND   i.taking_code = #{taking_code}
+	</select>
+	
+	<select id="takingSeqNext" resultType="int">
+		SELECT STOCK_TAKING_SEQ.NEXTVAL FROM DUAL
+	</select>
+	
+	<select id="takingSeqCurrent" resultType="int">
+		SELECT STOCK_TAKING_SEQ.CURRVAL FROM DUAL
+	</select>
+    
+    <update id="registTaking">
+    INSERT INTO LOGIS_STOCK_TAKING
+    	(TAKING_CODE, LOGIS_CODE, WH_CODE, TAKING_DATE, COMPUTER_STOCK, ACTUAL_STOCK, DEFF_QUANTITY, ADJUST_QUANTITY, TAKING_ST)
+    VALUES 
+    	(#{taking_code},#{logis_code},#{wh_code},#{comquan},#{realquan},#{realquan}-#{comquan},#{realquan}-#{comquan},SYSDATE,2)
+    </update>
+    <update id="registTakingTempDetail">
+	INSERT INTO LOGIS_STOCK_TAKING
+	(TAKING_CODE, LOGIS_CODE, WH_CODE, HQ_GOODS_CODE,COMPUTER_STOCK,ACTUAL_STOCK,DEFF_QUANTITY,ADJUST_QUANTITY,TAKING_ST, TAKING_DATE) 
+	VALUES (#{takingCode},#{logis_code}, #{wh_code}, #{goodsCode},#{comquan},#{realquan},#{realquan}-#{comquan},#{realquan}-#{comquan}, 2, SYSDATE)
+    </update>
+    <update id="updateTakingTempDetail">
+    UPDATE LOGIS_STOCK_TAKING SET 
+		COMPUTER_STOCK = #{comquan}, ACTUAL_STOCK = #{realquan}, DEFF_QUANTITY = #{realquan}-#{comquan}, ADJUST_QUANTITY = #{realquan}-#{comquan}
+	WHERE 
+		TAKING_CODE = #{takingCode}
+    AND HQ_GOODS_CODE = #{goodsCode}
+    AND LOGIS_CODE = #{logis_code}
+    AND Wh_CODE = #{wh_code}
+    </update>
+    <update id="takingFinish">
+    UPDATE LOGIS_STOCK_TAKING SET
+    TAKING_ST = 1
+    WHERE TAKING_CODE = #{takingCode}
+    </update>
+    <update id="updateStockByTaking">
+    UPDATE LOGIS_WH A
+	SET
+	(HQ_GOODS_CODE, LOGIS_GOODS_STOCK)= (
+                                             SELECT
+                                                 HQ_GOODS_CODE,
+                                                 ACTUAL_STOCK
+                                             FROM
+                                                 LOGIS_STOCK_TAKING B
+                                             WHERE
+                                                 TAKING_CODE =  #{takingCode}
+                                             AND
+                                                 A.HQ_GOODS_CODE = B.HQ_GOODS_CODE
+                                         )
+	WHERE
+	LOGIS_CODE =  #{logis_code}
+	AND WH_CODE = #{wh_code}
+	AND HQ_GOODS_CODE IN  (
+                              SELECT
+                                  HQ_GOODS_CODE
+                              FROM
+                                  LOGIS_STOCK_TAKING L
+                              WHERE
+                                  TAKING_CODE =  #{takingCode}
+                          )
+    </update>
+</mapper>

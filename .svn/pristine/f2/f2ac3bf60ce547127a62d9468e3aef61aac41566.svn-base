@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HqOrder-Mapper">
+
+	<select id="selectOrderList" resultType="franOrder">
+		SELECT * FROM FRAN_ORDER
+	</select>
+	
+	<select id="selectOrderListCount" resultType="int">
+		select count(*)
+		from fran_order
+		where fran_order_code is not null  			  				  	
+	</select>
+
+</mapper>

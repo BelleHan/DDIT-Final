@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Sales-Mapper">
+	<sql id="searchMap">
+		<if test="keywordMap.fms_fran!=null and !keywordMap.fms_fran.equals('')">
+			and a.fran_code = #{keywordMap.fms_fran}
+		</if>
+		<if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+			and b.fran_local_num= #{keywordMap.fms_local}
+		</if>
+		<if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+			and a.hq_goods_code= #{keywordMap.fms_goods}
+		</if>
+		<if test="keywordMap.start_date != null and !keywordMap.start_date.equals('')">
+	        and <![CDATA[a.sales_date >= #{keywordMap.start_date}]]>
+		</if>
+		<if test="keywordMap.end_date != null and !keywordMap.end_date.equals('')">
+	        and <![CDATA[a.sales_date <= #{keywordMap.end_date}]]>		
+		</if>
+	</sql>
+	<sql id="searchtext">
+		<if test="keywordMap.fms_fran!=null and !keywordMap.fms_fran.equals('')">
+	    ,a.sales_date
+	    ,b.fran_local_num
+	    ,b.fran_code
+	    ,b.fran_name
+		</if>
+	    <if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+	    ,a.sales_date
+	    ,b.fran_local_num
+	    </if>
+   	    <if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+ 	    ,b.fran_local_num
+	    ,b.fran_code
+	    ,b.fran_name
+		,d.sup_goods_laca
+        ,d.sup_goods_smca
+		,a.hq_goods_code
+ 		,c.hq_goods_name
+		</if>
+	    <if test="(keywordMap.fran_local_num==null and keywordMap.fran_code==null and keywordMap.fms_goods==null) or (keywordMap.fms_fran.equals('') and keywordMap.fms_local.equals('') and keywordMap.fms_goods.equals(''))">
+	    ,b.fran_local_num
+	    ,b.fran_code
+	    ,b.fran_name
+	    </if>
+	</sql>
+	
+	<select id="getSalesListWithoutGoods" resultType="franSalesVO">
+	SELECT
+	    round(sum( a.sales_amount),-2) sales_amount
+	    <include refid="searchtext"/>
+	FROM
+	    fran_sales_mock a, fran b, hq_goods c, sup_goods d
+	WHERE 
+		a.fran_code = b.fran_code
+	AND a.hq_goods_code = c.hq_goods_code
+	and c.sup_goods_code = d.sup_goods_code
+	<include refid="searchMap"/>
+	<trim prefix="GROUP by" prefixOverrides=","> 
+		<include refid="searchtext"/>
+	</trim>
+	<if test="keywordMap.fms_fran!=null and !keywordMap.fms_fran.equals('')">
+	    ORDER by b.fran_local_num DESC
+    </if>
+    <if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+	    ORDER by b.fran_local_num DESC
+    </if>
+    <if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+    	ORDER by a.hq_goods_code
+    </if>
+    </select>
+    
+	<select id="getSalesListWithoutGoodsCount" resultType="int">
+	SELECT
+	count(round(avg( a.sales_amount),-2))
+	FROM
+	    fran_sales_mock a, fran b, hq_goods c, sup_goods d
+	WHERE 
+		a.FRAN_CODE = b.fran_code
+	AND a.hq_goods_code = c.hq_goods_code
+	and c.sup_goods_code = d.sup_goods_code
+	<include refid="searchMap"/>
+	<trim prefix="GROUP by" prefixOverrides=","> 
+		<include refid="searchtext"/>
+	</trim>
+    </select>
+	<select id="getSalesListWithoutGoodsAmount" resultType="int">
+	SELECT
+	round(avg(round(avg( a.sales_amount),-2)),-2)
+	FROM
+	    fran_sales_mock a, fran b, hq_goods c, sup_goods d
+	WHERE a.FRAN_CODE = b.fran_code
+	and a.hq_goods_code = c.hq_goods_code
+	<include refid="searchMap"/>
+	<trim prefix="GROUP by" prefixOverrides=","> 
+		<include refid="searchtext"/>
+	</trim>
+    </select>
+    
+    <select id="sum" resultType="int">
+	SELECT
+	    round(sum( a.sales_amount),-2) sales_amount
+	FROM
+	    fran_sales_mock a, fran b, hq_goods c, sup_goods d
+	WHERE 
+		a.fran_code = b.fran_code
+	AND a.hq_goods_code = c.hq_goods_code
+	and c.sup_goods_code = d.sup_goods_code
+	<include refid="searchMap"/>
+    </select>
+    
+</mapper>

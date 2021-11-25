@@ -1,0 +1,384 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<head>
+<title>발주신청</title>
+</head>
+<style>
+/* 리스트 css */
+
+.container-fluid{
+	margin-top: 20px;
+}
+.container-fluid .card{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+.container {
+  background-color: #b5c1dc57;
+}
+
+
+
+</style>
+<script type="text/javascript">
+// 	$(document).ready(function() {
+// 		$("#cbx_chkAll").click(function() {
+// 			if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+// 			else $("input[name=chk]").prop("checked", false);
+// 		});
+		
+// 		$("input[name=chk]").click(function() {
+// 			var total = $("input[name=chk]").length;
+// 			var checked = $("input[name=chk]:checked").length;
+			
+// 			if(total != checked) $("#cbx_chkAll").prop("checked", false);
+// 			else $("#cbx_chkAll").prop("checked", true); 
+// 		});
+// 	});
+</script>
+<body>
+<script src="<%=request.getContextPath() %>/resources/js/common_kjy.js"></script>
+<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>발주관리</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>발주관리
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	발주요청
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<hr>
+</section>
+<div class="row">
+<!-- 		<div class="col-2 column" > -->
+<!-- 		</div> -->
+		<div class="col-8 column" >
+<!-- 			  <button type="button" class="btn btn-primary float-sm-right">물품추가</button> -->
+			  <button type="button" class="btn btn-block btn-warning btn-xs" onclick="addOrder()">물품추가</button>
+		</div>
+<!-- 		<div class="col-2 column" > -->
+<!-- 		</div> -->
+		<div class="col-4 column" >
+<!-- 			  <button type="button" class="btn btn-primary float-sm-right">발주요청</button> -->
+			  <button type="button" class="btn btn-block btn-primary btn-xs">발주요청</button>
+		</div>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<!-- 세로 리스트 박스 -->
+		<div class="col-4 column" >
+		    <div class="info-box" style="height: 100px;">
+
+              <div class="info-box-content" >
+                <span class="info-box-text" style="padding-left: 15px;"><b>자동발주</b></span>
+				<div class="row">
+					<div class="col-sm-6">
+		                  <a href="#" class="nav-link">
+		                    <i class="fas fa-history"></i> 이전발주
+		                  </a>
+					</div>
+					<div class="col-sm-6">
+		                  <a href="#" class="nav-link">
+		                    <i class="fas fa-thumbs-up"></i> 추천발주
+		                  </a>
+					</div>
+				 </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <div class="card text-white bg-primary mb-3 no-move">
+			<div class="card-header">Header</div>
+			<div class="card-body">
+			<h5 class="card-title">card 1</h5>
+			<p class="card-text">no-move</p>
+			</div>
+	</div>
+
+		<!-- 각 카드 리스트 박스 -->
+		</div>
+		
+		<!-- 세로 리스트 박스 --><!-- 물품목록 -->
+		<div class="col-4 container" style="height:80vh;overflow:scroll;">
+			<div class="info-box"  style="height: 100px; margin-bottom: 5px;">
+	<!--               <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span> -->
+					<div class="col-sm-9">
+					 	<div class="form-group row">
+							<span class=" search-group col-sm-4">대분류</span>
+							<div class="input-group input-group-sm col-sm-8">
+								<input type="text" id="fms-laca" name="keyword" onkeyup="enterkey();" class="form-control form-fms-search" value="">
+								<span class="input-group-append">
+									<button type="button" id="btn-laca" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+								</span>
+							</div>
+						</div>
+					 	<div class="form-group row">
+							<span class=" search-group col-sm-4">소분류</span>
+							<div class="input-group input-group-sm col-sm-8">
+								<input type="text" id="fms-smca" name="keyword2" onkeyup="enterkey();" class="form-control form-fms-search" value="" >
+								<span class="input-group-append">
+									<button type="button" id="btn-smca" class="btn bg-gradient-secondary btn-flat btn-fms-search"><i class="fas fa-sw fa-search"></i></button>
+								</span>
+							</div>
+						</div>
+					</div>
+	                <div class="info-box-content">
+					 	<div class="col-sm-3" style="margin:auto 0;">
+			               <button  onclick="list_go_buyGoods(1);" type="button" id="btn-search" 
+							class="btn btn-block btn-outline-secondary btn-lg btn-fms-search" style="font-size: 15px; width:65px; text-align: center; padding-left: 9px;">search</button>
+		              	</div>
+		             </div>
+	              <!-- /.info-box-content -->
+             </div>
+             <!-- infobox(검색조건) -->
+             
+            <div class="row" style="padding:0 10px;">
+            	<div class="col-sm-4" >
+				     <input type="checkbox" value="" id="check_all"><label for="check_all">전체선택</label>
+            	</div>
+				<div class="col-sm-8" style="text-align: right;">
+		     		<span>검색결과 <span style="color:red;"><b> ${orderGoodsList.size()} </b></span>개 </span>
+				</div>
+            </div>
+            
+
+		   <c:forEach items="${orderGoodsList }" var="orderGoods" varStatus="st">
+				<!-- 전체검색결과 -->
+				
+			 
+				<div data-target="order" id="order_div" class="card bg-light mb-3 mb-3 ">
+					<div class="card-header">
+						<!-- checkbox (발주를 원하는 물품체크)-->
+						
+<%-- 						<input type="checkbox" onclick="javascript:test();" data-target="checkGoods" name="checkGoods" hq_goods_code="${orderGoods.hq_goods_code}" --%>
+						<input type="checkbox" data-target="checkGoods" name="checkGoods" 
+							hq_goods_code="${orderGoods.hq_goods_code}"
+							hq_goods_name="${orderGoods.hq_goods_name}"
+							sup_goods_attr1="${orderGoods.supGoodsVO.sup_goods_attr1 }" 
+							sup_goods_unit="${orderGoods.supGoodsVO.sup_goods_unit}"
+							sup_goods_img="${orderGoods.supGoodsVO.sup_goods_img }"
+							sup_goods_price="${orderGoods.goods_delivery_price}"/>
+							
+					
+					
+						<b>${orderGoods.hq_goods_name} &nbsp; (${orderGoods.supGoodsVO.sup_goods_attr1}${orderGoods.supGoodsVO.sup_goods_unit})</b>
+	               		<button type="button" style="visibility:hidden;" class="close" data-dismiss="alert" aria-hidden="true" onclick='deleteDiv()'>×</button>
+					</div>
+					<div class="card-body">
+	<!-- 					<h5 class="card-title">card 3</h5> -->
+						<div class="card-text">
+							<div class="row">
+								<div class="product-image col-sm-3" id="pictureView" 
+									style="background-image:url('<%=request.getContextPath()%>/sup/goods/getPicture.do?sup_goods_img=${orderGoods.supGoodsVO.sup_goods_img}');background-repeat:no-repeat;background-position:center;background-size:cover;"></div>
+		
+								<table class="product-image col-sm-9" style="font-size: 13px;">
+			            			<tr>
+			            				<th class="col-sm-4">단가(원)</th>
+			            				<td>${orderGoods.goods_delivery_price}<b>원</b></td>
+	<!-- 		            				<th class="col-sm-4">수량(개)</th> -->
+	<!-- 		            				<td><input type="text" class="form-control" id="goods_num" name="goods_num" onkeyup='call()'></td> -->
+			            			</tr>
+			            			<tr>
+			            				<th class="col-sm-4">수량(개)</th>
+			            				<td><input data-target="orderNum" type="text" class="form-control fran_order_quan" value=1
+			            						id="fran_order_quan${st.count}" name="fran_order_quan" onkeyup='this.value=this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z]/g, "");calcprice(${st.count },${orderGoods.goods_delivery_price});'></td>
+			            			</tr>
+			            			<tr>
+			            				<th class="col-sm-4">금액(원)</th>
+			            				<td>
+			            					<input data-target="orderPrice" type="text" readonly
+			            					 class="form-control fran_order_price" id="fran_order_price" name="fran_order_price"
+			            					  placeholder="단가(원)*수량(개)">
+										</td>
+			            			</tr>
+			            		</table>
+							</div>
+							<br>
+		            		<div class="row" style="margin: 0 auto;">
+		            			<div class="col-sm-6">
+				              		<input type="radio" value="1" id="generalorder" name="order-deli-se${st.count}" checked>
+	                				 <label for="check1">일반발주 <i class="fas fa-truck"></i></label>
+<!-- 		          				<span><b>일반발주 </b><i class="fas fa-truck"></i></span> -->
+		            			</div>
+		            			<div class="col-sm-6">
+			          				<input type="radio" value="2" id="speedorder" name="order-deli-se${st.count}" >
+		            				 <label for="check1">총알발주<i class="fas fa-space-shuttle"></i></label>
+<!-- 			          				<span><b>총알발주 </b><i class="fas fa-space-shuttle"></i></span> -->
+		            			</div>
+		            		</div>
+						</div>
+					</div>
+				</div>
+					<input data-target="orderGoods" type="hidden" name="goods_code" id="goods_code" value="${orderGoods.supGoodsVO.sup_goods_code }"/>
+<%-- 					<input data-target="GoodsName" type="hidden" name="hq_goods_name" id="hq_goods_name" value="${orderGoods.hq_goods_name}"/> --%>
+<!-- 					<input data-target="orderst" type="hidden" name="orderst" id="orderst" value="$('input[name=order-deli-se]:checked').val()"/> -->
+<!-- 					<input data-target="fran_order_quan" type="hidden" name="fran_order_quan" id="fran_order_quan" value="$('#fran_order_quan').val()"/> -->
+			</c:forEach>
+		</div>
+		
+				<!-- 세로 리스트 박스 -->
+		
+		<div class="col-4 column container" style="border: 1px solid #cecece; border-radius: 5px; height:80vh;overflow:scroll;">
+		<!-- 각 카드 리스트 박스 -->
+			 <div class="d-flex justify-content-between">
+                  <h3 class="card-title">발주목록</h3>
+<!--                   <a href="javascript:void(0);">View Report</a> -->
+             </div>
+               
+            <div class="row" style="padding:0 10px; ">
+            	<div class="col-sm-4" >
+				     <input type="checkbox" value="" id="check_all"><label for="check_all">전체선택</label>
+            	</div>
+				<div class="col-sm-8" style="text-align: right;">
+		     		<span>선택물품개수 <span style="color:red;"><b> </b></span>개 </span>
+				</div>
+            
+             <!-- 발주할 물품개수 -->
+             
+	             <div id="addOrderDiv">
+			
+	             </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    //console.log($('#fran_order_quan${st.count }').val());
+
+    function calcprice(count,price){
+		var num = $('#fran_order_quan'+count).val().trim();
+		var totalprice = $('#fran_order_price'+count);
+		
+		if(num)	totalprice.val(num * price); 
+	}
+    function calcprice2(price){
+		var num = $('#fran_order_quan').val().trim();
+		var totalprice = $('#fran_order_price'+count);
+		
+		if(num)	totalprice.val(num * price); 
+	}
+    
+	function deleteDiv() {
+	  const div = document.getElementById('order_div${orderGoods.hq_goods_code}');
+	  
+	  div.remove();
+	}
+	
+</script>
+<script>
+function test() {
+	$('#test').val($('#fran_order_quan1').val());
+	console.log($('#test').val());
+}
+function addOrder() {
+	$('#addOrderDiv').empty();
+	$('input[data-target="checkGoods"]:checked').each(function(){
+		var htmlCode = '<div class="info-box" >'
+		
+			htmlCode += '<div class="product-image col-sm-2" id="pictureView"'
+			htmlCode += 'style="background-image:url('+<%=request.getContextPath()%>+'/sup/goods/getPicture.do?sup_goods_img='+$(this).attr("sup_goods_img")+');background-repeat:no-repeat;background-position:center;background-size:cover;"></div>'
+			
+// 			htmlCode += '<div class="info-box-content">'
+			htmlCode += '<span class="info-box-text">'+$(this).attr("hq_goods_name")+$(this).attr("sup_goods_attr1")+$(this).attr("sup_goods_unit")+'</span>'
+// 			htmlCode += '<span class="info-box-number" style="font-size:12px;">'+$(this).attr("sup_goods_price")+'원'
+			htmlCode += '<input class="form-control" type="text" style="width:60px; value="'+$('.fran_order_quan').val()+'"'
+// 			htmlCode += 'onkeyup=this.value=this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z]/g, "");calcprice2('+$(this).attr("sup_goods_price")+');/>'
+// 			htmlCode += '</div>'
+			
+// 			htmlCode += '<div class="progress">'
+// 			htmlCode += '<p class="info-box-number"><input class="form-control" type="text" style="width:60px; value="'+$('.fran_order_price').val()+'"/></p>'
+// 			htmlCode += '<span class="progress-description">'
+			if($('#generalorder').prop("checked")==true){
+				htmlCode += '<span>일반배송</span>'
+				
+			}
+// 			htmlCode += '<c:if test="{'+$('#speedorder').prop("checked")+' eq true}"><span>총알배송</span></c:if>'
+// 			htmlCode += '</span>'
+// 			htmlCode += '</div>'
+			
+			htmlCode += '</div>'
+		
+		$('#addOrderDiv').append(htmlCode);
+	});
+	
+	
+}
+
+// 		var input = $('<input>').attr({
+// //				type :"hidden",
+// 			hq_goods_code	:	$(this).attr("hq_goods_code"),
+// 			hq_goods_name	:	$(this).attr("hq_goods_name"),
+// 			sup_goods_attr1	:	$(this).attr("sup_goods_attr1"),
+// 			sup_goods_unit	:	$(this).attr("sup_goods_unit"),
+// 			sup_goods_img	:	$(this).attr("sup_goods_img"),
+// 			generalorder	:	$('#generalorder').prop("checked"),
+// 			speedorder		:	$('#speedorder').prop("checked"),
+// 			fran_order_quan	:	s
+// 		});
+		
+// window.onload=function(){
+// 	$('input[data-target="checkGoods"]').change(function(event){
+		
+// // 		var val = $('#order_div')
+// // 		$('#addOrderDiv').append(val);
+// // 		alert($(this).prop("checked"));
+// // 		alert($(this).attr("hq_goods_code"));
+// // 		alert($(this).attr("hq_goods_name"));
+// // 		alert($(this).attr("sup_goods_attr1"));
+// // 		alert($(this).attr("sup_goods_unit"));
+// // 		alert($(this).attr("sup_goods_img"));
+// // 		alert($('#generalorder').prop("checked"));
+// // 		alert($('#speedorder').prop("checked"));
+// // 		alert($('.fran_order_quan').val());
+		
+// 		if($(this).prop("checked")){
+// 			var input = $('<input>').attr({
+// // 				type :"hidden",
+// 				hq_goods_code	:	$(this).attr("hq_goods_code"),
+// 				hq_goods_name	:	$(this).attr("hq_goods_name"),
+// 				sup_goods_attr1	:	$(this).attr("sup_goods_attr1"),
+// 				sup_goods_unit	:	$(this).attr("sup_goods_unit"),
+// 				sup_goods_img	:	$(this).attr("sup_goods_img"),
+// 				generalorder	:	$('#generalorder').prop("checked"),
+// 				speedorder		:	$('#speedorder').prop("checked"),
+// 				fran_order_quan	:	$('.fran_order_quan').val()
+// 			});
+// 			$('form[name="addProduct"]').append(input);
+// 		}else{
+// 			$('form[name="addProduct"]>input[hq_goods_code	="'+$(this).attr("hq_goods_code")+'"]').remove();
+// 			$('form[name="addProduct"]>input[hq_goods_name	="'+$(this).attr("hq_goods_name")+'"]').remove();
+// 			$('form[name="addProduct"]>input[sup_goods_attr1="'+$(this).attr("sup_goods_attr1")+'"]').remove();
+// 			$('form[name="addProduct"]>input[sup_goods_unit	="'+$(this).attr("sup_goods_unit")+'"]').remove();
+// 			$('form[name="addProduct"]>input[sup_goods_img	="'+$(this).attr("sup_goods_img")+'"]').remove();
+// 			$('form[name="addProduct"]>input[generalorder	="'+$('#generalorder').prop("checked")+'"]').remove();
+// 			$('form[name="addProduct"]>input[speedorder		="'+$('#speedorder').prop("checked")+'"]').remove();
+// 			$('form[name="addProduct"]>input[fran_order_quan="'+$('.fran_order_quan').val()+'"]').remove();
+			
+// 		}
+// 	});
+	
+// }
+
+</script>
+
+	
+
+
+</body>

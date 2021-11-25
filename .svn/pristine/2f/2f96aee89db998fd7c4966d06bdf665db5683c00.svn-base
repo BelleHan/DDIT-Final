@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LStock-Mapper">
+   
+   <!-- 재고목록출력(해당물류센터) -->
+   <select id="selectSearchStockList" resultType="logisStock">
+   
+<!--    <include refid="Common-Mapper.pageHeader"></include> -->
+   
+   SELECT
+       e.logis_safe_stock,
+       e.logis_suit_stock,
+       e.logis_goods_stock,
+       e.wh_name,
+       f.sup_goods_name,
+       f.sup_goods_smca,
+       f.sup_goods_laca,
+       d.goods_max_order,
+       d.hq_goods_code,
+        e.logis_code
+   FROM
+       logis_wh e,
+       hq_goods d,
+       sup_goods f
+   WHERE
+         d.hq_goods_code = e.hq_goods_code
+    AND   f.sup_goods_code = d.sup_goods_code
+    AND   e.logis_code = #{keywordMap.logis_code}
+   <if test="keywordMap.wh != null and keywordMap.wh != ''">
+           and e.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.laca != null and keywordMap.laca != ''">
+        and f.sup_goods_laca = #{keywordMap.laca}         
+   </if>
+   <if test="keywordMap.smca != null and keywordMap.smca != ''">
+        and f.sup_goods_smca = #{keywordMap.smca}         
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+        and f.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+      
+      
+<!--       <include refid="Common-Mapper.pageFooter"></include> -->
+
+   </select>
+   
+   <!-- 재고목록총갯수(해당물류센터) -->
+   <select id="selectSearchStockListCount" resultType="int">
+	SELECT 
+	   count(*)
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+	   c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+	    AND   c.logis_code = #{keywordMap.logis_code}
+	<if test="keywordMap.wh != null and keywordMap.wh != ''">
+	    AND d.wh_name = #{keywordMap.wh}
+	</if>
+	<if test="keywordMap.laca != null and keywordMap.laca != ''">
+	    AND f.sup_goods_laca = #{keywordMap.laca}			
+	</if>
+	<if test="keywordMap.smca != null and keywordMap.smca != ''">
+		AND f.sup_goods_smca = #{keywordMap.smca}			
+	</if>
+	<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+		AND f.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+	</if>
+	</select>
+   
+   <!-- 창고 콤보박스  -->
+   <select id="whCombo" resultType="logisWh">
+   SELECT
+       distinct b.wh_name
+   FROM
+       logis_wh b,
+       logis a
+   WHERE
+       a.logis_code = b.logis_code
+       and a.logis_code = #{logis_code}
+       order by b.wh_name
+   </select>
+   
+   <!-- 대분류 콤보박스 -->
+   <select id="lacaCombo" resultType="logisStock">
+   SELECT
+      distinct sup_goods_laca
+   FROM
+       sup_goods
+       order by sup_goods_laca
+   </select>
+   
+   <!-- 소분류 콤보박스 -->
+   <select id="smcaCombo" resultType="logisStock">
+   SELECT
+      distinct sup_goods_smca
+   FROM
+       sup_goods
+       order by sup_goods_smca
+   </select>
+   
+   <select id="selectStockByHq_goods_code"  parameterType="logisWh" resultType="logisWh">
+		SELECT
+			* 
+		FROM
+			logis_wh 
+		WHERE
+			hq_goods_code=#{hq_goods_code}
+        AND wh_name=#{wh_name}
+        and logis_code = #{logis_code}
+	</select>
+	
+	<update id="updateStock" parameterType="logisWh">
+	UPDATE
+	logis_wh
+	SET
+	logis_goods_stock = #{logis_goods_stock}, logis_safe_stock = #{logis_safe_stock}, logis_suit_stock = #{logis_suit_stock}
+	WHERE
+	hq_goods_code = #{hq_goods_code}
+	AND
+	wh_name = #{wh_name}
+	AND logis_code = #{logis_code}
+	</update>
+	
+	<!-- 재고실사 -->
+	<select id="selectSearchTakingList" resultType="logisStockTaking">
+	SELECT
+	     k.taking_code
+	    ,k.wh_code
+	    ,k.hq_goods_code
+	    ,j.wh_name
+	    ,l.hq_goods_name
+	    ,k.logis_code
+	    ,k.computer_stock
+	    ,k.actual_stock
+	    ,k.deff_quantity
+	    ,k.adjust_quantity
+	    ,j.logis_goods_stock
+	    ,k.taking_date   
+	FROM
+	     logis_stock_taking k
+	    ,logis_wh j
+	    ,hq_goods l
+	WHERE
+	          j.logis_code = k.logis_code
+	    AND   j.wh_code = k.wh_code
+	    AND   l.hq_goods_code = k.hq_goods_code
+	    AND   l.hq_goods_code = j.hq_goods_code
+	    and   k.logis_code = #{keywordMap.logis_code}
+   <if test="keywordMap.wh != null and keywordMap.wh != ''">
+           and j.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+     	   and l.hq_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+	ORDER by k.taking_date desc
+	</select>
+	
+	<select id="selectSearchTakingListCount" resultType="int">
+	SELECT
+	     count(*)   
+	FROM
+	     logis_stock_taking k
+	    ,logis_wh j
+	    ,hq_goods l
+	WHERE
+	          j.logis_code = k.logis_code
+	    AND   j.wh_code = k.wh_code
+	    AND   l.hq_goods_code = k.hq_goods_code
+	    AND   l.hq_goods_code = j.hq_goods_code
+	    and   k.logis_code = #{keywordMap.logis_code}
+	<if test="keywordMap.wh != null and keywordMap.wh != ''">
+           and j.wh_name = #{keywordMap.wh}
+   </if>
+   <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+     	   and l.hq_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+	ORDER by k.taking_date desc
+	</select>
+	
+	<select id="selectTakingList" resultType="logisStockTaking">
+	SELECT
+	     k.taking_code
+	    ,k.wh_code
+	    ,k.hq_goods_code
+	    ,j.wh_name
+	    ,l.hq_goods_name
+	    ,k.logis_code
+	    ,k.computer_stock
+	    ,k.actual_stock
+	    ,k.deff_quantity
+	    ,k.adjust_quantity
+	    ,j.logis_goods_stock
+	    ,k.taking_date   
+	FROM
+	     logis_stock_taking k
+	    ,logis_wh j
+	    ,hq_goods l
+	WHERE
+	          j.logis_code = k.logis_code
+	    AND   j.wh_code = k.wh_code
+	    AND   l.hq_goods_code = k.hq_goods_code
+	    AND   l.hq_goods_code = j.hq_goods_code
+	    and   k.logis_code = #{keywordMap.logis_code}
+	ORDER by k.taking_date desc		
+	</select>
+   
+</mapper>

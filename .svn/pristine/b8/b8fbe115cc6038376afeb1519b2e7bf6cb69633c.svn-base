@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Qr-Mapper">
+	
+	<select id="selectQrByWh_code" resultType="QR">
+	SELECT
+	    q.hq_goods_code,
+	    q.hq_goods_name,
+	    p.actual_stock,
+	    o.logis_goods_stock
+	FROM
+	    logis_stock_taking p,
+	    logis_wh o,
+	    hq_goods q
+	WHERE
+	          o.hq_goods_code = p.hq_goods_code
+	    AND   q.hq_goods_code = o.hq_goods_code
+	    and   o.hq_goods_code = #{hq_goods_code}
+	    and   o.wh_code = #{wh_code}
+	    and   o.logis_code = #{logis_code}
+	</select>
+
+</mapper>

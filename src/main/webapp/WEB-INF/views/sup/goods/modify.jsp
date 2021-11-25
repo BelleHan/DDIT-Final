@@ -1,0 +1,161 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="lacaList" value="${dataMap.lacaList }" />
+<c:set var="smcaList" value="${dataMap.smcaList }" />
+<head>
+<style>
+th{
+	text-align: center;
+	vertical-align: center;
+	width:15%;
+}
+/* td { */
+/* 	width:35%; */
+/* 	vertical-align: center; */
+/* } */
+
+.td1{
+	width:35%;
+}
+
+</style>
+</head>
+
+<title>공지목록</title>
+
+<body>
+	<section class="content-header">
+	  	<div class="container-fluid" style="padding:0; margin:0">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+<!-- 	  				<h2>물품관리</h2>  				 -->
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>물품목록
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	물품등록
+			        </li>		        
+	    	  	</ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<hr>
+	</section>
+	
+  <section >
+		<form role="form" class="form-horizontal" action="modify.do" method="post" enctype="multipart/form-data">	 		
+		<div class="card-body" style="padding-top:0px;">
+	          <div class="row">
+	          	<input type="hidden" name="oldPicture"  value="${supGoods.sup_goods_img }"/>
+				<input type="file" id="inputFile" onchange="changePicture_go();" name="sup_goods_img" style="display:none" />
+	            <div class="col-12 col-sm-4" style="padding-top: 65px">
+<!-- 	              <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3> -->
+	              <div class="col-12">
+	<%-- 				<img src="<%=request.getContextPath()%>/sup/goods/getPicture.do?sup_goods_img=${supGoods.sup_goods_img}" alt="supGoodsImg"  --%>
+	<!-- 						class="product-image"> -->
+					<div class="product-image" id="pictureView"></div>														
+					<div class="input-group input-group-sm" style="padding-top: 5px;">
+						<label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">이미지변경</label>
+						<input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled
+							value="${supGoods.sup_goods_img.split('\\$\\$')[1] }"/>
+						<input id="picture" class="form-control" type="hidden" name="uploadPicture" />
+					</div>		
+	              </div>
+	            </div>
+	            <div class="col-12 col-sm-8">
+	             
+	              <h3 class="my-3">${supGoods.sup_goods_name }(${supGoods.sup_goods_code })
+	             	<button type="button"  class="btn btn-primary float-sm-right" id="modifyBtn" onclick="modify_go();" >저 장</button>
+					<button type="button" class="btn btn-default float-right" id="cancelBtn" onclick="history.go(-1);" style=" margin-right: 8px;">취 소</button>
+	              </h3><hr style="margin-bottom:10px;">
+	              
+<!-- 	         			<h6 style="padding:5px;">물품상세정보</h6> -->
+				<div class="col-sm-12">
+				<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+	                
+	                <tbody>
+	                
+	                <tr role="row" class="odd">
+	                  <th class="sorting_1">물품명</th>
+	                  <td class="td1"><input name="sup_goods_name" type="text" class="form-control" placeholder="${supGoods.sup_goods_name }" value="${supGoods.sup_goods_name }"></td>
+	                  <th>물품코드</th>
+	                  <td colspan="2"><input readonly name="sup_goods_code" type="text" class="form-control" id="sup_goods_code"
+							value="${supGoods.sup_goods_code}"></td>
+	                </tr>
+	                <tr role="row" class="even">
+	                  <th class="sorting_1">대분류</th>
+	                  <td class="td1">	  
+            				<select class="form-control" id="sup_goods_laca" name="sup_goods_laca">
+								<c:if test="${!empty lacaList}">
+					  			<option value="${supGoods.sup_goods_laca}">${supGoods.sup_goods_laca}</option>
+					  			<c:forEach var ="lacaList" items="${lacaList}">
+					  				<option value="${lacaList}" <c:if test="${map.laca eq lacaList}">selected</c:if> >${lacaList}</option>
+					  			</c:forEach>
+					  			</c:if>			
+		                   </select>
+		              </td>
+	                  <th>물품종류</th>
+	                  <td colspan="2">
+							<select class="form-control" name="sup_goods_smca" id="sup_goods_smca">
+						  		<c:if test="${!empty smcaList}">
+						  		<option value="${supGoods.sup_goods_smca}" >${supGoods.sup_goods_smca}</option>
+						  		<c:forEach var ="smcaList" items="${smcaList}">
+						  			<option value="${smcaList}"  <c:if test="${map.smca eq smcaList}">selected</c:if> >${smcaList}</option>
+						  		</c:forEach>
+					  			</c:if>
+						  	</select>		
+	                  </td>
+	                </tr>
+	                
+	                <tr role="row" class="odd">
+	                  <th class="sorting_1">납품가(원)</th>
+	                  <td class="td1"><input name="sup_goods_price" type="text" class="form-control" placeholder="${supGoods.sup_goods_price}" value="${supGoods.sup_goods_price}"></td>
+	                  <th>용량(단위)</th>
+	                  <td><input name="sup_goods_attr1" type="text"  class="form-control" placeholder="${supGoods.sup_goods_attr1}" value="${supGoods.sup_goods_attr1}"></td>
+	                  <td>  <input name="sup_goods_unit" type="text" class="form-control" placeholder="${supGoods.sup_goods_unit}" value="${supGoods.sup_goods_unit}"></td>
+                   </tr>	                
+
+	                <tr role="row" class="even">
+	                  <th class="sorting_1">포장재질</th>
+	                  <td class="td1"><input name="sup_goods_attr2" type="text" class="form-control" placeholder="${supGoods.sup_goods_attr2}" value="${supGoods.sup_goods_attr2}"></td>
+	                  <th>물품재질</th>
+	                  <td colspan="2"><input name="sup_goods_attr3" width="10px" type="text"  class="form-control" placeholder="${supGoods.sup_goods_attr3}" value="${supGoods.sup_goods_attr3}"></td>
+	                </tr>
+	                
+	                <tr role="row" class="odd">
+	                  <th class="sorting_1">가로(cm)</th>
+	                  <td class="td1"><input name="sup_goods_attr4" type="text" class="form-control" placeholder="${supGoods.sup_goods_attr4}" value="${supGoods.sup_goods_attr4}"></td>
+	                  <th>세로(cm)</th>
+	                  <td colspan="2"><input name="sup_goods_attr5" type="text" class="form-control" placeholder="${supGoods.sup_goods_attr5}" value="${supGoods.sup_goods_attr5}"></td>
+	                </tr>
+	                
+	                <tr role="row" class="even">
+	                  <th class="sorting_1">높이(cm)</th>
+	                  <td class="td1"><input name="sup_goods_attr6" type="text" class="form-control" placeholder="${supGoods.sup_goods_attr6}" value="${supGoods.sup_goods_attr6}"></td>
+	                  <th>무게(kg)</th>
+	                  <td colspan="2"><input name="sup_goods_attr7" type="text" class="form-control" placeholder="${supGoods.sup_goods_attr7}" value="${supGoods.sup_goods_attr7}"></td>
+	                </tr>
+	                
+	                <tr role="row" class="odd" rowspan='4'>
+	                  <th class="sorting_1" style="margin: 0">제품특성</th>
+	                  <td colspan='4'><textarea class="form-control" name="sup_goods_attr8" type="text" row="5" placeholder="${supGoods.sup_goods_attr8}" value="${supGoods.sup_goods_attr8}"></textarea></td>
+	                </tr>
+	               </tbody>
+	              </table>
+	             </div>
+	           </div>
+	         </div>
+	     </div>
+		</form>
+		</section>
+	<%@ include file="../js/modify_js.jsp" %>
+</body>
+

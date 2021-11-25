@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GoodsBuy-Mapper">
+
+<select id="selectSearchGoodsList" resultType="total">
+SELECT
+    d.sup_goods_name,
+    d.sup_goods_code,
+    e.goods_pur_code,
+    e.goods_pur_date,
+    e.goods_pur_price,
+    e.goods_pur_st,
+    e.pur_arrive_date,
+    e.pur_note,
+    e.pur_arrive_loc,
+    e.goods_pur_quan,
+    e.sup_goods_code,
+    f.goods_num,
+    f.goods_price
+FROM
+    buy_goods e,
+    sup_goods d,
+    buy_goods_detail f
+WHERE
+    d.sup_goods_code = e.sup_goods_code
+    AND   d.sup_goods_code = f.sup_goods_code
+</select>
+
+<select id="selectSearchGoodsListCount" resultType="int">
+SELECT
+    count(*)
+FROM
+    buy_goods e,
+    sup_goods d,
+    buy_goods_detail f
+WHERE
+    d.sup_goods_code = e.sup_goods_code
+    AND   d.sup_goods_code = f.sup_goods_code
+</select>
+
+
+	
+	
+</mapper>

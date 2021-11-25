@@ -1,0 +1,57 @@
+package kr.or.fms.fran.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.fran.service.FranService;
+
+@Controller
+@RequestMapping("/fr")
+public class FranToFranController {
+
+	@Autowired
+	FranService franService;
+	
+	@RequestMapping(value="/tofran/list")
+	public ModelAndView toFranList(SearchCriteria cri,HttpSession session,String laca, String smca, String keyword, ModelAndView mnv)throws Exception {
+		String url = "fr/toFran/toFranList1";
+		
+		cri.setPerPageNum(10);
+		FranVO fran = (FranVO)session.getAttribute("loginFran");
+		float fran_latitude = fran.getFran_latitude();
+		float fran_longitude = fran.getFran_longitude();
+		System.out.println("fran_latitude"+fran_latitude);
+		System.out.println("fran_logitude"+fran_longitude);
+		
+		
+		cri.getKeywordMap().put("laca", laca);
+		cri.getKeywordMap().put("smca", smca);
+		cri.getKeywordMap().put("keyword", keyword);
+		fran.setFran_latitude(fran_latitude);
+		fran.setFran_longitude(fran_longitude);
+		
+		List<FranVO> nearFranList = franService.getNearFranList(fran);
+		Map<String, Object> dataMap = franService.getSearchGoods(cri);
+		
+		mnv.addObject("dataMap", dataMap);
+        mnv.addObject("nearFranList", nearFranList);
+        mnv.addObject("franLatitude",fran_latitude);
+        mnv.addObject("franLongitude", fran_longitude);
+        mnv.setViewName(url);
+	       
+       return mnv;
+	}
+
+	
+
+
+}

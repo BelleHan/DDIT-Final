@@ -1,0 +1,235 @@
+package kr.or.fms.fran.controller;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.or.fms.command.FranReturnReqModifyCommand;
+import kr.or.fms.command.FranReturnReqRegistCommand;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnDetailVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.service.FranReturnService;
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.service.MenuService;
+import kr.or.fms.util.GetAttachesAsMultipartFiles;
+
+@Controller
+@RequestMapping("/fr")
+public class FrReturnController {
+	
+	@Autowired
+	MenuService menuService;
+	
+	@Autowired
+	FranReturnService franReturnService;
+	
+	@Resource(name="fileUploadPath")
+	private String fileUploadPath;
+	
+	private static final Logger logger = LoggerFactory.getLogger(FrReturnController.class);
+	
+	@RequestMapping(value="return/regist.do", method=RequestMethod.POST, produces="text/plain; charset=utf-8")
+	public String regist(FranReturnReqRegistCommand registReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String url = "redirect:/fr/return/list.do";
+		
+		ReturnVO returnVO = registReq.toReturnVO();
+		ReturnDetailVO returnDeVO = registReq.toReturnDetailVO();
+//		returnVO.setReturn_title((String)request.getAttribute("XSSreturn_title"));
+		List<AttachVO> attachList = GetAttachesAsMultipartFiles.save(registReq.getUploadFile(), fileUploadPath);
+		
+//		pds.setTitle(HTMLInputFilter.htmlSpecialChars(pds.getTitle()));
+		returnVO.setAttachList(attachList);
+		System.out.println("첨부파일리스트=============" + attachList);
+		franReturnService.registFranReturn(returnVO);
+		
+		String returnCode = franReturnService.getSeqCurrValue();
+		
+		returnDeVO.setReturn_code(returnCode);
+		
+		franReturnService.registFranReturnDe(returnDeVO);
+		rttr.addFlashAttribute("from", "regist");
+		
+		return url;
+	}
+	
+	@RequestMapping("/return/detail.do")
+	public ModelAndView detail(String return_code, String from, ModelAndView mnv) throws SQLException {
+		
+		String url = "fr/return/detail";
+		System.out.println("return_code : -" + return_code);
+
+		ReturnVO returnVO = new ReturnVO();
+		returnVO = franReturnService.read(return_code);
+/*		if (from != null && from.equals("list")) {
+			returnVO = franRetunService.read(return_code);
+			url = "redirect:/return/detail.do?return_code=" + return_code;
+		} else {
+			returnVO = franRetunService.getReturn(return_code);
+		}*/
+		
+		
+		List<AttachVO> attachList = franReturnService.getAttachByAttach_no(returnVO.getReturn_code());
+		if (returnVO != null && attachList != null) {
+			returnVO.setAttachList(attachList);
+		}
+		mnv.addObject("returnVO", returnVO);
+		mnv.addObject("attachList", attachList);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping("/return/modifyForm.do")
+	public ModelAndView modifyForm(ModelAndView mnv, String return_code) throws Exception {
+		
+		String url = "fr/return/modify";
+		
+		ReturnVO returnVO = franReturnService.getReturn(return_code);
+		List<AttachVO> attachList = franReturnService.getAttachByAttach_no(returnVO.getReturn_code());
+		if (returnVO != null && attachList != null) {
+			returnVO.setAttachList(attachList);
+		}
+		
+		mnv.addObject("returnVO", returnVO);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+
+	@RequestMapping("/return/modify.do")
+	public String modifyPOST(FranReturnReqModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String url = "redirect:/fr/return/detail.do";
+		
+		// 파일삭제
+		if (modifyReq.getDeleteFile() != null && modifyReq.getDeleteFile().length > 0) {
+			for (String attach_no : modifyReq.getDeleteFile()) {
+				AttachVO attach = franReturnService.getAttachByAno(attach_no);
+				File deleteFile = new File(attach.getFile_location(), attach.getFile_name());
+				if (deleteFile.exists()) {
+					deleteFile.delete();	// File 삭제
+				}
+				franReturnService.deleteFranReturnModi(attach_no);	// DB삭제
+			}
+		}
+		
+		// 파일저장
+		List<AttachVO> attachList = GetAttachesAsMultipartFiles.save(modifyReq.getUploadFile(), fileUploadPath);
+		
+		// PdsVO setting
+		ReturnVO returnVO = modifyReq.toReturnVO();
+		ReturnDetailVO  returnDeVO = modifyReq.toReturnDetailVO();
+		
+		
+		returnVO.setAttachList(attachList);
+//		pds.setTitle(HTMLInputFilter.htmlSpecialChars(pds.getTitle()));
+//		returnVO.setTitle((String) request.getAttribute("XSStitle"));
+		
+		
+		// DB저장
+		franReturnService.updateFranReturn(returnVO);
+		franReturnService.updateFranReturnDe(returnDeVO);
+		
+		
+		rttr.addFlashAttribute("from", "modify");
+		rttr.addAttribute("return_code", returnVO.getReturn_code());
+		
+		return url;
+	}
+
+	@RequestMapping("/return/remove.do")
+	public String remove(String return_code, RedirectAttributes rttr) throws Exception {
+		String url = "fr/return/remove_success";
+		
+		// 첨부파일 삭제
+		List<AttachVO> attachList = franReturnService.getAttachByAttach_no(return_code);
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
+				File target = new File(attach.getFile_location(), attach.getFile_name());
+				if (target.exists()) {
+					target.delete();
+				}
+			}
+//			franReturnService.removeAttachByAttach_no(attach_no);
+		}
+		
+		// DB삭제
+		franReturnService.remove(return_code);
+		
+		rttr.addFlashAttribute("from", "remove");
+		rttr.addAttribute("return_code", return_code);
+		return url;
+	}
+	
+	@RequestMapping("/return/getFile.do")
+	public String getFile(String attach_no, Model model) throws Exception {
+		
+		String url = "downloadFile";
+		
+		AttachVO attach = franReturnService.selectAttachDownload(attach_no);
+		
+		model.addAttribute("savedPath", attach.getFile_location());
+		model.addAttribute("fileName", attach.getFile_name());
+		
+		return url;
+		
+	}
+	
+	@RequestMapping("return/registForm")
+	public ModelAndView registForm(ModelAndView mnv) throws Exception {
+		String url = "fr/return/regist";
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping("/return/list")
+	public ModelAndView returnList(SearchCriteria cri, ModelAndView mnv, String keyword)throws SQLException{
+		String url="fr/return/list";
+		cri.setPerPageNum(19);
+		
+		cri.getKeywordMap().put("keyword", keyword);
+		Map<String,Object> dataMap = franReturnService.getReturnList(cri);
+		
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/goodsList.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<HqGoodsVO>> goodsList(Model model, String goods, HttpServletRequest httpServletRequest) throws SQLException {
+		
+		ResponseEntity<List<HqGoodsVO>> entity = null;
+		System.out.println("=========="+ goods);
+		try {
+				List<HqGoodsVO> goodsList = franReturnService.getGoodsList(goods);
+				entity = new ResponseEntity<List<HqGoodsVO>>(goodsList, HttpStatus.OK) ;
+		}catch(SQLException e) {
+				entity = new ResponseEntity<List<HqGoodsVO>>(HttpStatus.INTERNAL_SERVER_ERROR) ;
+		}
+	
+		return entity;
+		
+	}
+	
+}

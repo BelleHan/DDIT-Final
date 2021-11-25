@@ -1,0 +1,57 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class FranOrderDAOImpl implements FranOrderDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public List<HqGoodsVO> orderGoodsCriteriaList(SearchCriteria cri) throws SQLException {
+		
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);	
+		
+		List<HqGoodsVO> orderList = 
+				session.selectList("Order-Mapper.selectOrderGoods", cri,rowBounds);
+		return orderList;
+		
+	}
+
+	@Override
+	public int selectOrderGoodsCount(SearchCriteria cri) throws SQLException {
+		int count = session.selectOne("Order-Mapper.selectOrderGoodsCount", cri);
+		return count;
+	}
+
+	//대분류콤보박스
+	@Override
+	public List<String> selectLaca() throws SQLException {
+		List<String> lacaCombo = session.selectList("Order-Mapper.lacaCombo");
+		return lacaCombo;
+	}
+	//소분류콤보박스
+	@Override
+	public List<String> selectSmca() throws SQLException {
+		List<String> smcaCombo = session.selectList("Order-Mapper.smcaCombo");
+		return smcaCombo;
+	}
+//	@Override
+//	public List<HqGoodsVO> orderGoodsList() throws SQLException {
+//		List<HqGoodsVO> orderList = session.selectList("Order-Mapper.selectOrderGoods");
+//		return orderList;
+//		
+//	}
+
+}

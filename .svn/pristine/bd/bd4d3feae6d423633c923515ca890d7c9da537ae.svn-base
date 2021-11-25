@@ -1,0 +1,34 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dao.FranOrderDAO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class FranOrderServiceImpl implements FranOrderService {
+
+	private FranOrderDAO franOrderDAO;
+	public void setFranOrderDAO(FranOrderDAO franOrderDAO) {
+		this.franOrderDAO = franOrderDAO;
+	}
+
+	
+//	@Override
+//	public Map<String, Object> getOrderGoodsSearchList(SearchCriteria cri) throws SQLException {
+//		Map<String, Object> dataMap = new HashMap<String, Object>();
+//		
+//		//현재 페이지 번호에 맞는 리스트를 perPageNum 개수만큼 가져오기
+//		List<HqGoodsVO> orderGoodsList = franOrderDAO.orderGoodsList(cri);
+//		
+//	}
+
+	@Override
+	public List<HqGoodsVO> getOrderGoodsList() throws SQLException {
+		List<HqGoodsVO> orderList = franOrderDAO.orderGoodsList();
+		return orderList;
+	}
+}

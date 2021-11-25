@@ -1,0 +1,206 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="taking" value="${dataMap.takingStock }" />
+<c:set var="lacaList" value="${dataMap.lacaList }" />
+<c:set var="smcaList" value="${dataMap.smcaList }" />
+<c:set var="whList" value="${dataMap.whComboList }" />
+<c:set var="keyword" value="${dataMap.keyword }" />
+
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style>
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.content-header{
+	padding : 8px .5em;
+}
+.card-body{
+    padding: 0.25rem;
+}
+.table {
+    font-size: 13px;
+    text-align: center;
+}
+.search-group, .form-control {
+	font-size : 13px;
+	text-align : right;
+}
+.search-group {
+	padding-top: 2px;
+}
+.search-card {
+	padding-top : 5px;
+    padding-bottom: 0px;
+	height : 85px;
+    width: 1260px;
+    margin: auto;
+}
+.search-body{
+	padding : 5px 30px;
+	height : 80px;
+}
+.search-navi{
+	position : fixed;
+	top : 92vh;
+	left : 71vh;
+	font-size : 13px;	
+}
+.search-navi{
+   position : fixed;
+   top : 35rem;
+   left : 34rem;   
+   font-size : 13px;
+}
+.input-padding-bottom {
+	margin-bottom : 5px;
+}
+.custom-checkbox {
+	padding-left : 108px;
+}
+#btn-goods {
+	height : 31px;
+}
+.custom-control-label {
+	padding-top: 3px;
+}
+.btn-fms-search{
+	height: 30px;
+}
+#btn-search {
+	height : 65px; margin-left : 26px;
+}
+.body-top {
+	margin-top : 5px;
+}
+#custom-tabs-one-profile-tab{
+	background-color: white;
+}
+#tab{
+background-color: #5ea4ff;
+}
+.table td{
+padding: 6.8px;
+}
+
+
+</style>
+</head>
+
+<title>재고실사</title>
+
+<body>
+
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h5>${loginLogis.logis_name } 재고실사</h5>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>재고실사
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	목록
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+	 <!-- Main content -->
+	<section class="content">
+		<div class="card">
+         <div class="card-body search-body" style="height: auto;">
+            <div class="search-group">
+               <div class="input-group">
+                  <select class="form-control col-md-3" name="wh" id="wh"
+                       onchange="list_go_logis();" style="text-align: center;">
+                    <c:if test="${!empty whList }" >
+                       <option value="" >창고명</option>
+                       <c:forEach var="wh" items="${whList }">
+                       <option value="${wh.wh_name }" ${wh.wh_name eq '${wh.wh_name}' ? 'selected':''} >${wh.wh_name }</option>
+                       </c:forEach>
+                    </c:if>
+                    </select>
+                  <input style="margin-left: 600px;" class="form-control col-md-3" type="text" name="keyword" placeholder="물품명을 입력하세요." value="${param.keyword }"/>
+                  <span class="input-group-append">
+                     <button class="btn btn-primary" type="button" onclick="list_go_logis(1);" 
+                     data-card-widget="search">
+                        <i class="fa fa-fw fa-search"></i>
+                     </button>
+                  </span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+		<div class="card-body" style="height: 728.88px;">
+			<table class="table table-hover text-center">
+				<tr style="font-size: 1.2em;">
+					<th style="width: 5%;">번 호</th>
+					<th style="width: 6%;">실사날짜</th>
+					<th style="width: 7%;">창고코드</th>
+					<th style="width: 7%;">물품코드</th>
+					<th style="width: 10%;">창고명</th>
+					<th style="width: 10%;">물품명</th>
+					<th style="width: 6%; text-align: right;">전산재고</th>
+					<th style="width: 6%; text-align: right;">실사재고</th>
+					<th style="width: 6%; text-align: right;">차이수량</th>
+					<th style="width: 6%; text-align: right;">조정수량</th>
+					<th style="width: 6%; text-align: right;">현재고</th>
+					<th style="width: 7%;">실사코드</th>
+				</tr>
+				<c:if test="${empty dataMap.takingStock }">
+					<tr>
+						<td colspan="12"><strong>해당 내용이 없습니다.</strong></td>
+					</tr>
+				</c:if>
+				<c:forEach items="${dataMap.takingStock }" var="taking">
+					<c:set var="i" value="${i+1 }" />
+					<tr>
+						<td>${i }</td>
+						<td><fmt:formatDate value="${taking.taking_date }" pattern="yyyy-MM-dd" /></td>
+						<td>${taking.wh_code }</td>
+						<td>${taking.hq_goods_code }</td>
+						<td>${taking.wh_name }</td>
+						<td>${taking.hq_goods_name }</td>
+						<td><fmt:formatNumber value="${taking.computer_stock }" pattern="#,###" /></td>
+						<td style="text-align: right;"><fmt:formatNumber value="${taking.actual_stock }" pattern="#,###" /></td>
+						<td style="color: red; text-align: right;"><fmt:formatNumber value="${taking.deff_quantity }" pattern="#,###" /></td>
+						<td style="text-align: right;"><fmt:formatNumber value="${taking.adjust_quantity }" pattern="#,###" /></td>
+						<td style="text-align: right;"><fmt:formatNumber value="${taking.logis_goods_stock }" pattern="#,###" /></td>
+						<td>${taking.taking_code }</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+		<div class="card-footer">
+			<%@ include file="/WEB-INF/views/common/paginationLStock.jsp"%>
+		</div>
+
+	</section>
+	<!-- /.content -->
+
+</body>
+
+
+
+
+
+
+

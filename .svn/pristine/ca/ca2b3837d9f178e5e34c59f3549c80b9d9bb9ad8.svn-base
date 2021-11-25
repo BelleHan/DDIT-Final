@@ -1,0 +1,21 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.logis.dao.LogisDAO;
+import kr.or.fms.logis.dto.LogisVO;
+
+public class LogisServiceImpl implements LogisService {
+
+	public LogisDAO logisDAO;
+	public void setLogisDAO(LogisDAO logisDAO) {
+		this.logisDAO = logisDAO;
+	}
+	
+	@Override
+	public LogisVO getLogis(String logis_code) throws SQLException {
+		LogisVO logis = logisDAO.selectLogisByCode(logis_code);
+		return logis;
+	}
+
+}

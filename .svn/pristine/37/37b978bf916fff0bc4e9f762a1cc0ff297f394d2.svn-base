@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.table-scroll {
+	max-height: 83vh; 
+	overflow-y: scroll;
+}
+input.form-control {
+text-align: left;
+}

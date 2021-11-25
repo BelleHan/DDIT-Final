@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Buy-Mapper">
+	
+	<resultMap type="sup" id="sup">
+		<result column="sup_code" property="sup_code"/>	
+		<result column="sup_owner" property="sup_owner"/>	
+		<result column="sup_name" property="sup_name"/>	
+		<result column="sup_reg_st" property="sup_reg_st"/>	
+		<result column="sup_prod" property="sup_prod"/>	
+		<result column="sup_account" property="sup_account"/>	
+		<result column="sup_bank" property="sup_bank"/>	
+		<result column="sup_tel" property="sup_tel"/>	
+		<result column="sup_email" property="sup_email"/>
+		<result column="sup_contract_st" property="sup_contract_st"/>
+		<result column="sup_zip" property="sup_zip"/>
+		<result column="sup_addr" property="sup_addr"/>
+		<result column="sup_detail_addr" property="sup_detail_addr"/>
+		<result column="sup_business_no" property="sup_business_no"/>
+	</resultMap>
+	
+	<resultMap type="supContInfo" id="supContInfo">
+		<result column="sup_cont_start" property="sup_cont_start"/>
+		<result column="sup_cont_end" property="sup_cont_end"/>
+	</resultMap>
+	
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_code" property="sup_code" />
+		<result column="sup_goods_name" property="sup_goods_name" />
+		<result column="sup_goods_price" property="sup_goods_price" />
+		<result column="sup_goods_unit" property="sup_goods_unit" />
+		<result column="sup_goods_attr1" property="sup_goods_attr1" />
+		<result column="sup_goods_attr2" property="sup_goods_attr2" />
+		<result column="sup_goods_attr3" property="sup_goods_attr3" />
+		<result column="sup_goods_attr4" property="sup_goods_attr4" />
+		<result column="sup_goods_attr5" property="sup_goods_attr5" />
+		<result column="sup_goods_attr6" property="sup_goods_attr6" />
+		<result column="sup_goods_attr7" property="sup_goods_attr7" />
+		<result column="sup_goods_attr8" property="sup_goods_attr8" />
+		<result column="sup_goods_laca" property="sup_goods_laca" />
+		<result column="sup_goods_smca" property="sup_goods_smca" />
+		<result column="sup_goods_img" property="sup_goods_img" />
+		<result column="hq_goods_appr" property="hq_goods_appr" />
+		
+		<collection property="supVO" resultMap="sup"></collection>
+		<collection property="supContInfoVO" resultMap="supContInfo"></collection>
+	</resultMap>
+	
+	
+	<sql id="searchBox">
+		<if test="keywordMap.laca != null and keywordMap.laca != ''">
+			  and b.sup_goods_laca = #{keywordMap.laca}			
+		</if>
+		<if test="keywordMap.smca != null and keywordMap.smca != ''">
+			  and b.sup_goods_smca = #{keywordMap.smca}			
+		</if>
+		<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+			  and b.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+		</if>
+		
+	</sql>
+		<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" resultType="str">
+		SELECT
+	    distinct sup_goods_laca
+		FROM
+	    sup_goods_class
+	    order by sup_goods_laca
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="str">
+	    select 
+	    sup_goods_smca 
+	    from 
+	    sup_goods_class
+	</select>
+	
+	<select id="searchSmca" parameterType="str" resultType="str">
+		select sup_goods_smca 
+		from sup_goods_class 
+		where sup_goods_laca = #{sup_goods_laca}
+	</select>
+	
+	<select id="selectSupGoodsInfoList" resultMap="supGoods">
+		select a.*, b.*
+		from sup a, sup_goods b
+		where a.sup_code = b.sup_code
+		<include refid="searchBox"></include>
+		order by b.sup_goods_regdate desc
+	</select>
+	
+	<select id="selectSearchGoodsListCount" resultType="int">
+		select
+		count(*)
+		from
+		sup_goods b
+		where sup_goods_code is not null
+		<include refid="searchBox"></include>
+	</select>
+	
+	<!-- 납품장소선택(물류센터) -->
+	<select id="selectLogis" resultType="logis">
+		select 
+		logis_code, logis_name 
+		from logis
+	</select>
+	
+	<select id="selectBuyGoodsByCode" parameterType="str" resultMap="supGoods">
+		select a.*, b.*, c.*
+		from sup a, sup_goods b, sup_contract_info c
+		where a.sup_code = b.sup_code
+	  	and a.sup_code = c.sup_code
+		and b.sup_goods_code = #{sup_goods_code}
+	</select>
+	
+	<select id="selectSupContSt" parameterType="str" resultType="str">
+		select sup_contract_st
+		from sup a
+		where sup_code 
+		= (select sup_code from sup_goods b where sup_goods_code=#{sup_goods_code})
+		  
+	</select>
+	
+	<!-- 본사물품구매요청 -->
+	<update id="insertBuyGoods" parameterType="buyGoods" >
+		insert into 
+		buy_goods(goods_pur_code, hq_code, goods_pur_price, pur_arrive_date, pur_arrive_loc, pur_note, goods_pur_quan,sup_goods_code) 
+		values('BC'||lpad(buy_goods_code_seq.nextval, 4, '0'), #{hq_code},#{goods_pur_price},#{pur_arrive_date} , #{pur_arrive_loc}, #{pur_note},#{goods_pur_quan},#{sup_goods_code})
+
+	</update>
+	<!-- 물품디테일 넣기 위해 기본키가져오기 -->
+	<select id="selectGoodsPurCode">
+		select goods_pur_code
+		from buy_goods
+		where rownum=1
+	</select>
+	<!-- 물품디테일  insert -->
+	<update id="insertBuyGoodsDetail" parameterType="buyGoodsDe">
+		insert into 
+		buy_goods_detail(goods_pur_code, sup_goods_code, goods_num, goods_price) 
+		values(#{goods_pur_code}, #{sup_goods_code}, #{goods_num}, #{goods_price})
+	</update>
+	
+	<update id="updateBuyGoods" parameterType="buyGoods">
+		update buy_goods 
+		set goods_pur_price=#{goods_pur_price}, goods_pur_st=#{goods_pur_price}
+		where goods_pur_code=#{goods_pur_code}
+	</update>
+	
+	<update id="insertHqGoods" parameterType="hqGoods">
+		insert into 
+		hq_goods(hq_goods_code, hq_code, sup_goods_code)
+		values (hq_goods_code_seq.nextval, #{hq_code}, #{sup_goods_code})
+	</update>
+	
+</mapper>

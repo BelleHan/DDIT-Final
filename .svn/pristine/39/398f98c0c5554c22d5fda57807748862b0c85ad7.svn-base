@@ -1,0 +1,223 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>공급업체 홈</title>
+<style>
+.divbox{
+	float:left;
+	margin-top: 20px;
+}
+.li{
+	list-style-type:none; 
+	
+}
+.li li{
+	float: left;
+
+}
+
+.list {
+	list-style: none;
+}
+
+</style>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> <!-- 차트 링크 --> 
+
+ <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+
+</head>
+<body>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 686px;">
+    <!-- Main content -->
+	
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">발주신청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">발주완료</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">배송신청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">배송완료</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">반품신청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #4798df; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">반품완료</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 60px; font-weight: bold;">5</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+    <form style="margin-left: 20px;">
+		<input type="date" style="margin-top: 20px;">
+		<button style="background: #0285f7; border-radius: 5px; border: none;">조회</button>
+	<!-- <button type="button" class="btn btn-block btn-primary" style="width: 60px; height: 30px; font-size: 15px; position: relative;" >조회</button> -->
+	</form>
+	<!-- graph -->
+	<div class="container">
+  <div class="row my-3"> 
+  	<div>
+  		<h5 style="margin-left: 200px;">가맹점 매출현황</h5>
+  	</div>
+   </div>
+<div class="row my-2">
+ <div class="col-md-6"> 
+ <div class="card"> 
+ <div class="card-body">
+  <canvas class="myChart"></canvas> 
+  </div> 
+  <div class="card-body text-center text-align-center"> 
+  <h3>매출</h3>
+   </div> 
+   </div> 
+   </div> 
+   </div>
+<div class="row my-2"> 
+<div class="col-md-6"> 
+</div> 
+</div>
+ </div>
+
+
+
+	
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+<!-- jQuery -->
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+ integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+ crossorigin="anonymous"></script> 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+ integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+ crossorigin="anonymous"></script> 
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+ crossorigin="anonymous"></script>
+
+
+
+<!-- 차트 -->
+  <script>
+  const mydata = [10, 20, 30, 40];
+  const mydataHalf = [5, 10, 20, 7]; 
+  // var ctx = document.getElementById("myChart"); 
+  var ctx = document.getElementsByClassName("myChart");
+  var mixedChart = { 
+		  type: 'bar', 
+		  labels: ['1', '2', '3', '4'], 
+		  datasets : [ { 
+			  label: 'Bar Dataset', 
+		  	  data : mydata, 
+		  	  backgroundColor: 'rgba(256, 0, 0, 0.1)' 
+		  	},		  	  		  	  
+		  	{ label: 'Line Dataset', 
+		  	   data: mydataHalf,
+		  	   backgroundColor: 'transparent',
+		  	   borderColor: 'skyblue',
+		  	   type: 'line' 
+		  	   } 
+		  	]
+  		};
+  var myChart = new Chart(ctx, { 
+	  type: 'bar',
+	  data: mixedChart,
+	  options: {
+		 legend: {
+			 display: true
+			 }
+  		} 
+  });
+  </script>
+
+
+
+
+</body>
+</html>

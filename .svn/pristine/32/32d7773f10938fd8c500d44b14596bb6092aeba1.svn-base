@@ -1,0 +1,38 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.OutVO;
+
+public interface OutDAO {
+	
+	//출고계획  등록
+	void insertOutPlan(OutVO out) throws SQLException;
+	
+	// 출고계획 상세조회
+	OutVO selectOutByCode(String ocode) throws SQLException;
+	// 출고계획 전체조회
+	List<OutVO> selectOutList() throws SQLException;
+	List<OutVO> selectOutList(Criteria cri) throws SQLException;
+	List<OutVO> selectOutList(SearchCriteria cri) throws SQLException;
+	
+	// 출고계획 수정
+	void updateOut(OutVO out) throws SQLException;
+	// 전체 리스트 개수
+	
+	int selectOutListCount(SearchCriteria cri) throws SQLException;
+	
+	
+	String selectOutSeqNext() throws SQLException;
+////////////////////////////////
+	//검색
+	List<OutVO> outTakingList() throws SQLException;
+	List<OutVO> outTakingList(Criteria cri) throws SQLException;
+	List<OutVO> outTakingList(SearchCriteria cri) throws SQLException;
+	//조회
+	List<OutVO> getOutTakingDetail(String ocode) throws SQLException;
+	int outTakingSearchCount(SearchCriteria cri) throws SQLException;
+}

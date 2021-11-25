@@ -1,0 +1,11 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+
+import kr.or.fms.fran.dto.FranVO;
+
+public interface FranDAO {
+
+	//가맹점 정보조회(가맹점페이지)
+	FranVO selectFranInfo(String fran_code)throws SQLException;
+}

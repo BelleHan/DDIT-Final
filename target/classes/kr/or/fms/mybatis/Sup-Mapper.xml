@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Sup-Mapper">
+
+	<sql id="searchList">
+		<if test="keywordMap.laca != null and keywordMap.laca != '' and keywordMap.laca != '-1'">
+			  and sup_goods_laca = #{keywordMap.laca}			
+		</if>
+		<if test="keywordMap.smca != null and keywordMap.smca != '' and keywordMap.saca != '-1'">
+			  and sup_goods_smca = #{keywordMap.smca}			
+		</if>
+		<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+			  and sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+		</if>
+	</sql>
+	
+	<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" parameterType="str" resultType="str">
+		SELECT
+	    distinct(sup_goods_laca)
+		FROM
+	    sup_goods
+	    where sup_code =#{sup_code}
+	    order by sup_goods_laca
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="str">
+	    select 
+	    DISTINCT(sup_goods_smca) 
+	    from sup_goods
+	    order by sup_goods_smca
+	</select>
+	
+	<select id="searchSmca" parameterType="str" resultType="str">
+		select sup_goods_smca 
+		from sup_goods_class 
+		where sup_goods_laca = #{sup_goods_laca}
+		order by sup_goods_smca
+	</select>
+	
+	<select id="selectSearchSupGoodsList" parameterType="str"  resultType="supGoods">
+		select
+		*
+		from
+		sup_goods
+		where sup_goods_code is not null
+		and sup_code = #{keywordMap.sup_code}	  	
+		<include refid="searchList"/>
+		order by sup_goods_regdate desc
+	</select>
+	
+	<select id="selectSearchSupGoodsListCount" resultType="int">
+		select
+		count(*)
+		from
+		sup_goods
+		where sup_goods_code is not null 
+		and sup_code =  #{keywordMap.sup_code}
+		<include refid="searchList"/>
+		order by sup_goods_regdate desc
+	</select>
+	
+	<select id="selectSupByCode"  resultType="sup">
+		select *
+		from sup
+		where sup_code = #{sup_code}
+	</select>
+	
+	<select id="selectSupList" resultType="supGoods">
+		select *
+		from sup
+	</select>
+	
+	<select id="selectSupGoodsBySupCode" parameterType="str" resultType="supGoods">
+		select
+		*
+		from
+		sup_goods
+		where sup_goods_code is not null
+		and sup_code = #{sup_code}		  	
+		order by sup_goods_regdate desc
+	</select>
+	
+	
+	<select id="selectSupGoodsList" resultType="supGoods">
+		select * 
+		from sup_goods
+		order by sup_goods_code desc		
+	</select>
+	
+	<select id="selectSupGoodsByCode"  resultType="supGoods">
+		select * 
+		from sup_goods 
+		where sup_goods_code=#{sup_goods_code}
+	</select>
+	
+	<update id="insertGoods" parameterType="supGoods">
+		insert into 
+		sup_goods
+		(sup_goods_code, sup_code, sup_goods_name, sup_goods_price, sup_goods_img, sup_goods_attr1, sup_goods_unit, sup_goods_laca, sup_goods_smca, sup_goods_attr2, sup_goods_attr3,sup_goods_attr4,sup_goods_attr5,sup_goods_attr6,sup_goods_attr7,sup_goods_attr8)
+		values
+		(#{sup_goods_code}, #{sup_code}, #{sup_goods_name}, #{sup_goods_price},#{sup_goods_img}, #{sup_goods_attr1}, #{sup_goods_unit}, #{sup_goods_laca}, #{sup_goods_smca}, #{sup_goods_attr2},#{sup_goods_attr3},#{sup_goods_attr4},#{sup_goods_attr5},#{sup_goods_attr6},#{sup_goods_attr7},#{sup_goods_attr8})
+	</update>
+	
+	<update id="insertAllGoods" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+		into sup_goods
+		(sup_goods_code, sup_code, sup_goods_name, sup_goods_price, sup_goods_attr1, sup_goods_unit, sup_goods_laca, sup_goods_smca, sup_goods_attr2, sup_goods_attr3,sup_goods_attr4,sup_goods_attr5,sup_goods_attr6,sup_goods_attr7,sup_goods_attr8 )
+		values
+		(#{item.sup_goods_code}, #{item.sup_code}, #{item.sup_goods_name}, #{item.sup_goods_price}, #{item.sup_goods_attr1}, #{item.sup_goods_unit}, #{item.sup_goods_laca}, #{item.sup_goods_smca}, #{item.sup_goods_attr2},#{item.sup_goods_attr3},#{item.sup_goods_attr4},#{item.sup_goods_attr5},#{item.sup_goods_attr6},#{item.sup_goods_attr7},#{item.sup_goods_attr8})
+		</foreach>
+	</update>
+
+	<update id="updateGoods" parameterType="supGoods">
+		update sup_goods
+		set 
+        sup_goods_name=#{sup_goods_name}, sup_goods_price=#{sup_goods_price}, sup_goods_laca=#{sup_goods_laca},
+        sup_goods_smca=#{sup_goods_smca}, sup_goods_attr3=#{sup_goods_attr3}, sup_goods_unit=#{sup_goods_unit},
+        sup_goods_attr1=#{sup_goods_attr1}, sup_goods_attr2=#{sup_goods_attr2}, sup_goods_attr4=#{sup_goods_attr4},
+        sup_goods_attr5=#{sup_goods_attr5}, sup_goods_attr6=#{sup_goods_attr6}, sup_goods_attr7=#{sup_goods_attr7},
+        sup_goods_attr8=#{sup_goods_attr8}, sup_goods_img=#{sup_goods_img},sup_goods_update=sysdate
+        where sup_goods_code =#{sup_goods_code}
+	</update>
+	
+	<select id="selectSupById" parameterType="str" resultType="sup">
+		select
+		*
+		from sup
+		where sup_code=#{sup_code}
+	</select>
+	
+	<select id="selectGoodsLaca" resultType="str">
+		select 
+		DISTINCT sup_goods_laca 
+		from sup_goods_class
+	</select>
+	
+	<select id="selectGoodsSmca" resultType="str">
+		select sup_goods_smca 
+		from sup_goods_class
+	</select>
+	
+</mapper>

@@ -1,0 +1,61 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranNoticeVO;
+
+public class FranNoticeDAOImpl implements FranNoticeDAO{
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+
+	@Override
+	public List<FranNoticeVO> selectFranNoticeList() throws SQLException {
+		List<FranNoticeVO> noticeList = session.selectList("FranNotice-Mapper.selectFranNoticeList");
+		return noticeList;
+	}
+
+	@Override
+	public List<FranNoticeVO> selectFranNoticeList(Criteria cri) throws SQLException {
+		
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranNoticeVO> noticeList = session.selectList("FranNotice-Mapper.selectFranNoticeList",null,rowBounds);
+		return noticeList;
+	}
+
+	@Override
+	public List<FranNoticeVO> selectFranNoticeList(SearchCriteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranNoticeVO> noticeList = session.selectList("FranNotice-Mapper.selectFranNoticeList",cri,rowBounds);
+		return noticeList;
+	}
+
+	@Override
+	public FranNoticeVO selectFranNoticeDetail(String fNum) throws SQLException {
+		FranNoticeVO franNotice = session.selectOne("FranNotice-Mapper.selectFranNoticeDetail", fNum);
+		return franNotice;
+	}
+
+	@Override
+	public int selectFranNoticeListCount(SearchCriteria cri) throws SQLException {
+		int count=0;		
+		count=session.selectOne("FranNotice-Mapper.selectFranNoticeListCount",cri);
+		return count;
+	}
+
+
+
+}

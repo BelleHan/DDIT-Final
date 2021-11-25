@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LStock-Mapper">
+	
+	<!-- 재고목록출력(해당물류센터) -->
+	<select id="selectSearchStockList" resultType="logisStock">
+	
+<!-- 	<include refid="Common-Mapper.pageHeader"></include> -->
+	
+	SELECT
+	    e.logis_safe_stock,
+	    e.logis_suit_stock,
+	    e.logis_goods_stock,
+	    e.wh_name,
+	    f.sup_goods_name,
+	    f.sup_goods_smca,
+	    f.sup_goods_laca,
+	    d.goods_max_order,
+	    d.hq_goods_code,
+        e.logis_code
+	FROM
+	    logis_wh e,
+	    hq_goods d,
+	    sup_goods f
+	WHERE
+	      d.hq_goods_code = e.hq_goods_code
+    AND   f.sup_goods_code = d.sup_goods_code
+    AND   e.logis_code = #{keywordMap.logis_code}
+	<if test="keywordMap.wh != null and keywordMap.wh != ''">
+   		  and e.wh_name = #{keywordMap.wh}
+	</if>
+	<if test="keywordMap.laca != null and keywordMap.laca != ''">
+		  and f.sup_goods_laca = #{keywordMap.laca}			
+	</if>
+	<if test="keywordMap.smca != null and keywordMap.smca != ''">
+		  and f.sup_goods_smca = #{keywordMap.smca}			
+	</if>
+	<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+		  and f.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+	</if>
+		
+		
+<!-- 		<include refid="Common-Mapper.pageFooter"></include> -->
+
+	</select>
+	
+	<!-- 재고목록총갯수(해당물류센터) -->
+	<select id="selectSearchStockListCount" resultType="int">
+	SELECT 
+		count(*)
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+		c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+	    AND	  c.logis_code = #{keywordMap.logis_code}
+	</select>
+	
+	<!-- 창고 콤보박스  -->
+	<select id="whCombo" resultType="logisWh">
+	SELECT
+	    distinct b.wh_name
+	FROM
+	    logis_wh b,
+	    logis a
+	WHERE
+	    a.logis_code = b.logis_code
+	    and a.logis_code = #{logis_code}
+	    order by b.wh_name
+	</select>
+	
+	<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" resultType="logisStock">
+	SELECT
+	   distinct sup_goods_laca
+	FROM
+	    sup_goods
+	    order by sup_goods_laca
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="logisStock">
+	SELECT
+	   distinct sup_goods_smca
+	FROM
+	    sup_goods
+	    order by sup_goods_smca
+	</select>
+	
+	<!-- 물품명으로검색(해당물류센터) -->
+	<select id="whGoods" resultType="logisStock">
+	SELECT C.SUP_GOODS_NAME
+	FROM LOGIS_WH A, HQ_GOODS B, SUP_GOODS C
+	WHERE A.LOGIS_CODE = #{keywordMap.logis_code}
+	AND A.HQ_GOODS_CODE = B.HQ_GOODS_CODE
+	AND B.SUP_GOODS_CODE = C.SUP_GOODS_CODE
+	AND C.SUP_GOODS_NAME LIKE '%'||#{keyword}||'%'
+	</select>
+	
+</mapper>

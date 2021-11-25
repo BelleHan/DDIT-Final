@@ -1,0 +1,74 @@
+package kr.or.fms.logis.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.MenuVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.logis.service.ReturnService;
+import kr.or.fms.service.MenuService;
+
+@Controller
+@RequestMapping("/logis")
+public class LogisDeReController {
+
+	@Autowired
+	ReturnService returnService;
+	
+	
+	@RequestMapping("/return/list")
+	public ModelAndView returnList(SearchCriteria cri, ModelAndView mnv)throws SQLException{
+		String url="logis/return/list";		
+		cri.setPerPageNum(20);
+		Map<String,Object> dataMap = returnService.getReturnList(cri);
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/return/detail")
+	public ModelAndView returnDetail(String rcode, ModelAndView mnv )throws SQLException{
+		String url= "logis/return/detail";		
+		
+		ReturnVO returnDetail = returnService.getReturn(rcode);
+		
+		mnv.addObject("returnDetail", returnDetail);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "updateReturnSt.do", method = RequestMethod.GET)
+	public String updateReturnSt(String rcode, String returnSt) throws SQLException {
+		
+//		String url = "redirect:/logis/return/detail.do?rcode=" + rcode;
+		String url = "logis/return/success";
+		
+		ReturnVO returnVO = new ReturnVO();
+		
+		returnVO.setReturn_code(rcode);
+		returnVO.setReturn_st(returnSt);
+		
+		returnService.modify(returnVO);
+		
+		return url;
+	}
+	
+	
+}

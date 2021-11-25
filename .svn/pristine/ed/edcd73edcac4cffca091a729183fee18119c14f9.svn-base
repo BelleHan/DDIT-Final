@@ -1,0 +1,53 @@
+package kr.or.fms.fran.controller;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.service.FranOrderService;
+
+@Controller
+@RequestMapping("/fr")
+public class FrOrderController {
+
+	@Autowired
+	FranOrderService franOrderService;
+	
+    @RequestMapping("/order/list")
+    public ModelAndView hqGoodsList(SearchCriteria cri, String laca, String smca, ModelAndView mnv) throws SQLException{
+        String url="fr/order/list7";
+        
+        System.out.println("laca: "+laca);
+        System.out.println("laca: "+smca);
+        
+        cri.getKeywordMap().put("laca", laca);
+        cri.getKeywordMap().put("smca", smca);
+
+        Map<String, Object> dataMap = franOrderService.getOrderGoodsSearchList(cri);
+        
+        mnv.addObject("dataMap", dataMap);
+        mnv.setViewName(url);
+        
+        return mnv;
+    }
+    
+//    @ResponseBody
+//    @RequestMapping(value="/order/move", method = RequestMethod.POST)
+//    public ResponseEntity<List<HqGoodsVO>> orderMove(@ResponseBody ) 
+    
+//    public String GoodsMove(List<HqGoodsVO> Model model) throws SQLException{
+//    	String url="fr/order/move";
+//    	
+//    	
+//    	List<HqGoodsVO> orderGoodsList = franOrderService.getOrderGoodsList();
+//    	model.addAttribute("orderGoodsList", orderGoodsList);
+//    	
+//    	return url;
+//    }
+
+}

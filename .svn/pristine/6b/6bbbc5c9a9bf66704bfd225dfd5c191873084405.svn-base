@@ -1,0 +1,13 @@
+package kr.or.fms.logis.service;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+
+public interface ReturnService {
+	
+	// 목록조회	
+	Map<String,Object> getReturnList(SearchCriteria cri)throws SQLException;
+
+}

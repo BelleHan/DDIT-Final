@@ -1,0 +1,66 @@
+package kr.or.fms.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.stereotype.Controller;
+
+import edu.emory.mathcs.backport.java.util.Collections;
+import kr.or.fms.util.JsonUtil;
+
+@ServerEndpoint("/takingSocket")
+@Controller
+public class WebsocketController {
+	
+	private List<Session> sessionUsers = Collections.synchronizedList(new ArrayList<Session>());
+	private String userName;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@OnOpen
+	public void handleOpen(Session session) {
+		sessionUsers.add(session);
+		setUserName(session.getId());
+		System.out.println(session.getId() + "접속\n");
+	}
+	
+	@OnMessage
+	public String handletakingData(String takingData) throws IOException {
+		return buildJsonData(takingData);
+	}
+	
+	@OnClose
+	public void handleClose(Session session) {
+		System.out.println(getUserName() + " : 접속해제");
+		sessionUsers.remove(session);
+	}
+	
+	@OnError
+	public void handleError(Throwable t) {
+		t.printStackTrace();
+	}
+
+	public String buildJsonData(String takingData) {
+		Map<String, Object> jsonMap = new HashMap<>();
+		jsonMap.put("takingData", takingData);
+		String jsonString = JsonUtil.MapToJson(jsonMap);
+		return jsonString;
+	}
+}
+

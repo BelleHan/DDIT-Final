@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranSales-Mapper">
+
+	<select id="selectSearchSalesList"	resultType="franAppli">
+	SELECT
+	    fran_sales_mock.sales_code
+	    ,fran_sales_mock.hq_goods_code
+	    ,hq_goods.hq_goods_code
+	    ,hq_goods.hq_goods_name
+	    ,fran_sales_mock.sales_amount
+	    ,fran_sales_mock.sales_date
+	FROM
+	    fran_sales_mock,
+	    hq_goods
+	WHERE
+	    fran_code = #{fran_code}
+	</select>
+	
+	<select id="selectSearchAppliListCount" resultType="int">
+	SELECT
+	    count(*)
+	FROM
+	    fran_sales_mock,
+	    hq_goods
+	WHERE
+	    fran_code = #{fran_code}   
+	</select>
+	
+	<select id="selectAppliList" resultType="franAppli">
+	SELECT
+	    fran_sales_mock.sales_code
+	    ,fran_sales_mock.hq_goods_code
+	    ,hq_goods.hq_goods_code
+	    ,hq_goods.hq_goods_name
+	    ,fran_sales_mock.sales_amount
+	    ,fran_sales_mock.sales_date
+	FROM
+	    fran_sales_mock,
+	    hq_goods
+	WHERE
+	    fran_code = #{fran_code}		
+	</select>
+	
+</mapper>

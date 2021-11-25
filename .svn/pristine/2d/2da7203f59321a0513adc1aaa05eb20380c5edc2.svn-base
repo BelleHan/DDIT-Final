@@ -1,0 +1,24 @@
+package kr.or.fms.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class KeywordDAOImpl implements KeywordDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+
+	@Override
+	public List<HqGoodsVO> goods() throws SQLException {
+		List<HqGoodsVO> goodsList = null;
+		goodsList = session.selectList("Keyword-Mapper.hqGoods");
+		return goodsList;
+	}
+
+}

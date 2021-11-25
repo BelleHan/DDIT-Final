@@ -1,0 +1,200 @@
+package kr.or.fms.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.MenuVO;
+import kr.or.fms.exception.InvalidPasswordException;
+import kr.or.fms.exception.NotFoundIdException;
+import kr.or.fms.fran.service.FranService;
+import kr.or.fms.hq.service.EmpService;
+import kr.or.fms.service.MenuService;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+@RequestMapping("/hq")
+public class HqController {
+	@Autowired
+	MenuService menuService;
+	
+	@Autowired
+	EmpService empService;
+	
+	@Autowired
+	FranService franService;
+
+	private static final Logger logger = LoggerFactory.getLogger(HqController.class);
+	
+	@RequestMapping(value = "/com/list", method = RequestMethod.GET)
+	public ModelAndView list(SearchCriteria cri, ModelAndView mnv) throws SQLException {
+		String url = "fr/list";
+
+		Map<String, Object> dataMap = franService.getFranList(cri);
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+//		if(true) throw new SQLException();
+			
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
+	public String home(Model model) {
+		String url = "hq/index_hq";
+		try {
+			List<MenuVO> menuList = menuService.getMainMenuList();
+			model.addAttribute("menuList", menuList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			url = null;
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String Login(String code, String pwd, HttpSession session, HttpServletRequest request) throws Exception {
+		String url = "redirect:index.do";
+		
+		try {
+			
+			empService.login(code, pwd);
+			//로그인 성공시
+			session.setAttribute("loginUser", empService.getEmp(code));
+			session.setMaxInactiveInterval(20*60);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e; 
+		} catch (NotFoundIdException | InvalidPasswordException e) {
+			request.setAttribute("message", e.getMessage());
+			url = "common/loginFail";
+		} 
+		return url;
+	}
+	
+	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
+	public String main(Model model) {
+		String url = "hq/hqhome";
+		return url;
+	}
+	@RequestMapping(value = "/stock/detail", method = RequestMethod.GET)
+	public String stock(Model model) {
+		String url = "hq/index_hq2";
+		try {
+			List<MenuVO> menuList = menuService.getMainMenuList();
+			model.addAttribute("menuList", menuList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			url = null;
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		String url = "redirect:/";
+		session.invalidate();
+
+		return url;
+	}
+	
+	
+//----------------------------여기까지가 테스트 메소드----------------------------------	
+	
+	
+	
+	
+	@RequestMapping(value = "/common/loginForm", method = RequestMethod.GET)
+	public String loginForm(@RequestParam(defaultValue="")String error, HttpServletResponse response) {
+		String url = "common/loginForm";
+		if (error.equals("1")) {
+			response.setStatus(302);
+		}
+		return url;
+	}
+
+
+	/* login processing by spring-security
+	 * @RequestMapping(value = "/common/login")
+	public String login(String id, String pwd, HttpServletRequest request, HttpSession session, RedirectAttributes rttr)
+			throws Exception {
+		String url = "redirect:/index.do";
+
+		try {
+			memberService.login(id, pwd);
+			// 로그인 성공시
+			session.setAttribute("loginUser", memberService.getMember(id));
+			session.setMaxInactiveInterval(20 * 60); // 세션유지단위(초) 현재는 20분
+		} catch (NotFoundIDException | InvalidPasswordException e) {
+			rttr.addFlashAttribute("message", e.getMessage());
+			url = "redirect:/common/loginForm";
+		} catch (SQLException e) {
+			ExceptionLoggerHelper.write(request, e, memberService);
+			e.printStackTrace();
+			throw e; // sql이 틀렸기 때문에 반드시 throw 해야함
+		}
+
+		return url;
+	}*/
+	
+//	@RequestMapping("/common/loginTimeOut")
+//	public String loginTimeOut(Model model) throws Exception {
+//		String url = "security/sessionOut";
+//		
+//		model.addAttribute("message", "세션이 만료되었습니다. \\n 다시 로그인하세요.");
+//				
+//		return url;
+//	}
+//	
+//	@RequestMapping("/common/loginExpired")
+//	public String loginExpired(Model model) throws Exception {
+//		String url = "security/sessionOut";
+//		model.addAttribute("message", "중복로그인이 확인되었습니다. \\n 다시 로그인하면 다른 장치에서 로그인은 취소됩니다.");
+//				
+//		return url;
+//	}
+//
+//	@RequestMapping("/getMcode")
+//	@ResponseBody
+//	public ResponseEntity<MenuVO> getMcode(String mName)throws Exception{
+//		
+//		ResponseEntity<MenuVO> entity = null;
+//		try {
+//				MenuVO menu = menuService.getMenuByMname(mName);
+//				
+//				entity = new ResponseEntity<MenuVO>(menu, HttpStatus.OK) ;
+//		}catch(SQLException e) {
+//				entity = new ResponseEntity<MenuVO>(HttpStatus.INTERNAL_SERVER_ERROR) ;
+//		}
+//	
+//		
+//		return entity;
+//	}
+//
+//	@RequestMapping(value = "/main", method = RequestMethod.GET)
+//	public String main() throws Exception {
+//		return "common/main";
+//	}
+	
+}

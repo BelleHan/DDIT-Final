@@ -1,0 +1,150 @@
+package kr.or.fms.hq.dto;
+									/* 본사물품 */
+import java.util.Date;
+
+import kr.or.fms.dto.ReturnDetailVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public class HqGoodsVO {
+
+	private String hq_goods_code;
+	private String hq_code;
+	private String sup_goods_code;
+	private int goods_delivery_price;
+	private int goods_retail_price;
+	private int hq_goods_stock;
+	private int goods_max_order;
+	private int goods_barcode;
+	private Date last_update;
+	private String consumer_pre;
+	private String goods_estimate;
+	private String sup_goods_name;
+	private String sup_name;
+	private String hq_goods_name;
+	private String avail_num;
+	
+	private ReturnDetailVO returnDetailVO;
+	private SupGoodsVO supGoodsVO;
+	private FranVO franVO;
+	
+	public FranVO getFranVO() {
+		return franVO;
+	}
+	public void setFranVO(FranVO franVO) {
+		this.franVO = franVO;
+	}
+	public SupGoodsVO getSupGoodsVO() {
+		return supGoodsVO;
+	}
+	public void setSupGoodsVO(SupGoodsVO supGoodsVO) {
+		this.supGoodsVO = supGoodsVO;
+	}
+	public String getSup_goods_name() {
+		return sup_goods_name;
+	}
+	public void setSup_goods_name(String sup_goods_name) {
+		this.sup_goods_name = sup_goods_name;
+	}
+	public String getSup_name() {
+		return sup_name;
+	}
+	public void setSup_name(String sup_name) {
+		this.sup_name = sup_name;
+	}
+	public String getSup_code() {
+		return sup_code;
+	}
+	public void setSup_code(String sup_code) {
+		this.sup_code = sup_code;
+	}
+	private String sup_code;
+
+
+	public String getHq_goods_code() {
+		return hq_goods_code;
+	}
+	public void setHq_goods_code(String hq_goods_code) {
+		this.hq_goods_code = hq_goods_code;
+	}
+
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public int getGoods_delivery_price() {
+		return goods_delivery_price;
+	}
+	public void setGoods_delivery_price(int goods_delivery_price) {
+		this.goods_delivery_price = goods_delivery_price;
+	}
+	public int getGoods_retail_price() {
+		return goods_retail_price;
+	}
+	public void setGoods_retail_price(int goods_retail_price) {
+		this.goods_retail_price = goods_retail_price;
+	}
+	public int getHq_goods_stock() {
+		return hq_goods_stock;
+	}
+	public void setHq_goods_stock(int hq_goods_stock) {
+		this.hq_goods_stock = hq_goods_stock;
+	}
+	public int getGoods_max_order() {
+		return goods_max_order;
+	}
+	public void setGoods_max_order(int goods_max_order) {
+		this.goods_max_order = goods_max_order;
+	}
+	public int getGoods_barcode() {
+		return goods_barcode;
+	}
+	public void setGoods_barcode(int goods_barcode) {
+		this.goods_barcode = goods_barcode;
+	}
+	public Date getLast_update() {
+		return last_update;
+	}
+	public void setLast_update(Date last_update) {
+		this.last_update = last_update;
+	}
+	public String getConsumer_pre() {
+		return consumer_pre;
+	}
+	public void setConsumer_pre(String consumer_pre) {
+		this.consumer_pre = consumer_pre;
+	}
+	public String getGoods_estimate() {
+		return goods_estimate;
+	}
+	public void setGoods_estimate(String goods_estimate) {
+		this.goods_estimate = goods_estimate;
+	}
+	public String getHq_goods_name() {
+		return hq_goods_name;
+	}
+	public void setHq_goods_name(String hq_goods_name) {
+		this.hq_goods_name = hq_goods_name;
+	}
+	public ReturnDetailVO getReturnDetailVO() {
+		return returnDetailVO;
+	}
+	public void setReturnDetailVO(ReturnDetailVO returnDetailVO) {
+		this.returnDetailVO = returnDetailVO;
+	}
+	public String getAvail_num() {
+		return avail_num;
+	}
+	public void setAvail_num(String avail_num) {
+		this.avail_num = avail_num;
+	}	
+	
+}

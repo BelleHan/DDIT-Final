@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FrApply-Mapper">
+
+
+	<update id="insertFranApply" parameterType="franAppliDocVO">
+	INSERT 
+	INTO 
+	fran_applidoc (
+	 	fran_applidoc_code,
+	  	fran_code,
+		hq_code,
+		attach_no,
+		fran_applidoc_appr_st,
+		fran_appli_date,
+		fran_memo,
+		deposit,
+		admiin_expenses,
+		 rent) 
+	VALUES ('AP'||lpad(#{fran_applidoc_code},4,'0'),#{fran_code},#{hq_code},#{attach_no},#{fran_applidoc_appr_st},#{fran_appli_date},#{fran_memo},#{deposit}, #{admiin_expenses}, #{rent});
+	</update>
+	<update id="insertFran" parameterType="franAppliDocVO">
+	INSERT 
+	INTO 
+	fran_applidoc (
+	 	fran_applidoc_code,
+	  	fran_code,
+		hq_code,
+		attach_no,
+		fran_applidoc_appr_st,
+		fran_appli_date,
+		fran_memo,
+		deposit,
+		admiin_expenses,
+		 rent) 
+	VALUES ('AP'||lpad(#{fran_applidoc_code},4,'0'),#{fran_code},#{hq_code},#{attach_no},#{fran_applidoc_appr_st},#{fran_appli_date},#{fran_memo},#{deposit}, #{admiin_expenses}, #{rent});
+	</update>
+
+
+
+
+
+</mapper>

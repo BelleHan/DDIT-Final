@@ -1,0 +1,63 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.logis.dto.LogisVO;
+
+public class LogisListDAOImpl implements LogisListDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public List<LogisVO> selectLogisList() throws SQLException {
+		List<LogisVO> logisList = session.selectList("Hq-Mapper.selectLogisList");
+		return logisList;
+	}
+
+	@Override
+	public List<LogisVO> selectLogisList(Criteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		List<LogisVO> logisList = session.selectList("Hq-Mapper.selectLogisList", null, rowBounds);
+		return logisList;
+	}
+
+	@Override
+	public List<LogisVO> selectLogisList(SearchCriteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		List<LogisVO> logisList = session.selectList("Hq-Mapper.selectSearchLogisList", cri, rowBounds);
+		return logisList;
+	}
+
+	@Override
+	public int selectLogisListCount(SearchCriteria cri) throws SQLException {
+		int count=0;		
+		count=session.selectOne("Hq-Mapper.selectLogisListCount",cri);
+		return count;
+	}
+
+	@Override
+	public LogisVO selectLogisBycode(String lcode) {
+		LogisVO logis = session.selectOne("Hq-Mapper.selectLogisByCode", lcode);
+		return logis;
+	}
+
+	@Override
+	public int updateLogis(LogisVO logis) {
+		int i = session.update("Hq-Mapper.updateLogis", logis);
+		return i;
+	}
+
+}

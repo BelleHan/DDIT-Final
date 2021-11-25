@@ -1,0 +1,149 @@
+package kr.or.fms.fran.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranOrderDeVO;
+import kr.or.fms.fran.dto.FranOrderVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.fran.service.FranOrderService;
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.hq.service.BuyGoodsService;
+
+@Controller
+@RequestMapping("/fr")
+public class FrOrderController {
+
+	@Autowired
+	FranOrderService franOrderService;
+	@Autowired
+	BuyGoodsService buyGoodsService;
+	
+    @RequestMapping("/order/list")
+    public ModelAndView hqGoodsList(SearchCriteria cri, HttpSession session,String laca, String smca,@RequestParam Map<String,Object> map, ModelAndView mnv) throws SQLException{
+        String url="fr/order/list10";
+        
+        //가맹점 지역코드 세션값으로 받아오기
+        FranVO fran = (FranVO)session.getAttribute("loginFran");
+        String fran_local_num = fran.getFran_local_num();
+        
+        //대분류, 소분류 
+        cri.getKeywordMap().put("laca", laca);
+        cri.getKeywordMap().put("smca", smca);
+
+        Map<String, Object> dataMap = franOrderService.getOrderGoodsSearchList(cri,fran_local_num);
+        
+        mnv.addObject("map", map);
+        mnv.addObject("dataMap", dataMap);
+        mnv.setViewName(url);
+        
+        return mnv;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value="/goods/searchList", method=RequestMethod.POST)
+    public List<HqGoodsVO> searchList(@RequestBody String laca,@RequestBody String smca,@RequestBody String keyword )throws Exception{
+    	
+    	System.out.println("11111111111111111111");
+    	System.out.println("laca>>>>"+laca);
+    	System.out.println("laca>>>>"+smca);
+    	System.out.println("laca>>>>"+keyword);
+    	HqGoodsVO hqGoods = new HqGoodsVO();
+    	
+    	hqGoods.getSupGoodsVO().setSup_goods_laca(laca);
+    	hqGoods.getSupGoodsVO().setSup_goods_smca(smca);
+    	hqGoods.getSupGoodsVO().setSup_goods_name(keyword);
+    	List<HqGoodsVO> orderGoodsList = franOrderService.getSearchOrderList(hqGoods);
+    	
+    	return orderGoodsList;
+    	
+    }
+    
+    @ResponseBody
+    @RequestMapping(value="/goods/searchSmca", method=RequestMethod.POST)
+    public List<String> searchSmca(@RequestBody String laca)throws Exception{
+    	
+    	System.out.println("lca 는????????????????"+laca);
+    	List<String> searchSmcaList = buyGoodsService.searchSmca(laca);
+    	
+    	return searchSmcaList;
+    }
+    
+    @RequestMapping(value="/order/insertOrder",method=RequestMethod.POST)
+    public String insertOrder(String[] hq_goods_code, String[] fran_order_quan, String[] fran_order_price, String[] order_detail_st, HttpSession session)throws SQLException{
+    	String url = "fr/order/orderSuccess";
+    	
+    	FranVO fran = (FranVO)session.getAttribute("loginFran");
+    	String fran_code = fran.getFran_code();
+    	String fran_order_code = null;
+    	
+    	System.out.println(hq_goods_code);
+  
+    	System.out.println("lenth:"+hq_goods_code.length);
+    	for(int i=0; i<hq_goods_code.length; i++) {
+    		System.out.println(hq_goods_code[i]);
+    		System.out.println(fran_order_quan[i]);
+    		System.out.println(order_detail_st[i]);
+    		System.out.println(fran_order_price[i]);
+    	}
+    	
+    	FranOrderVO franOrderVO = new FranOrderVO();
+    	FranOrderDeVO franOrderDeVO = new FranOrderDeVO();
+    	
+    	for(int i = 0; i<hq_goods_code.length; i++) {
+//    		System.out.println(order_deli_se[0]);
+//    		System.out.println(fran_code);
+//    		FranOrderVO franOrderVO = franCom.toFranOrderVO();
+    		
+//    		franOrderVO.setOrder_deli_se(order_detail_st[i]);
+    		franOrderVO.setFran_order_price(10000);
+    		franOrderVO.setFran_code(fran_code);
+    		
+    		System.out.println(franOrderVO.getFran_order_price());
+    		System.out.println(franOrderVO.getFran_code());
+    		
+    		//1.franOrder table insert
+    		franOrderService.registFranOrder(franOrderVO);
+    		//2.franOrder의 fran_order_code값 가져오기
+    		fran_order_code = franOrderService.getFranOrderCode();
+    		
+    		franOrderDeVO.setFran_order_code(fran_order_code);
+    		franOrderDeVO.setHq_goods_code(hq_goods_code[i]);
+    		franOrderDeVO.setFran_order_quan(Integer.parseInt(fran_order_quan[i]));
+    		franOrderDeVO.setFran_order_price(Integer.parseInt(fran_order_price[i]));
+    		franOrderDeVO.setOrder_detail_st(order_detail_st[i]);
+    		
+    		//3.franOrderDetail table insert
+    		franOrderService.registFranOrderDe(franOrderDeVO);
+    	}
+    	
+    	return url;
+    }
+    
+    //    @RequestMapping(value="/order/move", method = RequestMethod.POST)
+//    public ResponseEntity<List<HqGoodsVO>> orderMove(@ResponseBody ) 
+    
+//    public String GoodsMove(List<HqGoodsVO> Model model) throws SQLException{
+//    	String url="fr/order/move";
+//    	
+//    	
+//    	List<HqGoodsVO> orderGoodsList = franOrderService.getOrderGoodsList();
+//    	model.addAttribute("orderGoodsList", orderGoodsList);
+//    	
+//    	return url;
+//    }
+
+}

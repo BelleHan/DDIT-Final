@@ -1,0 +1,61 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.fran.dao.FranHomeDAO;
+import kr.or.fms.fran.dto.FranDealVO;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+
+
+public class FranHomeServiceImpl implements FranHomeService{
+	
+	
+	private FranHomeDAO franHomeDAO;
+	public void setFranHomeDAO(FranHomeDAO franHomeDAO) {
+		this.franHomeDAO = franHomeDAO;
+	}
+	
+	@Override
+	public int getFranOrderCount(String fran_code) throws SQLException {
+		int selectFranOrderCount = franHomeDAO.selectFranOrderCount(fran_code);
+		return selectFranOrderCount;
+	}
+
+	@Override
+	public int getOrderCompletedCount(String fran_code) throws SQLException {
+		int selectOrderCompletedCount = franHomeDAO.selectOrderCompletedCount(fran_code);
+		return selectOrderCompletedCount;
+	}
+
+	@Override
+	public int getReturnApplyCount(String fran_code) throws SQLException {
+		int selectReturnApplyCount = franHomeDAO.selectReturnApplyCount(fran_code);
+		return selectReturnApplyCount;
+	}
+
+	@Override
+	public int getReturnCompleteCount(String fran_code) throws SQLException {
+		int selectReturnCompleteCount = franHomeDAO.selectReturnCompleteCount(fran_code);
+		return selectReturnCompleteCount;
+	}
+
+	@Override
+	public int getStockRequestCount(String fran_code) throws SQLException {
+		int selectStockRequestCount = franHomeDAO.selectStockRequestCount(fran_code);
+		return selectStockRequestCount;
+	}
+
+	@Override
+	public List<FranDealVO> franDealList(String fran_code) throws SQLException {
+		List<FranDealVO> franDealList = franHomeDAO.selectDealList(fran_code);
+		return franDealList;
+	}
+
+	@Override
+	public List<FranGoodsDeVO> franDealGoods(FranGoodsDeVO franGoodsDe) throws SQLException {
+		List<FranGoodsDeVO> franGoodsList = franHomeDAO.franGoodsDe(franGoodsDe);
+		return franGoodsList;
+	}
+
+}

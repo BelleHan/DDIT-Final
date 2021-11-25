@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Order-Mapper">
+
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_name" property="hq_goods_name" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="goods_delivery_price" property="goods_delivery_price" />
+		<result column="goods_retail_price" property="goods_retail_price" />
+		<result column="avail_num" property="avail_num" />
+		<collection property="supGoodsVO" resultMap="supGoods"></collection>
+		<collection property="franVO" resultMap="fran"></collection>
+	</resultMap>
+
+	<resultMap type="fran" id="fran">
+		<result column="fran_local_num" property="fran_local_num"/>
+	</resultMap>
+
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_img" property="sup_goods_img" />
+		<result column="sup_goods_name" property="sup_goods_name" />
+		<result column="sup_goods_attr1" property="sup_goods_attr1" />
+		<result column="sup_goods_attr3" property="sup_goods_attr3" />
+		<result column="sup_goods_unit" property="sup_goods_unit" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_laca" property="sup_goods_laca" />
+		<result column="sup_goods_smca" property="sup_goods_smca" />
+		<result column="sup_goods_price" property="sup_goods_price" />
+	</resultMap>
+	
+	<resultMap type="logis" id="logis">
+		<result column="logis_local_num" property="logis_local_num"/>
+	</resultMap>
+	
+	<resultMap type="logisWh" id="logisWh">
+		<result column="wh_code" property="wh_code"/>
+		<result column="logis_suit_stock" property="logis_suit_stock"/>
+		<result column="logis_code" property="logis_code"/>
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<collection property="logisVO" resultMap="logis"></collection>
+	</resultMap>
+	
+	<resultMap type="franSalesVO" id="franSales">
+		<result column="sales_amount" property="sales_amount"/>
+		<result column="fran_code" property="fran_code"/>
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<result column="sales_date" property="sales_date"/>
+	</resultMap>
+	
+	<resultMap type="franGoodsDe" id="franGoodsDe">
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<result column="fran_suit_stock" property="fran_suit_stock"/>
+		<result column="fran_goods_stock" property="fran_goods_stock"/>
+		<result column="fran_safe_stock" property="fran_safe_stock"/>
+		<result column="fran_code" property="fran_code"/>
+		<result column="need_num" property="need_num"/>
+		<result column="high_stock" property="high_stock"/>
+		<result column="avail_num" property="avail_num"/>
+		<collection property="hqGoodsVO" resultMap="hqGoods"></collection>
+		<collection property="franSalesVO" resultMap="franSales"></collection>
+		<collection property="supGoodsVO" resultMap="supGoods"></collection>
+	</resultMap>
+	
+	
+	<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" resultType="str">
+		select 
+		distinct (sup_goods_laca) 
+		from sup_goods 
+		where sup_goods_code in (select sup_goods_code from hq_goods)
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="str">
+	    select 
+	    distinct(sup_goods_smca) 
+	    from sup_goods 
+	    where sup_goods_code in(select sup_goods_code from hq_goods)
+	</select>
+	
+	<!-- 대분류 적용시 대분류에 속한 소분류 -->
+	<select id="searchSmca" parameterType="str" resultType="str">
+		 select 
+		 distinct(sup_goods_smca) 
+		 from sup_goods 
+		 where sup_goods_laca = #{sup_goods_laca}
+	</select>
+	
+	
+	<select id="selectOrderGoods" resultMap="hqGoods" parameterType="str">
+		select a.*, b.hq_goods_name, b.goods_delivery_price, b.hq_goods_code, 
+		(select nvl(max(ceil(0.01*(logis_suit_stock))),0)
+			from logis_wh 
+			where logis_code in (select logis_code from logis where logis_local_num = #{fran_local_num}) 
+			and hq_goods_code = b.hq_goods_code) avail_num
+		from sup_goods a, hq_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		<if test="cri.keywordMap.laca == null or cri.keywordMap.laca.equals('')">
+			  and a.sup_goods_laca = ''			
+		</if>
+		<if test="cri.keywordMap.laca != null and !cri.keywordMap.laca.equals('')">
+			  and a.sup_goods_laca = #{cri.keywordMap.laca}			
+		</if>
+		<if test="cri.keywordMap.smca != null and cri.keywordMap.smca != ''">
+			  and a.sup_goods_smca = #{cri.keywordMap.smca}			
+		</if>
+		 order by a.sup_goods_regdate desc
+	</select>
+	
+	
+	<select id="searchOrderList" resultMap="hqGoods" parameterType="hqGoods">
+		select a.*, b.hq_goods_name, b.goods_delivery_price, b.hq_goods_code, 
+		(select nvl(max(ceil(0.01*(logis_suit_stock))),0)
+			from logis_wh 
+			where logis_code in (select logis_code from logis where logis_local_num = #{franVO.fran_local_num}) 
+			and hq_goods_code = b.hq_goods_code) avail_num
+		from sup_goods a, hq_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		and a.sup_goods_laca = #{supGoodsVO.sup_goods_laca}
+		and a.sup_goods_smca = #{supGoodsVO.sup_goods_smca}
+		and a.sup_goods_name like '%'||#{supGoodsVO.sup_goods_name}||'%'			
+		order by a.sup_goods_regdate desc
+	</select>
+	
+	<select id="selectOrderGoodsCount" resultType="int">
+		select count(b.hq_goods_name)
+ 		from sup_goods a, hq_goods b
+ 		where a.sup_goods_code = b.sup_goods_code
+<!-- 		<include refid="searchBox"/> -->
+		order by a.sup_goods_regdate desc
+	</select>
+	
+	<update id="insertFranOrder" parameterType="franOrder">
+		insert into 
+        fran_order(fran_order_code, fran_code, fran_order_price)
+     	values('FROR'||to_char(sysdate,'YYMMDD')||lpad(ORDER_DETAIL_SEQ.nextval, 4, '0'), #{fran_code}, #{fran_order_price})
+	</update>
+	
+	<update id="insertFranOrderDe" parameterType="franOrderDe">
+		insert into 
+        fran_order_detail(fran_order_code, hq_goods_code, order_detail_num, fran_order_quan, fran_order_price, order_detail_st)
+     	values(#{fran_order_code}, #{hq_goods_code}, lpad(ORDER_DETAIL_SEQ.nextval, 4, '0'), #{fran_order_quan}, #{fran_order_price},#{order_detail_st})
+	</update>
+	
+	<select id="selectFranOrderCode" resultType="str">
+		select fran_order_code 
+		from (select fran_order_code from fran_order order by fran_order_date desc) 
+		where ROWNUM=1
+	</select>
+	
+	<select id="confirmOrder" resultMap="logisWh" parameterType="franOrderDe">
+		select wh_code, ceil(0.01*(logis_suit_stock)) 
+		from logis_wh 
+		where logis_code in (select logis_code from logis where logis_local_num = #{fran_local_num}) 
+		and hq_goods_code = #{hq_goods_code}
+	</select>
+	
+	<select id="selectRecList" parameterType="fran" resultMap="franGoodsDe">
+	<![CDATA[
+		select a.hq_goods_code, c.hq_goods_name, c.goods_retail_price, d.sup_goods_unit, d.sup_goods_price, d.sup_goods_attr1, d.sup_goods_img,
+      	(case when b.sales_amount is not null then ceil((a.fran_suit_stock - a.fran_goods_stock) + (a.fran_suit_stock*0.1)) else a.fran_suit_stock - a.fran_goods_stock end) need_num,
+      	(case when b.sales_amount is not null then '1' else '0' end) high_stock,
+      	(select nvl(max(ceil(0.01*(logis_suit_stock))),0)
+        from logis_wh 
+        where logis_code in (select logis_code from logis where logis_local_num = #{fran_local_num}) 
+        and hq_goods_code = c.hq_goods_code) avail_num
+		from (select * from fran_goods_detail where fran_code = #{fran_code} and fran_goods_stock < fran_suit_stock) a left outer join 
+     	(select fran_code,hq_goods_code, sum(sales_amount) sales_amount
+        from fran_sales_mock
+        where sales_date between sysdate-90 and sysdate
+        and fran_code = #{fran_code}
+        and rownum <=5
+        group by fran_code, hq_goods_code) b
+		on(a.fran_code = b.fran_code and a.hq_goods_code = b.hq_goods_code), hq_goods c, sup_goods d
+		where a.hq_goods_code = c.hq_goods_code
+		and c.sup_goods_code = d.sup_goods_code
+		order by need_num desc
+	]]>
+	</select>
+	
+</mapper>

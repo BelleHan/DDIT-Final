@@ -1,0 +1,17 @@
+package kr.or.fms.sup.service;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public interface SupGoodsService {
+
+	//목록조회
+	Map<String, Object> getSupGoodsList(SearchCriteria cri)throws SQLException;
+
+	//물품상세보기
+	SupGoodsVO getSupGoods(String sup_goods_code) throws SQLException;
+	
+}

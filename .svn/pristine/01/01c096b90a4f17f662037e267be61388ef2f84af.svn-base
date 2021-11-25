@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranAppli-Mapper">
+
+	<select id="selectSearchAppliList"	resultType="franAppli">
+	SELECT
+	    d.fran_applidoc_code,
+	    c.fran_reg_st,
+	    c.fran_owner,
+	    d.fran_appli_date,
+	    d.fran_applidoc_appr_st
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code
+	</select>
+	
+	<select id="selectSearchAppliListCount" resultType="int">
+	SELECT
+	    count(*)
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code   
+	</select>
+	
+	<select id="selectAppliList" resultType="franAppli">
+	SELECT
+	    d.fran_applidoc_code,
+	    c.fran_reg_st,
+	    c.fran_owner,
+	    d.fran_appli_date,
+	    d.fran_applidoc_appr_st
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    c.fran_code = d.fran_code		
+	</select>
+	
+	<select id="selectAppliByFran_applidoc_code"  resultType="franAppli">
+	SELECT
+	    *
+	FROM
+	    fran_applidoc  d,
+	    fran           c
+	WHERE
+	    d.fran_applidoc_code = #{fran_applidoc_code}
+	</select>
+	
+</mapper>

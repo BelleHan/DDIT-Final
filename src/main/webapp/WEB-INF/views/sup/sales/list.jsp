@@ -1,0 +1,227 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="buyList" value="${dataMap.buyList }" />
+
+<head>
+<style>
+table{
+	text-align: center;
+}
+.card-header{
+	margin:0px 6px;
+}
+</style>
+
+</head>
+
+<title>구매요청내역</title>
+
+<body>
+	 <script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
+	 <!-- Main content -->
+    <section class="content">		
+		<div class="card"  style="box-shadow:none;">
+			<div class="col-sm-12" style="padding:20px 10px 0px 5px; margin-bottom: 0px;">
+<%-- 				<c:if test="${supGoods.supVO.sup_contract_st ne 1}"> --%>
+<%-- 				</c:if> --%>
+					<h5 style="float:left">구매요청내역</h5> 		
+					<button type="button" class="btn btn-primary btn-sm float-right" onclick="checkSt()" style="margin-right:10px">승인</button>
+			</div>
+		</div>
+	</section>
+
+	 <!-- Main content -->
+    <section class="content">		
+		<div class="card" style="height: 800px; overflow-y: scroll;">
+			<div class="card-header with-border" >
+				<div id="keyword" class="card-tools" style="width:450px;">
+					<div class="input-group row">
+						<select class="form-control col-md-3" name="perPageNum" id="perPageNum"
+					  		onchange="list_go();">
+					  		<option value="10" >정렬개수</option>
+					  		<option value="20" ${cri.perPageNum == 20 ? 'selected':''}>20개씩</option>
+					  		<option value="50" ${cri.perPageNum == 50 ? 'selected':''}>50개씩</option>
+					  		<option value="100" ${cri.perPageNum == 100 ? 'selected':''}>100개씩</option>
+					  		
+					  	</select>						
+						<select class="form-control col-md-4" name="searchType" id="searchType">
+							<option value="rfs"  ${cri.searchType eq 'cn' ? 'selected':'' }>전 체</option>
+							<option value="r" ${cri.searchType eq 'c' ? 'selected':'' }>물품코드</option>
+							<option value="f" ${cri.searchType eq 'n' ? 'selected':'' }>물품명</option>
+						</select>					
+						<input  class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요." value="${param.keyword }"/>
+						<span class="input-group-append">
+							<button class="btn btn-primary" type="button" onclick="list_go(1);" 
+							data-card-widget="search">
+								<i class="fas fa-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>						
+			</div>
+
+
+		<c:if test="${empty buyList}">
+			<div>해당내용이 없습니다.</div>
+		</c:if>
+			<div class="row">
+	          <div class="col-12">
+	          <c:forEach items="${buyList }" var="buyList" varStatus="st">
+	          	
+	            <div class="card" style="padding:0px 5px; ">
+	              <div class="card-header" style="background-color:#E6E6E6;">
+	              	<i class="fas fa-info-circle float-left" style="padding:4px 5px 0 0; "></i><span class="card-title" style="font-size:16px;"><b>구매요청상세</b></span>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="col-sm-12">
+		              <table id="example2" class="table table-bordered dataTable" role="grid" aria-describedby="example2_info" style="font-size:15px;">
+		                <tr role="row">
+		                <td class="sorting_asc" tabindex="0" aria-controls="example2" style="font-weight:bold">이미지</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold">물품명</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold">물품코드</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold">물품수량</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold">물품가격</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold">승인여부</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" style="font-weight:bold; width:10px; vertical-align:middle;" rowspan="6">
+		                	<input data-target="buyCheck" type="checkbox" style="float-right" name="buyCheck" 
+		                	goods_pur_code="${buyList.goods_pur_code}" sup_goods_code="${buyList.sup_goods_code }" logis_code="${buyList.logisVO.logis_code }"
+		                	in_date="${buyList.pur_arrive_date }" in_num="${buyList.goods_pur_quan }" in_loca="${buyList.supGoodsVO.sup_code }"/>
+		                </td>
+		                </tr>
+		                <tr role="row">
+		                  <td class="sorting_1" rowspan="6" style="width:200px; height:230px;">
+		                  	<div class="product-image" id="pictureView" view-id="imgView${st.count }" data-id="${buyList.sup_goods_code}"></div>
+<%-- 		                  	<div style="background-image:url('<%=request.getContextPath() %>/resources/js/choi.PNG'); width:100px; height:100px;"></div> --%>
+		                  </td>
+		                  <td>${buyList.supGoodsVO.sup_goods_name}</td>
+		                  <td>${buyList.sup_goods_code}</td>
+		                  <td>${buyList.goods_pur_quan}</td>
+		                  <td>${buyList.goods_pur_price}</td>
+		                  <c:if test="${buyList.goods_pur_st eq 1}">
+		                  	<td>미승인</td>
+		                  </c:if>
+		                  <c:if test="${buyList.goods_pur_st eq 2}">
+		                  	<td>승인</td>
+		                  </c:if>
+		                </tr>
+		                 <tr role="row">
+		                <td class="sorting" tabindex="0" aria-controls="example2" colspan="1" style="font-weight:bold">배송 일자</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" colspan="4" style="font-weight:bold">배송 주소</td>
+		                </tr>
+		                <tr role="row" >
+		                  <td colspan="1"><fmt:formatDate value="${buyList.pur_arrive_date}" pattern="yyyy-MM-dd" /></td>
+		                  <td colspan="4">${buyList.logisVO.logis_addr}</td>
+		                </tr>
+		                 <tr role="row">
+		                <td class="sorting" tabindex="0" aria-controls="example2" colspan="1" style="font-weight:bold">구매코드</td>
+		                <td class="sorting" tabindex="0" aria-controls="example2" colspan="4" style="font-weight:bold">비고</td>
+		                </tr>
+		                <tr role="row" >
+		                  <td colspan="1">${buyList.goods_pur_code}</td>
+		                  <td colspan="4">${buyList.pur_note}</td>
+		                </tr>
+		              </table>
+	              </div><!-- /.card-body -->
+	            </div><!-- /.card -->
+	            <script>
+<%-- 		         GoodsPictureThumb3(document.querySelector('[data-id="${buyList.sup_goods_code}"]'),'${buyList.supGoodsVO.sup_goods_img}','<%=request.getContextPath()%>'); --%>
+		         GoodsPictureThumb3(document.querySelector('[view-id="imgView${st.count }"]'),'${buyList.supGoodsVO.sup_goods_img}','<%=request.getContextPath()%>');
+		         </script>
+	            </c:forEach>
+	           </div>
+	          <div class="card-footer" style="margin:0 auto;">
+				<%@ include file="/WEB-INF/views/common/paginationSY.jsp" %>				
+			</div>
+	          </div>
+	         </div>
+		
+    </section>
+      <script type="text/javascript">
+      	
+      	function checkSt() {
+//          	var checkArr = new Array();
+//       		$("#buyCheck:checked").each(function(i,v){
+//       			checkArr.push($(this).val());
+//       		});
+         	
+//          	console.log(checkArr);
+         	
+//          	$('form[name="submitProduct"]').attr("action","submit").submit();
+         	$('form[name="submitProduct"]').submit();
+      	}
+      	
+      	
+      	window.onload=function(){
+      		$('input[data-target="buyCheck"]').change(function(event){
+      			//alert($(this).prop("checked"));
+      			//alert($(this).attr("goods_pur_code"));
+      			if($(this).prop("checked")){
+	      			var input = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "goods_pur_code",
+	      				value :  $(this).attr("goods_pur_code")
+	      			});
+	      			$('form[name="submitProduct"]').append(input);
+	      			
+	      			var input1 = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "sup_goods_code",
+	      				value :  $(this).attr("sup_goods_code")
+	      			});
+	      			$('form[name="submitProduct"]').append(input1);
+	      			
+	      			var input2 = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "logis_code",
+	      				value : $(this).attr("logis_code")
+	      			});
+	      			$('form[name="submitProduct"]').append(input2);
+	      			
+	      			var input3 = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "in_date",
+	      				value : $(this).attr("in_date")
+	      			});
+	      			$('form[name="submitProduct"]').append(input3);
+	      			
+	      			var input4 = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "in_num",
+	      				value : $(this).attr("in_num")
+	      			});
+	      			$('form[name="submitProduct"]').append(input4);
+	      			
+	      			var input5 = $('<input>').attr({
+	      				type : "hidden",
+	      				goods_pur_code : $(this).attr("goods_pur_code"),
+	      				name : "in_loca",
+	      				value : $(this).attr("in_loca")
+	      			});
+	      			$('form[name="submitProduct"]').append(input5);
+	      			
+      			}else{
+      				$('form[name="submitProduct"]>input[goods_pur_code="'+$(this).attr("goods_pur_code")+'"]').remove();
+      			}
+      		});
+      	}
+      </script>
+    <!-- /.content -->
+
+	<form name="submitProduct" action="<%=request.getContextPath()%>/sup/updateBuySt.do" method="post">
+		
+	</form>
+	
+
+</body>
+

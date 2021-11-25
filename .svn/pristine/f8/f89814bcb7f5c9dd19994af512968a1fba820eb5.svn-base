@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		
+		<typeAlias type="kr.or.fms.dto.MenuVO" alias="menu"/>
+		<typeAlias type="kr.or.fms.dto.AttachVO" alias="attach"/>
+		<typeAlias type="kr.or.fms.dto.DeliveryVO" alias="delivery"/>
+		<typeAlias type="kr.or.fms.dto.DeliveryDeVO" alias="deliveryDetail"/>
+		<typeAlias type="kr.or.fms.dto.ReturnVO" alias="return"/>
+		<typeAlias type="kr.or.fms.dto.ReturnDetailVO" alias="returnDetail"/>
+		
+		<typeAlias type="kr.or.fms.hq.dto.HqGoodsVO" alias="hqGoods"/>
+		<typeAlias type="kr.or.fms.hq.dto.BuyGoodsDeVO" alias="hqBuyGoodsDe"/>
+		<typeAlias type="kr.or.fms.hq.dto.BuyGoodsVO" alias="hqBuyGoods"/>
+		<typeAlias type="kr.or.fms.hq.dto.HqEmpVO" alias="hqEmp"/>
+		<typeAlias type="kr.or.fms.hq.dto.HqVO" alias="hq"/>
+		<typeAlias type="kr.or.fms.hq.dto.HqWhVO" alias="hqWh"/>
+		<typeAlias type="kr.or.fms.hq.dto.HqAccountHistoryVO" alias="hqAccountHistory"/>
+		<typeAlias type="kr.or.fms.hq.dto.HqAccountInfoVO" alias="hqAccountInfo"/>
+
+		<typeAlias type="kr.or.fms.fran.dto.FranAppliDocVO" alias="franAppliDoc"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranContractInfoVO" alias="franContractInfo"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranDealVO" alias="franDeal"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranGoodsDeVO" alias="franGoodsDe"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranNoticeReply" alias="franNoticeReply"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranNoticeVO" alias="franNotice"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranOrder" alias="franOrder"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranOrderDe" alias="franOrderDe"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranStChange" alias="franStChange"/>
+		<typeAlias type="kr.or.fms.fran.dto.FranVO" alias="fran"/>
+		
+		<typeAlias type="kr.or.fms.sup.dto.SupGoodsVO" alias="supGoods"/>
+		
+	</typeAliases>
+	
+</configuration>

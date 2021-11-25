@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Out-Mapper">
+	<sql id="searchOutMap">	
+		<if test="keywordMap.fms_log!=null and !keywordMap.fms_log.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_log}||'%'			
+		</if>
+		<if test="keywordMap.fms_hq!=null and !keywordMap.fms_hq.equals('')">
+			and f.hq_goods_code '%'||#{keywordMap.fms_hq}||'%'			
+		</if>
+		<if test="keywordMap.fms_outFran!=null and !keywordMap.fms_outFran.equals('')">
+			and h.fran_code like '%'||#{keywordMap.fms_outFran}||'%'
+		</if>		
+		<if test="keywordMap.fms_outLogis!=null and !keywordMap.fms_outLogis.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_outLogis||'%'			
+		</if>		
+			
+	</sql> 
+	
+	<sql id="searchOutTakingMap">	
+		<if test="keywordMap.fms_logis!=null and !keywordMap.fms_logis.equals('')">
+			and d.logis_code like '%'||#{keywordMap.fms_logis}||'%'			
+		</if>
+		<if test="keywordMap.fms_wh!=null and !keywordMap.fms_wh.equals('')">
+			and d.fran_code like '%'||#{keywordMap.fms_fran}||'%'			
+		</if>
+		<if test="keywordMap.fms_st!=null and !keywordMap.fms_st.equals('')">
+			and e.out_st like '%'||#{keywordMap.fms_st}||'%'			
+		</if>
+		<if test="keywordMap.start_date!=null and !keywordMap.start_date.equals('')">
+		    and <![CDATA[d.taking_date >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null and !keywordMap.end_date.equals('')">
+			and <![CDATA[d.taking_date <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	
+	<select id="selectOutList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<select id="OutSearchList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<update id="insertOutPlan">
+		insert 
+		into
+		out(out_code, hq_goods_code, logis_code, out_loca_type, out_loca, out_date, out_st, out_num)
+		values
+		('RC'||lpad(#{out_code}), #{hq_goods_code}, #{logis_code}, #{out_loca_type}, #{out_loca}, #{out_date}, #{out_st}, #{out_num})
+	</update>
+	
+	<update id="updateOut" parameterType="out">
+		update out
+		set
+		logis_code=#{logis_code}, out_loca=#{out_loca}, out_date=#{out_date}, out_st=#{out_st}, out_num=#{out_num}
+		where out_code=#{out_code}
+	
+	</update>
+	
+	<select id="selectOutSeqNext" resultType="String">
+		select seq_out.nextval as out_code from dual
+	</select>
+		
+	<select id="selectOutListCount" resultType="int">
+		select 
+		count(*)
+		from out
+		where out_code is not null
+		
+	</select>
+	
+	<select id="selectOutByCode" resultType="out" parameterType="str">
+		select *
+		from out
+		where out_code=#{out_code}
+	</select>
+	
+	<select id="outTakingList" resultType="out">
+	SELECT
+	    b.logis_code,
+	    b.out_st,
+	    b.out_loca,
+	    b.out_date,
+	    b.out_code,
+	    fran.fran_name,
+	    fran.fran_code,
+	    a.logis_name,
+	    a.logis_code
+	FROM
+	    out b,
+	    logis a,
+	    fran
+	WHERE
+    	a.logis_code = b.logis_code
+	ORDER BY b.out_code
+	</select>
+<select id="outTakingSearchList" parameterType="map" resultType="out">
+	SELECT
+	    b.logis_code,
+	    b.out_st,
+	    b.out_loca,
+	    b.out_date,
+	    b.out_code,
+	    fran.fran_name,
+	    fran.fran_code,
+	    a.logis_name,
+	    a.logis_code
+	FROM
+	    out b,
+	    logis a,
+	    fran
+	WHERE
+	    a.logis_code = b.logis_code
+	    <include refid="searchOutTakingMap" />
+	ORDER BY b.out_code
+	</select>	
+	
+<select id="outTakingSearchCount" parameterType="map" resultType="int">
+	SELECT
+	 count(distinct b.out_code)
+	FROM
+	   out b
+	WHERE out_code is not null
+	    <include refid="searchOutTakingMap" />
+	</select>
+	
+	<select id="getOutTakingDetail" resultType="out">
+	 SELECT
+	    fran.fran_code,
+	    c.logis_code,
+	    d.out_code,
+	    d.hq_goods_code,
+	    d.logis_code,
+	    d.out_loca_type,
+	    d.out_date,
+	    d.out_loca,
+	    d.out_st,
+	    d.out_num
+	FROM
+	    out d,
+	    logis c,
+	    fran
+	WHERE
+    	c.logis_code = d.logis_code;   
+	   
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,22 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.fran.dto.FranVO;
+
+public class FranDAOImpl implements FranDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public FranVO selectFranInfo(String fran_code) throws SQLException {
+		FranVO franInfo = session.selectOne("Fran-Mapper.selectFranInfo", fran_code);
+		return franInfo;
+	}
+
+}

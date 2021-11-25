@@ -1,0 +1,28 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.BuyGoodsDeVO;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public interface BuyGoodsService {
+
+	//목록조회
+	Map<String, Object> getSupGoodsList(SearchCriteria cri) throws SQLException;
+	
+	//구매등록
+	void registBuyGoods(BuyGoodsVO buyGoods) throws SQLException;
+	
+	//구매상세등록
+	void registBuyGoodsDe(BuyGoodsDeVO buyGoodsDe)throws SQLException;
+	
+	//구매업데이트
+	void updateBuyGoods(BuyGoodsVO buyGoods) throws SQLException;
+	
+	//본사물품등록
+	void registHqGoods(HqGoodsVO hqGoods)throws SQLException;
+	
+}

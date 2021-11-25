@@ -1,0 +1,22 @@
+package kr.or.fms.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.dao.KeywordDAO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class KeywordServiceImpl implements KeywordService {
+
+	private KeywordDAO keywordDAO;
+	public void setKeywordDAO(KeywordDAO keywordDAO) {
+		this.keywordDAO = keywordDAO;
+	}
+
+	@Override
+	public List<HqGoodsVO> goods() throws SQLException {
+		List<HqGoodsVO> goodsList = keywordDAO.goods();
+		return goodsList;
+	}
+
+}

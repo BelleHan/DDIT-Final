@@ -1,0 +1,308 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>:: jsQR 테스트 ::</title>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/fontawesome-free/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- daterange picker -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/daterangepicker/daterangepicker.css">
+	<!-- iCheck for checkboxes and radio inputs -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+	<!-- Bootstrap Color Picker -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+	<!-- Tempusdominus Bbootstrap 4 -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	<!-- Select2 -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	<!-- Bootstrap4 Duallistbox -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/dist/css/adminlte.min.css">
+	<!-- Google Font: Source Sans Pro -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!-- Theme style -->
+	<link rel="stylesheet"	href="<%=request.getContextPath() %>/resources/bootstrap/dist/css/adminlte.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+	<!-- toast ui Grid -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/tui-grid/dist/tui-grid.min.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/tui-date-picker/dist/tui-date-picker.min.css" />
+	
+	<!-- toast ui Grid -->
+	<script src="<%=request.getContextPath()%>/resources/tui-time-picker/dist/tui-time-picker.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/tui-date-picker/dist/tui-date-picker.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/tui-grid/dist/tui-grid.js"></script>
+	
+<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jsQR.js"></script>
+
+<style type="text/css">
+
+	main {
+		width:100%;
+		height:100%;
+		text-align:center;
+	}
+
+	main > div {
+		float:left;
+		width:1%;
+		height:98%;
+	}
+
+	main > div:first-child {
+		width:49%;
+	}
+
+	main > div:last-child {
+		background-color:#D3D3D3;
+		width:49%;
+	}
+
+	div#output {
+		background-color:#BDBEBD;
+		padding-left:10px;
+		padding-right:10px;
+		padding-top:10px;
+		padding-bottom:10px;
+	}
+
+	div#frame {
+		border:2px solid #005666;
+		background-color:#FFFFFF;
+		margin-left:10px;
+		margin-right:10px;
+		padding-left:8px;
+		padding-right:8px;
+		padding-top:8px;
+		padding-bottom:8px;
+	}
+
+	div#outputLayer {
+		text-align:left;
+	}
+
+	canvas {
+		display : block;
+		margin : auto;
+		text-align : center;
+		width:80%;
+		height : 100%
+	}
+	
+	input {
+		height: 9rem;
+    	width: 350px;
+    	font-size: 100px;
+	}
+	
+</style>
+</head>
+<body>
+  		<div class="row">
+          <div class="col-md-12" >
+                 <button type="button"  onclick="donefn();" class="btn btn-block btn-danger btn-xs" style="height: 150px; font-size: 7em;" value="done">종료</button>
+          </div>
+        </div>
+        
+        <div class="row" style="height: 650px; background-color: white;">
+          <div class="col-md-12">
+                <div id="loadingMessage">
+				🎥 비디오 스트림에 액세스 할 수 없습니다<br/>카메라가 활성화되어 있는지 확인하십시오
+				</div>
+				<canvas id="canvas"></canvas>
+          </div>
+        </div>
+        
+        <div class="row" style="background-color: white;">
+          <div class="col-12">
+          <table class="col-12">
+          
+          	<tr>
+          		<td><h1>코드</h1></td> 
+          		<td><h1><input type="text" id="goodsCode" style="text-align: center;" value=""></h1></td>
+          		<td><h1>품명</h1></td>
+          		<td><h1><input type="text" id="goodsName" style="text-align: center;" value=""></h1></td>
+          	</tr>
+          	<tr>
+          		<td><h1>전산</h1></td>
+          		<td><h1><input id="comquan" type="number" pattern="\d*" style="text-align: center;" value=""></h1></td>
+          		<td><h1>실사</h1></td>
+          		<td><h1><input id="realquan" type="number"  pattern="\d*" style="text-align: center;" value="0"></h1></td>
+          	</tr>
+          	
+          </table>
+          <div class="col-12 row">
+	          <div class="col-6">
+	          	<button id="plsbtn" type="button" onclick="plusfn();" class="btn btn-block btn-info btn-xs" style="height: 170px; font-size: 11em;"><i class="fas fa-plus"></i></button>
+	          </div>
+	          <div class="col-6">
+	          	<button id="minusbtn" type="button" onclick="minusfn();" class="btn btn-block btn-info btn-xs" style="height: 170px; font-size: 11em;"><i class="fas fa-minus"></i></button>
+	          </div>
+          </div>
+        </div>
+        </div>
+        
+        <div class="col-12 row" style="margin-top: 17px;">
+        	<button id="chkbtn" type="button" onclick="savefn();" class="btn btn-block btn-primary btn-xs" style="height: 170px; font-size: 7em;" >확인</button>
+        </div>
+	<div id="test">
+		<div id="output">
+			<div id="outputMessage">
+<!-- 				QR코드를 카메라에 노출시켜 주세요 -->
+			</div>
+	   		<div id="outputLayer" hidden>
+	   			<span id="outputData"></span>
+	   		</div>
+		</div>
+	</div>
+</body>
+</html>
+<!-- Bootstrap 4 -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script>
+<!-- common.js -->
+<script src="<%=request.getContextPath()%>/resources/js/common.js" ></script>
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/chart.js/Chart.js" ></script>
+<!-- summernote -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- Select2 -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/moment/moment.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/inputmask/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript">	
+	document.addEventListener("DOMContentLoaded", function() {
+		var video = document.createElement("video");		
+		var canvasElement = document.getElementById("canvas");
+		var canvas = canvasElement.getContext("2d");
+		var loadingMessage = document.getElementById("loadingMessage");
+		var outputContainer = document.getElementById("output");
+		var outputMessage = document.getElementById("outputMessage");
+		var outputData = document.getElementById("outputData");
+		var goods= "";
+		var done = "";
+		var realquan = document.getElementById("realquan");
+		var goodsName = document.getElementById("goodsName");
+		var goodsCode = document.getElementById("goodsCode");
+		
+		function drawLine(begin, end, color) {
+			canvas.beginPath();
+			canvas.moveTo(begin.x, begin.y);
+			canvas.lineTo(end.x, end.y);
+			canvas.lineWidth = 4;
+			canvas.strokeStyle = color;
+			canvas.stroke();
+		}
+		navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+     		video.srcObject = stream;
+			video.setAttribute("playsinline", true);
+			video.height = 30;
+			video.width = 30;
+         	video.play();
+			requestAnimationFrame(tick);
+		});
+		
+		function hqgoods(data) {
+			$.ajax({
+				url : "keyword/hqgoodsdetail.do"
+				, data : {"hqgoods" : data}
+				, contentType: "application/json; charset=UTF-8"
+				, success : function(data) {
+			    	console.log(data);
+					document.querySelector('#goodsCode').setAttribute('value', data.hq_goods_code);
+					document.querySelector('#goodsName').setAttribute('value', data.hq_goods_name);
+			}
+			})
+		}
+		
+		function tick() {
+			loadingMessage.innerText = "⌛ 스캔 기능을 활성화 중입니다."
+			if(video.readyState === video.HAVE_ENOUGH_DATA) {
+      		      loadingMessage.hidden = true;
+      		      canvasElement.hidden = false;
+      		      outputContainer.hidden = false;
+      		      
+       		      // 읽어들이는 비디오 화면의 크기
+       		      canvasElement.height = video.videoHeight;
+       	 	      canvasElement.width = video.videoWidth;
+       		      canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+       		      
+       		      var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+       		      var code = jsQR(imageData.data, imageData.width, imageData.height, {
+						inversionAttempts : "dontInvert",
+					});
+
+					// QR코드 인식에 성공한 경우
+					if(code) {
+	                    // 인식한 QR코드의 영역을 감싸는 사용자에게 보여지는 테두리 생성
+						drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF0000");
+						drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF0000");
+						drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF0000");
+						drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF0000");
+						outputMessage.hidden = true;
+						outputData.parentElement.hidden = false;
+	
+						// QR코드 메시지 출력
+						goods = code.data;
+						hqgoods(goods);
+						
+						if (done == 'done'){
+	                        return;
+						}
+                    }
+
+					// QR코드 인식에 실패한 경우 
+					else {
+						outputMessage.hidden = false;
+						outputData.parentElement.hidden = true;
+					}
+				}
+				requestAnimationFrame(tick);
+			}
+
+		});
+	function donefn() {
+		alert('실사를 종료합니다.');
+		done = 'done'
+		$('.row').hide();
+	}
+	
+	
+	function plusfn() {
+		realquan.value = +realquan.value + 1
+	}
+	
+	function minusfn() {
+		realquan.value = +realquan.value - 1
+	}
+	
+	function savefn() {
+		realquan = document.getElementById("realquan");
+		goodsName = document.getElementById("goodsName");
+		goodsCode = document.getElementById("goodsCode");
+		var data = {'goodsCode' : goodsCode, 'goodsName' : goodsName, 'realquan' : realquan}
+	}
+</script>

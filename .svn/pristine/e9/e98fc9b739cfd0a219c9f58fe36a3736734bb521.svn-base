@@ -1,0 +1,53 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dao.FranDAO;
+import kr.or.fms.fran.dto.FranVO;
+
+public class FranServiceImpl implements FranService {
+
+	private FranDAO franDAO;
+
+	public void setFranDAO(FranDAO franDAO) {
+		this.franDAO = franDAO;
+	}
+
+	@Override
+	public List<FranVO> getFranList() throws SQLException {
+		List<FranVO> franList = franDAO.selectFranList();
+		return franList;
+	}
+
+	@Override
+	public List<FranVO> getFranList(Criteria cri) throws SQLException {
+		List<FranVO> franList = franDAO.selectFranList(cri);
+		return franList;
+	}
+
+	@Override
+	public Map<String, Object> getFranList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(franDAO.selectFranListCount(cri));
+
+		List<FranVO> franList = franDAO.selectFranList(cri);
+
+		dataMap.put("franList", franList);
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+	
+}

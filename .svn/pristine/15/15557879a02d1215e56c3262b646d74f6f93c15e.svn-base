@@ -1,0 +1,21 @@
+package kr.or.fms.hq.dto;
+									/* 본사계좌정보 */
+public class HqAccountInfoVO {
+	
+	private String hq_account_code;	//본사계좌정보코드
+	private String hq_account_no;	//본사계좌번호
+	
+	public String getHq_account_code() {
+		return hq_account_code;
+	}
+	public void setHq_account_code(String hq_account_code) {
+		this.hq_account_code = hq_account_code;
+	}
+	public String getHq_account_no() {
+		return hq_account_no;
+	}
+	public void setHq_account_no(String hq_account_no) {
+		this.hq_account_no = hq_account_no;
+	}
+
+}

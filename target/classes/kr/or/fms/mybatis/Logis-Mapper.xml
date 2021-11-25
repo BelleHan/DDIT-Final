@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Logis-Mapper">
+
+	<!-- logis정보 -->
+	<select id="selectLogisByCode" parameterType="str" resultType="logis">
+		select *
+		from logis
+		where logis_code = #{logis_code}
+	</select>
+	
+	<!-- 오배송, 미승인 상태의 반품건수 불러오기 -->
+	<select id="selectReturnCount" resultType="int">
+		select count(*) 
+		from return 
+		where return_reason_code = '1'
+		and return_check_st = '1'
+	</select>
+	
+	<!-- 각 logis가 소유한 창고정보 -->
+	<select id="selectLogidWhInfo" resultType="logisWh" parameterType="str">
+		select  distinct(wh_code), wh_name, wh_area, wh_st  
+		from logis_wh 
+		where logis_code =#{logis_code}
+		order by wh_name
+	</select>
+	
+	<!-- 현재 계약중이 업체 -->
+	<select id="selectLogisHq" parameterType="str" resultType="int">
+		select 
+		count(hq_code) 
+		from logis 
+		where logis_code=#{logis_code}
+	</select>
+	
+	<resultMap type="logisWh" id="logisWh">
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<result column="logis_goods_stock" property="logis_goods_stock"/>
+		<collection property="hqVO" resultMap="hq"></collection>
+		<collection property="logisVO" resultMap="logis"></collection>
+	</resultMap>
+	
+	<resultMap type="hq" id="hq">
+		<result column="hq_name" property="hq_name"/>
+		<result column="hq_code" property="hq_code"/>
+	</resultMap>
+	
+	<resultMap type="logis" id="logis">
+		<result column="logis_local_num" property="logis_local_num"/>
+	</resultMap>
+
+	<resultMap type="logisContractInfo" id="logisContractInfo">
+		<result column="hq_code" property="hq_code"/>
+		<result column="logis_contract_start" property="logis_contract_start"/>
+		<result column="logis_contract_end" property="logis_contract_end"/>
+		<collection property="hqVO" resultMap="hq"></collection>
+	</resultMap>
+
+	<!-- 창고에 가장많이 적재되고 있는 top5물품, 업체 -->
+	<select id="selectTopGoods" resultMap="logisWh" parameterType="str">
+		<![CDATA[
+		select a.hq_goods_code, a.logis_goods_stock, b.hq_name, b.hq_code
+		from logis_wh a, hq b, logis c
+		where a.logis_code = c.logis_code
+		and  b.hq_code = c.hq_code 
+		and a.logis_code = #{logis_code}
+		and rownum <= 5
+		order by a.logis_goods_stock desc]]>
+	</select>
+	
+	
+	<!-- 계약중인 업체 정보 (계약 끝나가는 순으로)-->
+	<select id="selectHq" resultMap="logisContractInfo" parameterType="str">
+		select a.hq_code, b.hq_name, a.logis_contract_start, a.logis_contract_end
+		from logis_contract_info a, hq b
+		where a.hq_code = b.hq_code
+		and logis_code = #{logis_code}
+		order by logis_contract_end
+	</select>
+</mapper>

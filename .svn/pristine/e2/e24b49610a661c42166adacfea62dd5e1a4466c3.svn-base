@@ -1,0 +1,37 @@
+package kr.or.fms.dto;
+
+public class MenuVO {
+	
+	private String menu_code;
+	private String menu_name;
+	private String menu_url;
+	private String menu_upper;
+	
+	public String getMenu_code() {
+		return menu_code;
+	}
+	public void setMenu_code(String menu_code) {
+		this.menu_code = menu_code;
+	}
+	public String getMenu_name() {
+		return menu_name;
+	}
+	public void setMenu_name(String menu_name) {
+		this.menu_name = menu_name;
+	}
+	public String getMenu_url() {
+		return menu_url;
+	}
+	public void setMenu_url(String menu_url) {
+		this.menu_url = menu_url;
+	}
+	public String getMenu_upper() {
+		return menu_upper;
+	}
+	public void setMenu_upper(String menu_upper) {
+		this.menu_upper = menu_upper;
+	}
+	
+	
+
+}

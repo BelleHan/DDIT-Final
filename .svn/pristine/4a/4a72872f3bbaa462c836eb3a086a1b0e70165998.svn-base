@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Out-Mapper">
+	<!-- <sql id="searchOutMap">	
+		<if test="keywordMap.fms_log!=null and !keywordMap.fms_log.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_log}||'%'			
+		</if>
+		<if test="keywordMap.fms_hq!=null and !keywordMap.fms_hq.equals('')">
+			and f.hq_goods_code '%'||#{keywordMap.fms_hq}||'%'			
+		</if>
+		<if test="keywordMap.fms_outFran!=null and !keywordMap.fms_outFran.equals('')">
+			and h.fran_code like '%'||#{keywordMap.fms_outFran}||'%'
+		</if>		
+		<if test="keywordMap.fms_outLogis!=null and !keywordMap.fms_outLogis.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_outLogis||'%'			
+		</if>		
+			
+	</sql>  -->
+		<resultMap type="logis" id="logis">
+		<result column="logis_code" property="logis_code" />
+		<result column="logis_name" property="logis_name" />
+		</resultMap>
+	
+		<resultMap type="fran" id="fran">
+		<result column="fran_code" property="fran_code" />
+		<result column="fran_name" property="fran_name" />
+		</resultMap>
+
+		<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="hq_goods_name" property="hq_goods_name" />
+		</resultMap>
+		
+	
+	<resultMap type="out" id="out">
+		<result column="out_code" property="out_code" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="logis_code" property="logis_code" />
+		<result column="out_loca_type" property="out_loca_type" />
+		<result column="out_loca" property="out_loca" />
+		<result column="out_date" property="out_date" />
+		<result column="outDate" property="outDate" />
+		<result column="out_st" property="out_st" />
+		<result column="out_num" property="out_num" />
+		<collection property="logisVO" resultMap="logis"/>	
+		<collection property="franVO" resultMap="fran" />
+		<collection property="hqGoodsVO" resultMap="hqGoods" />
+	</resultMap> 
+	
+	
+	<sql id="searchOutTakingMap">	
+		<if test="keywordMap.fms_logis!=null">
+<!-- 			and b.out_loca like '%'||#{keywordMap.fms_logis}||'%' -->
+			and (out_loca = #{keywordMap.fms_logis} or out_loca = #{keywordMap.fms_logis})			
+		</if>
+<!-- 		<if test="keywordMap.fms_fran!=null"> -->
+<!-- 			and b.out_loca like '%'||#{keywordMap.fms_fran}||'%'			 -->
+<!-- 		</if> -->
+		<if test="keywordMap.fms_st!=null">
+			and b.out_st like '%'||#{keywordMap.fms_st}||'%'			
+		</if>
+		<if test="keywordMap.start_date!=null">
+		    and <![CDATA[b.out_date >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null">
+			and <![CDATA[b.out_date <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	
+	<select id="selectOutList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<select id="OutSearchList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<update id="insertOutPlan">
+		insert 
+		into
+		out(out_code, hq_goods_code, logis_code, out_loca_type, out_loca, out_date, out_st, out_num)
+		values
+		('RC'||lpad(#{out_code},4,'0'), #{hq_goods_code}, #{logis_code}, #{out_loca_type}, #{out_loca}, #{out_date}, #{out_st}, #{out_num})
+	</update>
+	
+	<update id="updateOut" parameterType="out">
+		update out
+		set
+		out_num=#{out_num}
+		where out_code=#{out_code}
+		and hq_goods_code=#{hq_goods_code}	
+	</update>
+	
+	<select id="selectOutSeqNext" resultType="String">
+		select seq_out.nextval as out_code from dual
+	</select>
+		
+	<select id="selectOutListCount" resultType="int">
+		select 
+		count(*)
+		from out
+		where out_code is not null
+		
+	</select>
+	
+	<select id="selectOutByCode" resultType="out" parameterType="str">
+		select *
+		from out
+		where out_code=#{out_code}
+	</select>
+	
+	<select id="outTakingList" resultType="out">
+	SELECT
+	    b.out_code,
+	    b.hq_goods_code,
+	    b.logis_code,
+	    b.out_loca_type,
+	    b.out_loca,
+	    b.out_date,
+	    b.out_st,
+	    b.out_num
+	FROM
+    	out b
+	</select> 
+
+<select id="outTakingSearchList" parameterType="map" resultMap="out">
+	select 
+	    distinct b.out_code,
+	             b.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = b.logis_code
+                 ) logis_name,
+	             b.out_loca_type,
+	             b.out_loca,
+	             a.fran_name,
+	             b.out_date,
+	             b.out_st
+	from 
+	    out b, fran a
+<!-- 	    , logis c -->
+	where 
+	    out_code is not null
+	and b.out_loca = a.fran_code
+	 <include refid="searchOutTakingMap" />
+	union all
+	select 
+	    distinct b.out_code,
+	             b.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = b.logis_code
+                 ) logis_name,
+	             b.out_loca_type,
+	             b.out_loca,
+	             c.logis_name,
+	             b.out_date,
+	             b.out_st
+	from 
+	    out b, logis c
+<!-- 	    , fran a -->
+	where 
+	    out_code is not null
+	and b.out_loca = c.logis_code
+	    <include refid="searchOutTakingMap" />
+	order by out_code desc
+		
+
+	</select>	
+	
+<select id="outTakingSearchCount" parameterType="map" resultType="int">
+	SELECT
+	    count(*)
+	from (
+	
+	select 
+	    distinct b.out_code,
+	             b.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = b.logis_code
+                 ) logis_name,
+	             b.out_loca_type,
+	             b.out_loca,
+	             a.fran_name,
+	             b.out_date,
+	             b.out_st
+	from 
+	    out b, fran a
+<!-- 	    , logis c -->
+	where 
+	    out_code is not null
+	and b.out_loca = a.fran_code
+	 <include refid="searchOutTakingMap" />
+	union all
+	select 
+	    distinct b.out_code,
+	             b.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = b.logis_code
+                 ) logis_name,
+	             b.out_loca_type,
+	             b.out_loca,
+	             c.logis_name,
+	             b.out_date,
+	             b.out_st
+	from 
+	    out b, logis c
+<!-- 	    , fran a -->
+	where 
+	    out_code is not null
+	and b.out_loca = c.logis_code
+	    <include refid="searchOutTakingMap" />
+		
+	
+	
+	)
+<!-- 	FROM -->
+<!-- 	    out b -->
+<!-- 	 where 1=1 -->
+<!-- 	    <include refid="searchOutTakingMap" /> -->
+	
+		
+	</select>
+	
+	<select id="getOutTakingDetail" resultMap="out">
+	 select 
+	    distinct a.out_code,
+	             a.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = a.logis_code
+                 ) logis_name,
+	             a.out_loca_type,
+	             a.out_loca,
+	             b.fran_name,
+	             a.out_date,
+	             a.out_st,
+                 a.out_num,
+                 a.hq_goods_code,
+                 (
+                 select hq_goods_name
+                 from hq_goods h
+                 where h.hq_goods_code =  a.hq_goods_code
+                 )hq_goods_name
+	from 
+	    out a, fran b
+<!-- 	    , logis c -->
+	where  out_code = #{data}
+	   and out_code is not null
+	and a.out_loca = b.fran_code
+	union all
+	select 
+	    distinct a.out_code,
+	             a.logis_code,
+                 (
+                 select logis_name
+                 from logis l
+                 where l.logis_code = a.logis_code
+                 ) logis_name,
+	             a.out_loca_type,
+	             a.out_loca,
+	             c.logis_name,
+	             a.out_date,
+	             a.out_st,
+                 a.out_num,
+                 a.hq_goods_code,
+                (
+                 select hq_goods_name
+                 from hq_goods h
+                 where h.hq_goods_code =  a.hq_goods_code
+                 ) hq_goods_name
+	from 
+	    out a, logis c
+<!-- 	    , fran b -->
+	where  out_code = #{data}
+	 and   out_code is not null
+	and a.out_loca = c.logis_code
+	order by out_code 
+    
+    
+		
+	   
+	</select>
+
+	
+
+</mapper>

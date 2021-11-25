@@ -1,0 +1,63 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranContractInfoVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqEmpVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public class FranDAOImpl implements FranDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public FranContractInfoVO selectFranInfo(String fran_code) throws SQLException {
+		FranContractInfoVO franContInfo = session.selectOne("Fran-Mapper.selectFranCont", fran_code);
+		return franContInfo;
+	}
+
+	@Override
+	public FranVO selectFranBycode(String fran_code) throws SQLException {
+		FranVO fran = session.selectOne("Fran-Mapper.selectFranByCode", fran_code);
+		return fran;
+	}
+
+	@Override
+	public HqEmpVO selectFranEmp(String fran_code) throws SQLException {
+		HqEmpVO hqEmp = session.selectOne("Fran-Mapper.selectFranEmp", fran_code);
+		return hqEmp;
+	}
+
+	@Override
+	public List<FranVO> selectNearFran(FranVO fran) throws SQLException {
+		List<FranVO> selectNearFran = session.selectList("FranToFran-Mapper.searchNearFran", fran);
+		return selectNearFran;
+	}
+
+	@Override
+	public List<HqGoodsVO> searchGoods(SearchCriteria cri) throws SQLException {
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);	
+		
+		List<HqGoodsVO> searchGoodsList = session.selectList("FranToFran-Mapper.searchGoods", cri, rowBounds);
+		return searchGoodsList;
+	}
+
+	@Override
+	public int searchGoodsCount(SearchCriteria cri) throws SQLException {
+		int count = session.selectOne("FranToFran-Mapper.searchGoodsCount", cri);
+		return count;
+	}
+	
+
+}

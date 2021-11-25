@@ -1,0 +1,212 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
+<title>반품신청등록</title> 
+<head>
+<!-- summernote -->
+  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.css">
+</head>
+
+<body> 
+   <!-- Content Header (Page header) -->
+    <section class="content-header">
+    	<div class="container-fluid">
+    		<div class="row mb-2">
+    			<div class="col-sm-6">
+	      			<h1>반품신청</h1>
+	      		</div>	      		
+	    	
+	       		
+	       		<div class="col-sm-6">
+			      <ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item"><a href="list.do"><i class="fa fa-dashboard"></i>반품신청목록</a></li>
+			        <li class="breadcrumb-item active">반품신청</li>		        
+			      </ol>
+		      	</div>
+	     	</div>	     	
+      	</div>
+    </section>
+
+    <section class="content container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card card-outline card-info">
+					<div class="card-header">
+						<h4>반품신청등록</h4>
+					</div><!--end card-header  -->
+					<div class="card-body">
+						<form enctype="multipart/form-data" role="form" method="post" action="regist.do" name="registForm">
+							<div class="row">
+							<div class="form-group col-sm-2" >
+								<label for="fran_code">반품코드</label>
+								<input type="text" class="form-control" id="fran_code" name="fran_code" readonly value="${fran.fran_code }" />
+							</div>
+							<div class="form-group col-sm-2" >
+								<label for="fran_name">물품명</label>
+								<input type="text" class="form-control" id="fran_name" name="fran_name"  value="${fran.fran_name }" />
+							</div>
+							<div class="form-group col-sm-2" >
+								<label for="fran_name">물품명</label>
+								<input type="text" class="form-control" id="fran_name" name="fran_name"  value="${fran.fran_name }" />
+							</div>
+							<div class="form-group col-sm-2" >
+								<label for="fran_name">물품명</label>
+								<input type="text" class="form-control" id="fran_name" name="fran_name"  value="${fran.fran_name }" />
+							</div>
+							
+						</form>	
+							<div class="form-group col-sm-2" >
+<%-- 								<form action = "<%=request.getContextPath() %>/fr/goodsList.do" method ="get"> --%>
+								<label for="fran_name">물품명</label>
+								<input type="text" name="goods" id="goods">
+								<input type = "button" value="검색" id="searchBtn" onclick="search_goodsName()">
+<!-- 								</form> -->
+								<div id="result">
+								
+								</div>
+								
+<!-- 								<select name="goods_name" id="goods_name"> -->
+<!-- 									<option value="">물품선택</option> -->
+<!-- 								</select> -->
+							</div>							
+					<script type="text/javascript">
+					function search_goodsName(){
+						$.ajax({
+							url : "<%=request.getContextPath() %>/fr/goodsList.do",
+							data : {"goods" : $("#goods").val() },
+							dataType : "json",
+							success : function(res){
+								console.log(res);
+// 								let htmlCode = "<option value=''>물품선택</option>";
+// 								$.each(res, function(i,v){
+// 									htmlCode += "<option value='" + v.hq_goods_code+ "'>" + v.hq_goods_name + "</option>"
+// 								});
+// 								$("#goods_name").html(htmlCode);
+								
+								let htmlCode = "<table>";
+								$.each(res, function(i,v){
+									htmlCode += "<tr id='" + v.hq_goods_code+ "'><td>" + v.hq_goods_name  + "</td></tr>" 
+								});
+								htmlCode += "</table>";
+								$("#result").html(htmlCode);
+
+
+
+							},
+							error : function(e){
+								alert("오류...");
+							}
+						});
+					}
+					
+					</script>		
+							
+							</div>
+							<div class="form-group">
+								<label for="return_code">반품코드</label> 
+								<input type="text" id="writer" 
+									name="return_code" class="form-control" value="${fran.fran_name }">
+							</div>
+							<div class="form-group">
+								<label for="fran_code">가맹점코드</label> 
+								<input type="text" id="writer" 
+									name="fran_code" class="form-control" value="${fran.fran_name }">
+							</div>
+							<div class="form-group">
+								<label for="title">반품신청서 제목</label> 
+								<input type="text" id="title"
+									name='title' class="form-control" placeholder="반품신청서 제목을 쓰세요">
+							</div>
+							<div class="form-group">
+								<label for="content">반품사유</label>
+								<textarea class="form-control" name="content" id="content" rows="5"
+									placeholder="1000자 내외로 작성하세요."></textarea>
+							</div>
+							<div class="form-group">								
+								<div class="card card-outline card-success">
+									<div class="card-header">
+										<h5 style="display:inline;line-height:40px;">첨부파일 : </h5>
+										&nbsp;&nbsp;<button class="btn btn-xs btn-primary"
+										onclick="addFile_go();"	type="button" id="addFileBtn">Add File</button>
+									</div>									
+									<div class="card-footer fileInput">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div><!--end card-body  -->
+					<div class="card-footer">
+						<button type="button" class="btn btn-primary" id="registBtn" onclick="regist_go();">등 록</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn" id="cancelBtn" onclick="CloseWindow();">취 소</button>
+					</div><!--end card-footer  -->
+				</div><!-- end card -->				
+			</div><!-- end col-md-12 -->
+		</div><!-- end row -->
+    </section>
+    <!-- /.content -->
+ 	<script>   
+    	window.onload=function(){
+			Summernote_start($('#content'));
+			
+			$('.fileInput').on('change','input[type="file"]',function(event){
+				if (this.files[0].size > 1024 * 1024 * 40) {
+					alert("파일 용량이 40MB를 초과하였습니다.");
+					this.value="";
+					$(this).click();
+					return false;
+				}
+			});
+			
+			$('div.fileInput').on('click','div.inputRow > button',function(event){
+				$(this).parent('div.inputRow').remove();
+			});
+		}
+    </script>
+    
+    <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
+    
+    <script>
+    	function addFile_go(){
+//     		alert("add file btn");
+
+// 			var form=$('<form>');
+// 			$('body').append(form)
+// 			form.submit();
+			
+			if ($('input[name="uploadFile"]').length >= 5) {
+				alert("파일추가는 5개까지만 가능합니다.");
+				return;
+			}
+			
+			var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline");
+			var div=$('<div>').addClass("inputRow");
+			div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>X</button>");
+			$('.fileInput').append(div);
+    	}	
+    
+    
+    	function regist_go(){
+    		var files = $('input[name="uploadFile"]');
+    		for(var file of files){
+    			console.log(file.name+" : "+file.value);
+    			if(file.value==""){
+    				alert("파일을 선택하세요.");
+    				file.focus();
+    				file.click();
+    				return;
+    			}
+    		}	
+    		
+    		if($("input[name='title']").val()==""){ //form.title.value
+    			alert("제목은 필수입니다.");
+    			$("input[name='title']").focus();
+    			return;
+    		}
+    	
+    		document.registForm.submit();	
+    	}
+   
+    </script>
+</body>

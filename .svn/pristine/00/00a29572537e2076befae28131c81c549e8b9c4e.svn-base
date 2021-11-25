@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Return-Mapper">
+
+	<resultMap type="returnDetail" id="returnDetail">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="return_code" property="return_code" />
+	</resultMap>
+	
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+	</resultMap>
+	
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_name" property="sup_goods_name" />
+	</resultMap>
+	
+	<resultMap type="fran" id="fran">
+		<result column="fran_name" property="fran_name" />
+		<result column="fran_addr" property="fran_addr" />
+	</resultMap>
+	
+	<resultMap type="return" id="return">
+		<result column="return_code" property="return_code" />
+		<result column="fran_code" property="fran_code" />
+		<result column="return_st" property="return_st" />
+		<collection property="returnDetailVO" resultMap="returnDetail" />
+		<collection property="hqGoodsVO" resultMap="hqGoods" />
+		<collection property="supGoodsVO" resultMap="supGoods" />
+		<collection property="franVO" resultMap="fran" />
+	</resultMap>
+
+	<select id="selectReturnList" parameterType="return" resultMap="return">
+		select D.RETURN_CODE, D.FRAN_CODE, E.FRAN_NAME, E.FRAN_ADDR, C.SUP_GOODS_NAME, A.RETURN_QUAN, D.RETURN_ST
+		from RETURN_DETAIL A, HQ_GOODS B, SUP_GOODS C, RETURN D, FRAN E
+		WHERE A.HQ_GOODS_CODE = B.HQ_GOODS_CODE
+		AND B.SUP_GOODS_CODE = C.SUP_GOODS_CODE
+		AND D.RETURN_CODE = A.RETURN_CODE
+		AND D.FRAN_CODE = E.FRAN_CODE
+	</select>
+
+</mapper>

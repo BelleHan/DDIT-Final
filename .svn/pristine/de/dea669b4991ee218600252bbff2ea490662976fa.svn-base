@@ -1,0 +1,22 @@
+package kr.or.fms.sup.dao;
+
+import java.sql.SQLException;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.sup.dto.SupVO;
+
+public class SupDAOImpl implements SupDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+
+	@Override
+	public SupVO selectSupById(String sup_code) throws SQLException {
+		SupVO sup = session.selectOne("Sup-Mapper.selectSupById", sup_code);			
+		return sup;
+	}
+
+}

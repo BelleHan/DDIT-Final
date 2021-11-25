@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Orderlist-Mapper">
+
+	<select id="getOrderList" resultType="franOrder">
+		SELECT * FROM fran_order 
+		WHERE fran_code is not null 
+		AND fran_code = #{keywordMap.fran_code}
+		<include refid="searchOrderList"/>
+		order by fran_order_date
+	</select>
+	<select id="getOrderListCount" resultType="franOrder">
+		SELECT count(*) FROM fran_order 
+		WHERE fran_code is not null 
+		AND fran_code = #{keywordMap.fran_code}
+		<include refid="searchOrderList"/>
+	</select>
+	<select id="getOrderDetail" resultType="franOrderDe">
+		SELECT * FROM fran_order_detail 
+		WHERE fran_order_code is not null 
+		AND fran_order_code = #{keywordMap.orderCode}
+	</select>
+	<sql id="searchOrderList">
+		<if test="keywordMap.stardDate != null and !keywordMap.startDate.equals('')">
+			AND <![CDATA[fran_order_date >= #{keywordMap.stardData}]]>
+		</if>
+		<if test="keywordMap.endDate != null and !keywordMap.endDate.equals('')">
+			AND <![CDATA[fran_order_date <= #{keywordMap.endData}]]>
+		</if>
+		<if test="keywordMap.apprSt != null and !keywordMap.apprSt.equals('')">
+			AND fran_appr_st = #{keywordMap.apprSt}
+		</if>
+		<if test="keywordMap.deliSt != null and !keywordMap.deliSt.equals('')">
+			AND order_deli_se = #{keywordMap.deliSt}
+		</if>
+	</sql>
+</mapper>

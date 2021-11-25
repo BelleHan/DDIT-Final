@@ -1,0 +1,58 @@
+package kr.or.fms.hq.dto;
+									/* 본사 */
+public class HqVO {
+
+	private String hq_code;			//본사코드
+	private String hq_name;			//회사명
+	private String hq_business_no;	//사업자번호
+	private String hq_owner;		//대표명
+	private int hq_zip;				//우편번호
+	private String hq_addr;			//주소  
+	private String hq_detail_addr;	//상세주소
+	
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getHq_name() {
+		return hq_name;
+	}
+	public void setHq_name(String hq_name) {
+		this.hq_name = hq_name;
+	}
+	public String getHq_business_no() {
+		return hq_business_no;
+	}
+	public void setHq_business_no(String hq_business_no) {
+		this.hq_business_no = hq_business_no;
+	}
+	public String getHq_owner() {
+		return hq_owner;
+	}
+	public void setHq_owner(String hq_owner) {
+		this.hq_owner = hq_owner;
+	}
+	public int getHq_zip() {
+		return hq_zip;
+	}
+	public void setHq_zip(int hq_zip) {
+		this.hq_zip = hq_zip;
+	}
+	public String getHq_addr() {
+		return hq_addr;
+	}
+	public void setHq_addr(String hq_addr) {
+		this.hq_addr = hq_addr;
+	}
+	public String getHq_detail_addr() {
+		return hq_detail_addr;
+	}
+	public void setHq_detail_addr(String hq_detail_addr) {
+		this.hq_detail_addr = hq_detail_addr;
+	}
+	
+	
+	
+}

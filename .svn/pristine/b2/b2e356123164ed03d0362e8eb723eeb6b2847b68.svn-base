@@ -1,0 +1,30 @@
+package kr.or.fms.hq;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.hq.dao.SupListDAO;
+import kr.or.fms.sup.dto.SupVO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokSupListDAOImpl {
+	
+	@Autowired
+	private SupListDAO supListDAO;
+	
+	@Test
+	public void selectEmp() throws SQLException {
+		List<SupVO> selectSupList = supListDAO.selectSupList();
+		System.out.println(selectSupList.size());
+	}
+
+}

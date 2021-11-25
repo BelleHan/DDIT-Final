@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Out-Mapper">
+	<sql id="searchOutMap">	
+		<if test="keywordMap.fms_log!=null and !keywordMap.fms_log.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_log}||'%'			
+		</if>
+		<if test="keywordMap.fms_hq!=null and !keywordMap.fms_hq.equals('')">
+			and f.hq_goods_code '%'||#{keywordMap.fms_hq}||'%'			
+		</if>
+		<if test="keywordMap.fms_outFran!=null and !keywordMap.fms_outFran.equals('')">
+			and h.fran_code like '%'||#{keywordMap.fms_outFran}||'%'
+		</if>		
+		<if test="keywordMap.fms_outLogis!=null and !keywordMap.fms_outLogis.equals('')">
+			and e.logis_code like '%'||#{keywordMap.fms_outLogis||'%'			
+		</if>		
+			
+	</sql> 
+	
+	<select id="selectOutList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<select id="OutSearchList" resultType="out">
+		select *
+		from out
+		where out_code is not null
+		order by out_code asc
+	</select>
+	
+	<update id="insertOutPlan">
+		insert 
+		into
+		out(out_code, hq_goods_code, logis_code, out_loca_type, out_loca, out_date, out_st, out_num)
+		values
+		('RC'||lpad(seq_out.nextval, 4, '0'), #{hq_goods_code}, #{logis_code}, #{out_loca_type}, #{out_loca}, #{out_date}, #{out_st}, #{out_num})
+	</update>
+	
+	<update id="updateOut" parameterType="out">
+		update out
+		set
+		out_loca_type=#{out_loca_type}, out_loca=#{out_loca}, out_date=#{out_date}, out_st=#{out_st}, out_num=#{out_num}
+		where out_code=#{out_code}
+	
+	</update>
+	
+	<select id="selectOutSeqNext" resultType="String">
+		select seq_out.nextval as out_code from dual
+	</select>
+		
+	<select id="selectOutListCount" resultType="int">
+		select 
+		count(*)
+		from out
+		where out_code is not null
+		
+	</select>
+	
+	<select id="selectOutByCode" resultType="out" parameterType="str">
+		select *
+		from out
+		where out_code=#{out_code}
+	</select>
+	
+	<!-- <select id="outListCount" parameterType="map" resultType="int">
+	SELECT 
+		count(*)
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+		h.sup_goods_code is not null
+	    AND e.fran_code = f.fran_code
+	    AND g.hq_goods_code = f.hq_goods_code
+	    AND h.sup_goods_code = g.sup_goods_code
+	    AND i.sup_code = h.sup_code 
+		<include refid="searchFranMap" />
+	</select> -->
+</mapper>

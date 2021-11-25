@@ -1,0 +1,11 @@
+package kr.or.fms.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public interface KeywordDAO {
+	
+	public List<HqGoodsVO> goods() throws SQLException;
+}

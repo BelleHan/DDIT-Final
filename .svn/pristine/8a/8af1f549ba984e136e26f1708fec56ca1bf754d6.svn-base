@@ -1,0 +1,13 @@
+package kr.or.fms.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+public interface KeywordService {
+	
+	public List<HqGoodsVO> goods() throws SQLException;
+
+	public List<String> local() throws SQLException;
+}

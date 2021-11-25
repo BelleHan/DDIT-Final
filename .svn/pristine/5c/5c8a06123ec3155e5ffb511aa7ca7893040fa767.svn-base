@@ -1,0 +1,5 @@
+fms.upload=c:/fms/file/upload
+supGoods.picture.upload=c:/fms/supGoodsUpload
+error.log=c:/error_log/
+summernote.img=c:/attach/board/img
+login.logisUser.log=c:/log/loginLogis

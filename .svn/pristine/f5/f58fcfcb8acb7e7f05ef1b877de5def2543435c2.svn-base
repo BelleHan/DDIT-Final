@@ -1,0 +1,14 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.fran.dto.FranVO;
+
+public interface FranService {
+
+	//가맹점페이지 조회
+	FranVO getFranInfo(String fran_code)throws SQLException;
+	
+	//가맹점 조회
+	FranVO getFran(String fran_code)throws SQLException;
+}

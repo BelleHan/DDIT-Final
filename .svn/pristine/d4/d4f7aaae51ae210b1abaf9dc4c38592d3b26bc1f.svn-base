@@ -1,0 +1,52 @@
+package kr.or.fms.fran.dto;
+
+import java.util.Date;
+
+public class FranReplyVO {
+	
+	private String fran_reply_num;
+	private String fran_notice_num;
+	private String emp_no;
+	private Date fran_reply_date;
+	private String fran_reply_content;
+	private String fran_reply_scope;
+	public String getFran_reply_num() {
+		return fran_reply_num;
+	}
+	public void setFran_reply_num(String fran_reply_num) {
+		this.fran_reply_num = fran_reply_num;
+	}
+	public String getFran_notice_num() {
+		return fran_notice_num;
+	}
+	public void setFran_notice_num(String fran_notice_num) {
+		this.fran_notice_num = fran_notice_num;
+	}
+	public String getEmp_no() {
+		return emp_no;
+	}
+	public void setEmp_no(String emp_no) {
+		this.emp_no = emp_no;
+	}
+	public Date getFran_reply_date() {
+		return fran_reply_date;
+	}
+	public void setFran_reply_date(Date fran_reply_date) {
+		this.fran_reply_date = fran_reply_date;
+	}
+	public String getFran_reply_content() {
+		return fran_reply_content;
+	}
+	public void setFran_reply_content(String fran_reply_content) {
+		this.fran_reply_content = fran_reply_content;
+	}
+	public String getFran_reply_scope() {
+		return fran_reply_scope;
+	}
+	public void setFran_reply_scope(String fran_reply_scope) {
+		this.fran_reply_scope = fran_reply_scope;
+	}
+	
+	
+	
+}

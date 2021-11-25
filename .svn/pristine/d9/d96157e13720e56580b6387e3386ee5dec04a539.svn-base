@@ -1,0 +1,81 @@
+package kr.or.fms.dto;
+									/* 반품 */
+import java.util.Date;
+
+public class ReturnVO {
+	
+	private String return_code;			//반품코드
+	private String fran_code;			//가맹점코드
+	private String return_title;		//반품신청서제목
+	private Date return_appli_date;		//반품신청일자
+	private String return_reason;		//반품사유
+	private int return_appr_st;			//반품승인상태
+	private Date return_deliver_date;	//반품회수일자
+	private int return_st;				//반품진행상태
+	private int attach_no;				//첨부파일일련번호
+	private int retun_reason_code;		//반품사유코드(1:오배송 2:결품 3:기타)
+	
+	public String getReturn_code() {
+		return return_code;
+	}
+	public void setReturn_code(String return_code) {
+		this.return_code = return_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public int getRetun_reason_code() {
+		return retun_reason_code;
+	}
+	public void setRetun_reason_code(int retun_reason_code) {
+		this.retun_reason_code = retun_reason_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getReturn_title() {
+		return return_title;
+	}
+	public void setReturn_title(String return_title) {
+		this.return_title = return_title;
+	}
+	public Date getReturn_appli_date() {
+		return return_appli_date;
+	}
+	public void setReturn_appli_date(Date return_appli_date) {
+		this.return_appli_date = return_appli_date;
+	}
+	public String getReturn_reason() {
+		return return_reason;
+	}
+	public void setReturn_reason(String return_reason) {
+		this.return_reason = return_reason;
+	}
+	public int getReturn_appr_st() {
+		return return_appr_st;
+	}
+	public void setReturn_appr_st(int return_appr_st) {
+		this.return_appr_st = return_appr_st;
+	}
+	public Date getReturn_deliver_date() {
+		return return_deliver_date;
+	}
+	public void setReturn_deliver_date(Date return_deliver_date) {
+		this.return_deliver_date = return_deliver_date;
+	}
+	public int getReturn_st() {
+		return return_st;
+	}
+	public void setReturn_st(int return_st) {
+		this.return_st = return_st;
+	}
+	public int getAttach_no() {
+		return attach_no;
+	}
+	public void setAttach_no(int attach_no) {
+		this.attach_no = attach_no;
+	}
+	
+	
+
+}

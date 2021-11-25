@@ -1,0 +1,56 @@
+package kr.or.fms.hq.security;
+
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import kr.or.fms.hq.dto.HqEmpVO;
+
+public class UserHqEmp implements UserDetails {
+
+	private HqEmpVO emp;
+	public UserHqEmp(HqEmpVO emp) {
+		this.emp = emp;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		return emp.getEmp_pwd();
+	}
+
+	@Override
+	public String getUsername() {
+		return emp.getEmp_no();
+	}
+	public HqEmpVO getHqEmpVO() {
+		return this.emp;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+
+}

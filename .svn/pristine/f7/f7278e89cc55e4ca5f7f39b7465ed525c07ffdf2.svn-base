@@ -1,0 +1,28 @@
+package kr.or.fms.sup.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.exception.InvalidPasswordException;
+import kr.or.fms.exception.NotFoundIdException;
+import kr.or.fms.sup.dao.SupDAO;
+import kr.or.fms.sup.dto.SupVO;
+
+public class SupServiceImpl implements SupService {
+	
+	private SupDAO supDAO;
+	public void setSupDAO(SupDAO supDAO) {
+		this.supDAO = supDAO;
+	}
+
+	@Override
+	public void login(String sup_code, String sup_pwd) throws SQLException, NotFoundIdException, InvalidPasswordException {
+
+		SupVO sup = supDAO.selectSupById(sup_code);
+		if (sup == null)
+			throw new NotFoundIdException();
+		if (!sup_pwd.equals(sup.getSup_pwd()))
+			throw new InvalidPasswordException();
+		
+	}
+
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GoodsBuy-Mapper">
+
+<select id="selectSearchGoodsList" resultType="total">
+SELECT
+    e.pur_arrive_loc,
+    e.sup_goods_code,
+    e.goods_pur_price,
+    e.goods_pur_st,
+    e.goods_pur_code,
+    e.goods_pur_quan,
+    e.pur_arrive_date,
+    e.pur_note,
+    e.goods_pur_date,
+    d.sup_goods_code,
+    d.sup_goods_name
+FROM
+    buy_goods e,
+    sup_goods d
+WHERE
+    d.sup_goods_code = e.sup_goods_code
+    <if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+        and d.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+   </if>
+   order by e.goods_pur_date desc
+</select>
+
+<select id="selectSearchGoodsListCount" resultType="int">
+SELECT
+    count(*)
+FROM
+    buy_goods e,
+    sup_goods d
+WHERE
+    d.sup_goods_code = e.sup_goods_code
+</select>
+
+
+	
+	
+</mapper>

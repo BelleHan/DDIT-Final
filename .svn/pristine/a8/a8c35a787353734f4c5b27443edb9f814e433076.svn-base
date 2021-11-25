@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SupMain-Mapper">
+
+	<select id="selectSupGoodsList" resultType="supGoods">
+	SELECT
+	    sup_goods_code,
+	    sup_goods_name,
+	    sup_goods_regdate,
+	    sup_code,
+	    sup_goods_laca
+	FROM
+	    sup_goods    
+	WHERE
+		sup_code = #{sup_code}
+	AND
+	<![CDATA[
+		ROWNUM <= 5
+	  ]]>
+	ORDER BY
+		sup_goods_regdate DESC
+	</select>
+	
+	<select id="selectTotalGoodsCount" resultType="int">
+	SELECT
+    count(*)
+	FROM
+	    sup_goods    
+	where sup_code = #{sup_code}
+	</select>
+
+	<select id="selectSalesGoodsList" resultType="salesGoods">
+	SELECT
+    c.sup_code,
+    c.sup_goods_name,
+    c.sup_goods_code,
+    d.goods_pur_quan,
+    d.pur_arrive_date,
+    d.goods_pur_st,
+    d.sup_goods_code
+	FROM
+	    buy_goods d,
+	    sup_goods c
+	WHERE
+	    c.sup_goods_code = d.sup_goods_code
+	AND
+	    d.goods_pur_st = 1
+	AND
+	    c.sup_code = #{sup_code}
+	AND
+	<![CDATA[
+		ROWNUM <= 5
+	  ]]>
+	order by d.pur_arrive_date asc
+	</select>
+
+	<select id="selectTotalSalesGoodsCount" resultType="int">
+	SELECT
+   count(*)
+	FROM
+	    buy_goods d,
+	    sup_goods c
+	WHERE
+	    c.sup_goods_code = d.sup_goods_code
+	AND
+	    d.goods_pur_st = 1
+	AND
+	    c.sup_code = #{sup_code}
+	</select>
+	
+</mapper>

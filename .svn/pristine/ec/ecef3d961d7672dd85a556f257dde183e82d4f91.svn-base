@@ -1,0 +1,46 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+
+import kr.or.fms.fran.dao.FranHomeDAO;
+
+
+public class FranHomeServiceImpl implements FranHomeService{
+	
+	
+	private FranHomeDAO franHomeDAO;
+	public void setFranHomeDAO(FranHomeDAO franHomeDAO) {
+		this.franHomeDAO = franHomeDAO;
+	}
+	
+	@Override
+	public int getFranOrderCount(String fran_code) throws SQLException {
+		int selectFranOrderCount = franHomeDAO.selectFranOrderCount(fran_code);
+		return selectFranOrderCount;
+	}
+
+	@Override
+	public int getOrderCompletedCount(String fran_code) throws SQLException {
+		int selectOrderCompletedCount = franHomeDAO.selectOrderCompletedCount(fran_code);
+		return selectOrderCompletedCount;
+	}
+
+	@Override
+	public int getReturnApplyCount(String fran_code) throws SQLException {
+		int selectReturnApplyCount = franHomeDAO.selectReturnApplyCount(fran_code);
+		return selectReturnApplyCount;
+	}
+
+	@Override
+	public int getReturnCompleteCount(String fran_code) throws SQLException {
+		int selectReturnCompleteCount = franHomeDAO.selectReturnCompleteCount(fran_code);
+		return selectReturnCompleteCount;
+	}
+
+	@Override
+	public int getStockRequestCount(String fran_code) throws SQLException {
+		int selectStockRequestCount = franHomeDAO.selectStockRequestCount(fran_code);
+		return selectStockRequestCount;
+	}
+
+}

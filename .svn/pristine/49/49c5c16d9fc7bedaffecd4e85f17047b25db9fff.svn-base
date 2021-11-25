@@ -1,0 +1,230 @@
+package kr.or.fms.command;
+
+import java.util.Date;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public class SupGoodsdRegistCommand {
+
+	private String sup_goods_code;
+	private String sup_goods_name;
+	private String sup_goods_price;
+	
+	private String sup_goods_laca;	//물품대분류
+	private String sup_goods_smca;	//물품종류
+	private String sup_goods_attr1;	//용량
+	private String sup_goods_unit;	//단위
+	
+	private String sup_goods_attr2;	//포장재질
+	private String sup_goods_attr3;	//물품재질
+	private String sup_goods_attr4;	//가로
+	private String sup_goods_attr5;	//세로
+	private String sup_goods_attr6;	//높이
+	private String sup_goods_attr7;	//무게
+	private String sup_goods_attr8;	//제품특성
+	
+	private String sup_goods_img;
+	private String oldPicture; // 이전 사진파일명
+	private String uploadPicture; // 변경된 사진 파일명.
+	
+	public String getSup_goods_img() {
+		return sup_goods_img;
+	}
+
+	public void setSup_goods_img(String sup_goods_img) {
+		this.sup_goods_img = sup_goods_img;
+	}
+
+	public String getOldPicture() {
+		return oldPicture;
+	}
+
+	public void setOldPicture(String oldPicture) {
+		this.oldPicture = oldPicture;
+	}
+
+	public String getUploadPicture() {
+		return uploadPicture;
+	}
+
+	public void setUploadPicture(String uploadPicture) {
+		this.uploadPicture = uploadPicture;
+	}
+
+
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+
+	public String getSup_goods_name() {
+		return sup_goods_name;
+	}
+
+	public void setSup_goods_name(String sup_goods_name) {
+		this.sup_goods_name = sup_goods_name;
+	}
+
+	public String getSup_goods_price() {
+		return sup_goods_price;
+	}
+
+	public void setSup_goods_price(String sup_goods_price) {
+		this.sup_goods_price = sup_goods_price;
+	}
+
+	public String getSup_goods_laca() {
+		return sup_goods_laca;
+	}
+
+	public void setSup_goods_laca(String sup_goods_laca) {
+		this.sup_goods_laca = sup_goods_laca;
+	}
+
+
+	public String getSup_goods_smca() {
+		return sup_goods_smca;
+	}
+
+
+	public void setSup_goods_smca(String sup_goods_smca) {
+		this.sup_goods_smca = sup_goods_smca;
+	}
+
+
+	public String getSup_goods_attr1() {
+		return sup_goods_attr1;
+	}
+
+
+	public void setSup_goods_attr1(String sup_goods_attr1) {
+		this.sup_goods_attr1 = sup_goods_attr1;
+	}
+
+
+	public String getSup_goods_unit() {
+		return sup_goods_unit;
+	}
+
+
+	public void setSup_goods_unit(String sup_goods_unit) {
+		this.sup_goods_unit = sup_goods_unit;
+	}
+
+
+	public String getSup_goods_attr2() {
+		return sup_goods_attr2;
+	}
+
+
+	public void setSup_goods_attr2(String sup_goods_attr2) {
+		this.sup_goods_attr2 = sup_goods_attr2;
+	}
+
+
+	public String getSup_goods_attr3() {
+		return sup_goods_attr3;
+	}
+
+
+	public void setSup_goods_attr3(String sup_goods_attr3) {
+		this.sup_goods_attr3 = sup_goods_attr3;
+	}
+
+
+	public String getSup_goods_attr4() {
+		return sup_goods_attr4;
+	}
+
+
+	public void setSup_goods_attr4(String sup_goods_attr4) {
+		this.sup_goods_attr4 = sup_goods_attr4;
+	}
+
+
+	public String getSup_goods_attr5() {
+		return sup_goods_attr5;
+	}
+
+
+	public void setSup_goods_attr5(String sup_goods_attr5) {
+		this.sup_goods_attr5 = sup_goods_attr5;
+	}
+
+
+	public String getSup_goods_attr6() {
+		return sup_goods_attr6;
+	}
+
+
+	public void setSup_goods_attr6(String sup_goods_attr6) {
+		this.sup_goods_attr6 = sup_goods_attr6;
+	}
+
+
+	public String getSup_goods_attr7() {
+		return sup_goods_attr7;
+	}
+
+
+	public void setSup_goods_attr7(String sup_goods_attr7) {
+		this.sup_goods_attr7 = sup_goods_attr7;
+	}
+
+
+	public String getSup_goods_attr8() {
+		return sup_goods_attr8;
+	}
+
+
+	public void setSup_goods_attr8(String sup_goods_attr8) {
+		this.sup_goods_attr8 = sup_goods_attr8;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "SupGoodsdRegistCommand [sup_goods_name=" + sup_goods_name + ", sup_goods_price=" + sup_goods_price
+				+ ", sup_goods_laca=" + sup_goods_laca + ", sup_goods_smca="
+				+ sup_goods_smca + ", sup_goods_attr1=" + sup_goods_attr1 + ", sup_goods_unit=" + sup_goods_unit
+				+ ", sup_goods_attr2=" + sup_goods_attr2 + ", sup_goods_attr3=" + sup_goods_attr3 + ", sup_goods_attr4="
+				+ sup_goods_attr4 + ", sup_goods_attr5=" + sup_goods_attr5 + ", sup_goods_attr6=" + sup_goods_attr6
+				+ ", sup_goods_attr7=" + sup_goods_attr7 + ", sup_goods_attr8=" + sup_goods_attr8 + ", sup_goods_img="
+				+ sup_goods_img + ", toSupGoodsVO()=" + toSupGoodsVO() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
+
+	public SupGoodsVO toSupGoodsVO() {
+		SupGoodsVO supGoods = new SupGoodsVO();
+
+		supGoods.setSup_goods_code(this.sup_goods_code);
+		supGoods.setSup_goods_name(this.sup_goods_name);
+		supGoods.setSup_goods_price(Integer.parseInt(this.sup_goods_price));
+		
+		supGoods.setSup_goods_laca(this.sup_goods_laca);
+		supGoods.setSup_goods_smca(this.sup_goods_smca);
+		supGoods.setSup_goods_attr2(this.sup_goods_attr2);//포장재질  
+		supGoods.setSup_goods_attr3(this.sup_goods_attr3);//물품재질  
+
+		supGoods.setSup_goods_attr1(this.sup_goods_attr1);//용량
+		supGoods.setSup_goods_unit(this.sup_goods_unit);  
+		
+		supGoods.setSup_goods_attr4(this.sup_goods_attr4);//가로             
+		supGoods.setSup_goods_attr5(this.sup_goods_attr5);//세로     
+		supGoods.setSup_goods_attr6(this.sup_goods_attr6);//높이     
+		supGoods.setSup_goods_attr7(this.sup_goods_attr7);//무게     
+		supGoods.setSup_goods_attr8(this.sup_goods_attr8);//제품특성   
+		
+		supGoods.setSup_goods_img(this.sup_goods_img);//제품이미지  url
+		
+		supGoods.setSup_goods_regdate(new Date());
+		return supGoods;
+	}
+}

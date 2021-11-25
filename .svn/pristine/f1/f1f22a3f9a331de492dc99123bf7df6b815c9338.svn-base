@@ -1,0 +1,192 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>가맹점 홈</title>
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/all.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/adminlte.min.css">
+<style type="text/css">/* Chart.js */
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style>
+
+<style>
+.divbox{
+	float:left;
+	margin-top: 20px;
+}
+.li{
+	list-style-type:none; 
+	
+}
+.li li{
+	float: left;
+
+}
+
+.list {
+	list-style: none;
+}
+
+</style>
+
+
+
+
+</head>
+<body>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 686px;">
+    <!-- Main content -->
+	
+	
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #336699; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">발주신청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 50px; font-weight: bold;">${franOrderCount }</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #336699; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">발주완료</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 50px; font-weight: bold;">${orderCompletedCount }</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #336699; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">반품신청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 50px; font-weight: bold;">${returnApplyCount }</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #336699; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">반품완료</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 50px; font-weight: bold;">${returnCompleteCount }</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	<div class="col-md-2 divbox">
+            <div class="card card-danger">
+              <div class="card-header" style="background-color: #336699; height: 50px;">
+                <h3 class="card-title" style="text-align: center; color: white; font-size: 20px;">재고요청</h3>
+              </div>
+              <div class="card-body">
+                <ul class="li">
+                	<li><span style="text-decoration: underline; margin-left: 50px; font-weight: bold;">${stockRequestCount }</span></li>
+                	<li style="margin-left: 10px">건</li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+	
+	
+	<div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">물품별 안전/적정 재고량</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+	
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+<!-- jQuery -->
+
+<script src="<%=request.getContextPath() %>/resources/js/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="<%=request.getContextPath() %>/resources/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="<%=request.getContextPath() %>/resources/js/Chart.min.js"></script>
+<!-- AdminLTE App -->
+<script src="<%=request.getContextPath() %>/resources/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="<%=request.getContextPath() %>/resources/js/demo.js"></script>
+
+<script>
+  $(function () {
+  
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = $.extend(true, {}, areaChartData)
+    var temp0 = areaChartData.datasets[0]
+    var temp1 = areaChartData.datasets[1]
+    barChartData.datasets[0] = temp1
+    barChartData.datasets[1] = temp0
+
+    var barChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      datasetFill             : false
+    }
+
+    new Chart(barChartCanvas, {
+      type: 'bar',
+      data: barChartData,
+      options: barChartOptions
+    })
+
+  })
+</script>
+</body>
+</html>

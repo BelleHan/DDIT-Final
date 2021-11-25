@@ -1,0 +1,52 @@
+package kr.or.fms.fran.dto;
+
+public class FranGoodsDeVO { //가맹점물품상세
+
+	private String fran_code;
+	private String sup_goods_code;
+	private String hq_code;
+	private String fran_goods_stock;	//가맹점물품재고량
+	private String fran_safe_stock;		//가맹점안전재고량
+	private String fran_suit_stock;		//가맹점적정재고량
+	
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getFran_goods_stock() {
+		return fran_goods_stock;
+	}
+	public void setFran_goods_stock(String fran_goods_stock) {
+		this.fran_goods_stock = fran_goods_stock;
+	}
+	public String getFran_safe_stock() {
+		return fran_safe_stock;
+	}
+	public void setFran_safe_stock(String fran_safe_stock) {
+		this.fran_safe_stock = fran_safe_stock;
+	}
+	public String getFran_suit_stock() {
+		return fran_suit_stock;
+	}
+	public void setFran_suit_stock(String fran_suit_stock) {
+		this.fran_suit_stock = fran_suit_stock;
+	}
+	
+	
+	
+	
+}

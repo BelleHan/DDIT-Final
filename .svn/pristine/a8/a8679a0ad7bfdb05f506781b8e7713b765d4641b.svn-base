@@ -1,0 +1,51 @@
+package kr.or.fms.fran.dto;
+
+public class FranAppliDocVO {
+
+	private String fran_applidoc_code;		//가맹점신청서코드
+	private String fran_code;	
+	private String hq_code;
+	private String attach_no;				//첨부파일일련번호
+	private String fran_applidoc_appr_st;	//신청서승인상태
+	private String fran_appli_date;			//신청일자
+	
+	public String getFran_applidoc_code() {
+		return fran_applidoc_code;
+	}
+	public void setFran_applidoc_code(String fran_applidoc_code) {
+		this.fran_applidoc_code = fran_applidoc_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public String getAttach_no() {
+		return attach_no;
+	}
+	public void setAttach_no(String attach_no) {
+		this.attach_no = attach_no;
+	}
+	public String getFran_applidoc_appr_st() {
+		return fran_applidoc_appr_st;
+	}
+	public void setFran_applidoc_appr_st(String fran_applidoc_appr_st) {
+		this.fran_applidoc_appr_st = fran_applidoc_appr_st;
+	}
+	public String getFran_appli_date() {
+		return fran_appli_date;
+	}
+	public void setFran_appli_date(String fran_appli_date) {
+		this.fran_appli_date = fran_appli_date;
+	}
+
+	
+	
+}

@@ -1,0 +1,287 @@
+//팝업창 띄우기
+//새로운 Window창을 Open할 경우 사용되는 함수 (arg : 주소, 창타이틀, 넓이, 길이)
+function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
+	winleft = (screen.width - WinWidth) / 2;
+	wintop = (screen.height - WinHeight) / 2;
+	var win = window.open(UrlStr, WinTitle, "scrollbars=yes, width=" + WinWidth +", "
+				+ "height="+ WinHeight +", top=" + wintop +", left=" 
+				+ winleft + ", resizable=yes, status=yes");
+	win.focus();
+}
+//팝업창 닫기
+function CloseWindow(parentURL) {
+	if(parentURL) {
+		window.opener.parent.location.href=parentURL;
+	} else{
+		window.opener.location.reload(true);
+	}
+	window.close();
+}
+
+//페이지네이션
+function list_go(page, url) {
+	if (!url) url="list.do";
+	
+	var jobForm=$('#jobForm');
+
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('div.input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+//페이지네이션
+function list_go_hs(page, url) {
+	if (!url) url="list.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('div.input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+//페이지네이션(가맹점-반품관리)
+function list_go_franreturn(page, url) {
+	if (!url) url="list.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+//본사업체등록페이지네이션
+function list_go_regist(page, url) {
+	if (!url) url="regist.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('div.input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+//본사물품조회페이지네이션
+function list_go_lwh(page, url) {
+	if (!url) url="manage.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+//페이지네이션(주경이 임시등록게시글)
+function list_go_pjk(page, url) {
+	if (!url) url="board.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+	jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+
+//물류센터 검색
+function list_go_logis(page, url) {
+	if (!url) url="list.do";
+	
+	var jobForm=$('#jobForm');
+	
+	if(!page) page = 1;
+	
+	
+	jobForm.find("[name='page']").val(page);
+	jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+	jobForm.find("[name='wh']").val($('select[name="wh"]').val());
+	jobForm.find("[name='laca']").val($('select[name="laca"]').val());
+	jobForm.find("[name='smca']").val($('select[name="smca"]').val());
+//	console.log(jobForm.find("[name='wh']").val());
+//	console.log(jobForm.find("[name='keyword']").val());
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+
+function list_go_stock(page, url, data) {
+	if (!url) url="detail.do";
+	console.log('data : ' + data)
+	var jobForm=$('#jobFormFran');
+
+	if(!page) page = 1;
+	
+	a = jobForm.find("[name='page']").val(page);
+	b = jobForm.find("[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	d = jobForm.find("[name='keyword']").val(data);
+	
+	jobForm.attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+
+//상품 사진 출력
+function GoodsPictureThumb(targetObj, fileName,contextPath){ //(대상, 이미지파일명) 
+	targetObj.style.backgroundImage="url('"+contextPath+"/sup/goods/getPicture.do?sup_goods_img="+fileName+"')";
+	targetObj.style.backgroundPosition="center";
+	targetObj.style.backgroundRepeat="no-repeat";
+	targetObj.style.backgroundSize="cover";
+	targetObj.style.width="500px";
+	targetObj.style.height="450px";
+}
+function GoodsPictureThumb2(targetObj, fileName,contextPath){ //(대상, 이미지파일명)
+	targetObj.style.backgroundImage="url('"+contextPath+"/sup/goods/getPicture.do?sup_goods_img="+fileName+"')";
+	targetObj.style.backgroundPosition="center";
+	targetObj.style.backgroundRepeat="no-repeat";
+	targetObj.style.backgroundSize="cover";
+	targetObj.style.width="240px";
+	targetObj.style.height="250px";
+	
+}
+function GoodsPictureThumb3(targetObj, fileName,contextPath){ //(대상, 이미지파일명)
+	targetObj.style.backgroundImage="url('"+contextPath+"/sup/goods/getPicture.do?sup_goods_img="+fileName+"')";
+	targetObj.style.backgroundPosition="center";
+	targetObj.style.backgroundRepeat="no-repeat";
+	targetObj.style.backgroundSize="cover";
+	targetObj.style.width="190px";
+	targetObj.style.height="225px";
+}
+
+//spring_security redirect loginForm
+function AjaxErrorSecurityRedirectHandler(status) {
+	if (status == '302') {
+		alert('세션이 만료되었습니다.\n 로그인하세요.');
+		location.reload();
+	} else {
+		alert('시스템장애로 실행이 불가합니다.');
+		history.go(-1);
+	}
+}
+
+
+//비동기식 데이터 처리를 위한 핸들바스 컴파일
+function printData(dataArr, target, templateObject, removeClass){
+	var template = Handlebars.compile(templateObject.html());
+	var html = template(dataArr);
+	removeClass.remove();
+	//target.append(html);
+	target.html(html);
+}
+
+//페이지네이션 컴파일
+function printPagination(pageMaker,target,templateObject, removeClass){
+	
+	var pageNum = new Array(pageMaker.endPage-pageMaker.startPage+1);
+	for(var i=0;i<pageMaker.endPage-pageMaker.startPage+1;i++){
+		pageNum[i]=pageMaker.startPage+i;
+	}	
+	pageMaker.pageNum=pageNum;  
+	pageMaker.prevPageNum=pageMaker.startPage-1;
+	pageMaker.nextPageNum=pageMaker.endPage+1;
+	
+	$(removeClass).remove();
+	
+	var template=Handlebars.compile(templateObject.html());	
+	var html = template(pageMaker);	
+	target.html("").html(html);
+}
+
+//핸들바스 커스텀
+Handlebars.registerHelper({
+	"prettifyDate":function(timeValue){ 
+		var dateObj=new Date(timeValue);
+		var year=dateObj.getFullYear();
+		var month=dateObj.getMonth()+1;
+		var date=dateObj.getDate();
+		return year+"-"+(("00"+month.toString()).slice(-2))+"-"+(("00"+date.toString()).slice(-2));
+	},
+	"signActive":function(pageNum){
+		if(!page) page = 1;
+		if(pageNum == page) return 'active';
+	},
+	"ifCond": function(v1, v2, options){
+		if(v1 < v2) {
+   			return options.inverse(this);
+ 		}
+ 			return options.fn(this);
+	},
+	"ifeq": function(v1, options){
+		if(v1 == null) {
+			return options.inverse(this);
+		}
+		return options.fn(this);
+	},
+	"ifeqv": function(v1, v2, options){
+		if(v1 == v2) {
+			return options.inverse(this);
+		}
+		return options.fn(this);
+	},
+});
+Handlebars.registerHelper('numberFormat', function (value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
+Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+        
+    return {
+        "+": (lvalue + rvalue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        "-": (lvalue - rvalue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        "*": (lvalue * rvalue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        "/": (lvalue / rvalue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        "%": (lvalue % rvalue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }[operator];
+});

@@ -1,0 +1,35 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.logis.dto.LogisGoodsDeVO;
+
+public interface StockListService {
+//	// 가맹점재고상세보기
+//	FranGoodsDeVO getFran(String fran_code, String hq_goods_code) throws SQLException;
+//
+//	// 물류센터재고상세보기
+//	LogisGoodsDeVO getLogis(String logis_code, String wh_code, String hq_goods_code ) throws SQLException;
+
+	// 발주량제한
+	void modify(FranGoodsDeVO franGoods) throws SQLException;
+
+	// 가맹점재고리스트조회
+	List<FranGoodsDeVO> getFranStockList() throws SQLException;
+	List<FranGoodsDeVO> getFranStockList(Criteria cri) throws SQLException;
+	Map<String, Object> getFranStockList(SearchCriteria cri) throws SQLException;
+	// 검색조회
+	Map<String, Object> getFranStockSearch(SearchCriteria cri) throws SQLException;
+
+	// 물류센터재고리스트조회
+	List<LogisGoodsDeVO> getLogisStockList() throws SQLException;
+	List<LogisGoodsDeVO> getLogisStockList(Criteria cri) throws SQLException;
+	Map<String, Object> getLogisStockList(SearchCriteria cri) throws SQLException;
+	
+
+}

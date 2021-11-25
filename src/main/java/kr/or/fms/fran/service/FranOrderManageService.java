@@ -1,0 +1,16 @@
+package kr.or.fms.fran.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranOrderDe;
+
+public interface FranOrderManageService {
+	
+	Map<String, Object> getOrderList(SearchCriteria cri) throws SQLException;
+	List<FranOrderDe> getOrderDetail(String orderCode) throws SQLException;
+	int delete(String orderCode) throws SQLException;
+	int update(Map<String, String> data) throws SQLException;
+}

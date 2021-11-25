@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+   <typeAliases>
+      <typeAlias type="java.lang.String" alias="str"/>
+      <typeAlias type="java.lang.Integer" alias="int"/>
+      <typeAlias type="java.util.Map" alias="map"/>
+      
+      <typeAlias type="kr.or.fms.dto.MenuVO" alias="menu"/>
+      <typeAlias type="kr.or.fms.dto.AttachVO" alias="attach"/>
+      <typeAlias type="kr.or.fms.dto.DeliveryVO" alias="delivery"/>
+      <typeAlias type="kr.or.fms.dto.DeliveryDeVO" alias="deliveryDetail"/>
+      <typeAlias type="kr.or.fms.dto.ReturnVO" alias="return"/>
+      <typeAlias type="kr.or.fms.dto.ReturnDetailVO" alias="returnDetail"/>
+      
+      <typeAlias type="kr.or.fms.hq.dto.HqGoodsVO" alias="hqGoods"/>
+      <typeAlias type="kr.or.fms.hq.dto.BuyGoodsDeVO" alias="hqBuyGoodsDe"/>
+      <typeAlias type="kr.or.fms.hq.dto.BuyGoodsVO" alias="hqBuyGoods"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqEmpVO" alias="hqEmp"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqVO" alias="hq"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqWhVO" alias="hqWh"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqAccountHistoryVO" alias="hqAccountHistory"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqAccountInfoVO" alias="hqAccountInfo"/>
+      <typeAlias type="kr.or.fms.hq.dto.OutVO" alias="out"/>
+      <typeAlias type="kr.or.fms.hq.dto.InVO" alias="in"/>
+  	  <typeAlias type="kr.or.fms.hq.dto.LogisStockVO" alias="logisStockVO"/>
+	  <typeAlias type="kr.or.fms.hq.dto.FranStockVO" alias="franStockVO"/>
+	  <typeAlias type="kr.or.fms.hq.dto.LogisStockTakingVO" alias="logisStockTakingVO"/>
+	  
+	  <typeAlias type="kr.or.fms.logis.dto.LStockTakingVO" alias="logisStockTaking"/>
+      <typeAlias type="kr.or.fms.logis.dto.InLogisVO" alias="inLogisVO"/>
+      
+      <typeAlias type="kr.or.fms.fran.dto.FranAppliDocVO" alias="franAppliDoc"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranContractInfoVO" alias="franContractInfo"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranDealVO" alias="franDeal"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranGoodsDeVO" alias="franGoodsDe"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranNoticeReply" alias="franNoticeReply"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranNoticeVO" alias="franNotice"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranOrderVO" alias="franOrder"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranOrderDeVO" alias="franOrderDe"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranStChangeVO" alias="franStChange"/> 
+      <typeAlias type="kr.or.fms.fran.dto.FranVO" alias="fran"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranSalesVO" alias="franSalesVO"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranAppliDocVO" alias="franAppliDocVO"/>
+      <typeAlias type="kr.or.fms.fran.dto.FranReplyVO" alias="franReply"/>
+      
+      <typeAlias type="kr.or.fms.logis.dto.LogisVO" alias="logis"/>
+      <typeAlias type="kr.or.fms.logis.dto.LogisWhVO" alias="logisWh"/>
+      <typeAlias type="kr.or.fms.logis.dto.LStockVO" alias="logisStock"/>
+      <typeAlias type="kr.or.fms.sup.dto.SupVO" alias="sup"/>
+      <typeAlias type="kr.or.fms.logis.dto.LogisContractInfoVO" alias="logisContractInfo"/>
+      
+      <typeAlias type="kr.or.fms.sup.dto.SupGoodsVO" alias="supGoods"/>
+      <typeAlias type="kr.or.fms.sup.dto.SupContractInfoVO" alias="supContInfo"/>
+      <typeAlias type="kr.or.fms.sup.dto.SupGoodsClassVO" alias="goodsClass"/>
+      <typeAlias type="kr.or.fms.sup.dto.InGoodsVO" alias="inGoods"/>
+      
+      <typeAlias type="kr.or.fms.hq.dto.BuyGoodsVO" alias="buyGoods"/>
+      <typeAlias type="kr.or.fms.hq.dto.BuyGoodsDeVO" alias="buyGoodsDe"/>
+      <typeAlias type="kr.or.fms.hq.dto.HqGoodsVO" alias="hqGoods"/>
+      
+      <typeAlias type="kr.or.fms.dto.ComCodeVO" alias="comCode"/>
+      <typeAlias type="kr.or.fms.dto.ComGroupVO" alias="comGroup"/>
+      
+
+      <typeAlias type="kr.or.fms.hq.dto.FranAppliVO" alias="franAppli"/>
+      <typeAlias type="kr.or.fms.hq.dto.FranAppliDetailVO" alias="franAppliDetail"/>
+      <typeAlias type="kr.or.fms.logis.dto.QrVO" alias="QR"/>
+      
+      <typeAlias type="kr.or.fms.hq.dto.BuyGoodsTotalVO" alias="total"/>
+      <typeAlias type="kr.or.fms.sup.dto.SalesGoodsVO" alias="salesGoods"/>
+      
+      
+   </typeAliases>
+   
+</configuration>

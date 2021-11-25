@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<bean id="HqLoginUserLogSavePath" class="java.lang.String">
+		<constructor-arg value="${login.hqUser.log}" />
+	</bean>
+	<bean id="HqLoginUserLogSaveFileName" class="java.lang.String">
+		<constructor-arg value="login_hq_log.csv" />
+	</bean>
+	
+	<!-- DAO	 -->
+	<bean id="salesDAO" class="kr.or.fms.hq.dao.SalesDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="franOrderManagerDAO" class="kr.or.fms.fran.dao.FranOrderManagerDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="logisOutDAO" class="kr.or.fms.logis.dao.LogisOutDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="logisInDAO" class="kr.or.fms.logis.dao.LogisInDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<!-- Service -->
+	<bean id="salesService" class="kr.or.fms.hq.service.SalesServiceImpl"
+		p:salesDAO-ref="salesDAO"/>
+	<bean id="franOrderManageService" class="kr.or.fms.fran.service.FranOrderManagerServiceImpl"
+		p:franOrderManagerDAO-ref="franOrderManagerDAO"/>
+	<bean id="logisOutService" class="kr.or.fms.logis.service.LogisOutServiceImpl"
+		p:logisOutDAO-ref="logisOutDAO"/>		
+	<bean id="logisInService" class="kr.or.fms.logis.service.LogisInServiceImpl"
+		p:logisInDAO-ref="logisInDAO"/>		
+</beans>
+
+
+
+
+
+
+

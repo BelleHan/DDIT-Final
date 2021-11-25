@@ -1,0 +1,46 @@
+package kr.or.fms.hq.controller;
+
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.hq.service.HqReturnService;
+import kr.or.fms.service.MenuService;
+
+@Controller
+@RequestMapping("/hq")
+public class HqOrderController {
+
+	
+//	@Autowired
+//	HqReturnService hqReturnService;
+	
+
+	
+	
+	@RequestMapping("/order/list")
+	public String returnList(SearchCriteria cri, ModelAndView mnv)throws SQLException{
+		String url="hq/order/list";		
+
+		
+		return url;
+	}
+	
+
+
+}

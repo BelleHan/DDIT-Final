@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HqReturn-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 'r'.toString()">
+			and d.return_code like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'f'.toString()">
+			and e.fran_name like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 's'.toString()">
+			and d.return_st like '%'||#{keyword}||'%'			
+		</if>
+	</sql>
+
+	<resultMap type="returnDetail" id="returnDetail">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="return_code" property="return_code" />
+		<result column="return_quan" property="return_quan" />
+	</resultMap>
+	
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="hq_goods_name" property="hq_goods_name" />
+		<collection property="returnDetailVO" resultMap="returnDetail" />
+	</resultMap>
+	
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_name" property="sup_goods_name" />
+	</resultMap>
+	
+	<resultMap type="fran" id="fran">
+		<result column="fran_name" property="fran_name" />
+		<result column="fran_addr" property="fran_addr" />
+	</resultMap>
+	
+	<resultMap type="return" id="return">
+		<result column="return_code" property="return_code" />
+		<result column="return_title" property="return_title" />
+		<result column="return_reason_code" property="return_reason_code" />
+		<result column="return_reason" property="return_reason" />
+		<result column="return_check_st" property="return_check_st" />
+		<result column="fran_code" property="fran_code" />
+		<result column="return_st" property="return_st" />
+		<result column="return_apply_date" property="return_apply_date" />
+		<result column="return_reason_code" property="return_reason_code" />
+		<result column="attach_no" property="attach_no" />
+		<collection property="returnDetailVO" resultMap="returnDetail" />
+		<collection property="hqGoodsVO" resultMap="hqGoods" />
+		<collection property="supGoodsVO" resultMap="supGoods"/>	
+		<collection property="franVO" resultMap="fran" />
+	</resultMap>
+	<!-- 가맹점반품신청 목록 -->
+	<select id="selectFranReturnList"  resultMap="return">
+		SELECT
+		    i.return_code,
+		    i.return_title,
+		    i.return_reason_code,
+		    i.return_apply_date,
+		    i.return_check_st,
+		    i.return_reason_code,
+		    k.hq_goods_name,
+		    j.return_quan,
+		    i.attach_no
+		FROM
+		    return_detail j,
+		    return i,
+		    hq_goods k
+		WHERE
+		    i.return_code = j.return_code
+		    AND   k.hq_goods_code = j.hq_goods_code
+		<include refid="search" />
+		order by i.return_code desc
+	</select>
+	
+	<select id="selectSearchReturnListCount" resultType="int">
+		select count(*)
+		FROM
+		    return_detail j,
+		    return i,
+		    hq_goods k
+		WHERE
+		    i.return_code = j.return_code
+		    AND   k.hq_goods_code = j.hq_goods_code
+		<include refid="search" />
+<!-- 		from return -->
+<!-- 		where return_code is not null  			  	 -->
+<!-- 		and return_reason_code = 'WD' 			  	 -->
+<!-- 		<include refid="search" /> -->
+		order by return_apply_date desc
+	</select>
+	
+	<select id="selectReturnDetail" parameterType="str" resultMap="return">
+   		select 
+		a.return_title,
+		a.return_code,
+		b.hq_goods_code, 
+		c.hq_goods_name,
+		b.return_quan,
+		d.fran_name,
+		d.fran_code,
+		a.return_reason_code,
+		a.return_reason
+		
+		from
+		return a, return_detail b, hq_goods c, fran d
+		where a.return_code  = b.return_code
+		    and b.hq_goods_code = c.hq_goods_code
+		    and d.fran_code = a.fran_code
+		    and a.return_code = #{return_code}
+	</select>
+	
+	<update id="updateReturnCheckSt" parameterType="return">
+		update 
+		return
+		set 
+		return_check_st=#{return_check_st}
+		where return_code=#{return_code}
+	</update>
+	
+
+
+</mapper>

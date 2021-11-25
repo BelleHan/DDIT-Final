@@ -1,0 +1,51 @@
+package kr.or.fms.fran.dao;
+
+import java.sql.SQLException;
+
+import org.apache.ibatis.session.SqlSession;
+
+public class FranHomeDAOImpl implements FranHomeDAO{
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	
+	
+	@Override
+	public int selectFranOrderCount(String fran_code) throws SQLException {
+		int count = session.selectOne("FranHome-Mapper.selectFranOrderCount",fran_code);
+		return count;
+	}
+
+	@Override
+	public int selectOrderCompletedCount(String fran_code) throws SQLException {
+		int count = session.selectOne("FranHome-Mapper.selectOrderCompletedCount",fran_code);
+		return count;
+	}
+
+
+
+	@Override
+	public int selectReturnApplyCount(String fran_code) throws SQLException {
+		int count = session.selectOne("FranHome-Mapper.selectReturnApplyCount",fran_code);
+		return count;
+	}
+
+
+
+	@Override
+	public int selectReturnCompleteCount(String fran_code) throws SQLException {
+		int count = session.selectOne("FranHome-Mapper.selectReturnCompleteCount",fran_code);
+		return count;
+	}
+
+
+
+	@Override
+	public int selectStockRequestCount(String fran_code) throws SQLException {
+		int count = session.selectOne("FranHome-Mapper.selectStockRequestCount",fran_code);
+		return count;
+	}
+
+}

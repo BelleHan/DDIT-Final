@@ -1,0 +1,28 @@
+package kr.or.fms.sup.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.sup.dto.SupGoodsVO;
+
+public class SupGoodsDAOImpl implements SupGoodsDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+
+	@Override
+	public List<SupGoodsVO> selectGoodsList() throws SQLException {
+		List<SupGoodsVO> goodsList = session
+		return null;
+	}
+
+	@Override
+	public List<MemberVO> selectMemberList() throws SQLException {
+		List<MemberVO> memberList = session.selectList("Member-Mapper.selectMemberList");
+		return memberList;
+	}
+}

@@ -1,0 +1,132 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
+
+<head>
+<!-- summernote -->
+  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.css">
+</head>
+
+<body>
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>출고등록</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>출고
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	등록
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+  <!-- Main content -->
+    <section class="content container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-md-9" style="max-width:960px;">
+				<div class="card card-outline card-info">
+					<div class="card-header">
+						<!-- <h3 class="card-title p-1">출고등록</h3> -->
+						<div class ="card-tools">
+							<button type="button" class="btn btn-primary" id="registBtn" onclick="regist_go();">등 록</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-warning" id="cancelBtn" onclick="CloseWindow();" >취 소</button>
+						</div>
+					</div><!--end card-header  -->
+					<div class="card-body pad">
+					
+						<form role="form" method="post" action="outRegist.do" name="registForm">
+							<div class="form-group">
+								<label for="outCode">출고번호</label> 
+								<input type="text" id="outCode"
+									name='out_code' class="form-control">
+							</div>							
+							<div class="form-group">
+								<label for="logisCode">물류센터코드</label> 
+								<input type="text" id="logisCode" 
+									name="logis_code" class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="hqGoodsCode">물품코드</label> 
+								<input type="text" id="hqGoodsCode" 
+									name="hq_goods_code" class="form-control" >
+							</div>
+							<div class="form-group">
+								<label for="out_loca_type">출고지유형</label> 
+								<select class="form-control" name="out_loca_type">
+				                   <option value="1" ${ out.out_loca_type == 1 ? 'selected' : '' }>물류센터</option>
+				                   <option value="2" ${ out.out_loca_type == 2 ? 'selected' : '' }>가맹점</option>
+				                </select>
+							</div>
+							<div class="form-group">
+								<label for="outLoca">도착지</label> 
+								<input type="text" id="outLoca" 
+									name="out_loca" class="form-control" >
+							</div>
+							<div class="form-group">
+								<label for="outDate">출고일자</label> 
+								<input type="date" id="outDate" 
+									name="out_date" class="form-control" >
+							</div>
+							<div class="form-group">
+								<label for="outSt">출고상태</label> 
+								<select class="form-control" name="out_st">
+				                   <option value="1" ${ out.out_st == 1 ? 'selected' : '' }>미출고</option>
+				                   <option value="2" ${ out.out_st == 2 ? 'selected' : '' }>출고</option>
+				                </select>
+							<div class="form-group">
+								<label for="outNum">출고수량</label> 
+								<input type="text" id="outNum"
+									name="out_num" class="form-control" >
+							</div>
+							
+						</form>
+					</div><!--end card-body  -->
+					<div class="card-footer" style="display:none">
+					
+					</div><!--end card-footer  -->
+				</div><!-- end card -->				
+			</div><!-- end col-md-12 -->
+		</div><!-- end row -->
+    </section>
+    <!-- /.content -->
+
+    
+<script>
+window.onload=function(){
+	Summernote_start($('#content')); 
+}
+
+function regist_go(){
+/* 	var form = document.registForm;
+	
+	
+	form.submit(); */
+	
+}
+function regist_go(){
+	$("form[role='form']").submit();
+}
+</script>
+
+<%-- <%@ include file="/WEB-INF/views/common/summernote.jsp" %> --%>
+
+
+</body>
+
+    
+    
+    
+    

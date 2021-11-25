@@ -1,0 +1,29 @@
+package kr.or.fms.fran.controller;
+
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.or.fms.fran.dto.FranVO;
+
+@Controller
+@RequestMapping("/fr")
+public class FranToFranController {
+	
+	@RequestMapping("/tofran/list")
+	public String franList(HttpSession session) throws SQLException{
+		String url = "/fr/toFran/toFranList1";
+		
+		//가맹점의 위도, 경도
+		 FranVO fran = (FranVO)session.getAttribute("loginFran");
+		 String franLatitude = fran.getFran_latitude();
+		 String franLogitude = fran.getFran_logitude();
+		 
+		
+		return url;
+	}
+
+}

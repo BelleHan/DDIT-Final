@@ -1,0 +1,164 @@
+package kr.or.fms.sup.dto;
+
+import java.util.Date;
+
+/* 공급업체물품 */
+public class SupGoodsVO {
+
+	private String sup_goods_code;	//공급업체물품코드
+	private String sup_code;		//공급업체코드
+	
+	private String sup_goods_name;	//물품명
+	private int sup_goods_price;	//납품가
+	
+	private String sup_goods_laca;	//물품대분류(식품, large category)
+	private String sup_goods_smca;	//물품소분류(원두, small category)
+	private String sup_goods_attr2;	//물품속성2포장재질
+	private String sup_goods_attr3;	//물품재질
+	
+	private String sup_goods_attr1;	//물품속성1(속성2, 속성3 추가 가능)용량
+	private String sup_goods_unit;	//단위
+
+	private String sup_goods_attr4;	//가로
+	private String sup_goods_attr5;	//세로
+	private String sup_goods_attr6;	//높이
+	private String sup_goods_attr7;	//무게
+	private String sup_goods_attr8;	//제품특성
+
+	private String sup_goods_img;	//물품이미지(url)
+	private int hq_goods_appr;		//본사물품 승인여부
+	private Date sup_goods_regdate;	//물품등록일자
+	private Date sup_goods_update;	//물품최종업데이트일자
+	
+	private SupVO supVO;
+	private SupContractInfoVO supContInfoVO;
+	
+	public SupContractInfoVO getSupContInfoVO() {
+		return supContInfoVO;
+	}
+	public void setSupContInfoVO(SupContractInfoVO supContInfoVO) {
+		this.supContInfoVO = supContInfoVO;
+	}
+	public SupVO getSupVO() {
+		return supVO;
+	}
+	public void setSupVO(SupVO supVO) {
+		this.supVO = supVO;
+	}
+	public Date getSup_goods_regdate() {
+		return sup_goods_regdate;
+	}
+	public void setSup_goods_regdate(Date sup_goods_regdate) {
+		this.sup_goods_regdate = sup_goods_regdate;
+	}
+	
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getSup_code() {
+		return sup_code;
+	}
+	public void setSup_code(String sup_code) {
+		this.sup_code = sup_code;
+	}
+	public String getSup_goods_name() {
+		return sup_goods_name;
+	}
+	public void setSup_goods_name(String sup_goods_name) {
+		this.sup_goods_name = sup_goods_name;
+	}
+	public int getSup_goods_price() {
+		return sup_goods_price;
+	}
+	public void setSup_goods_price(int sup_goods_price) {
+		this.sup_goods_price = sup_goods_price;
+	}
+	public String getSup_goods_unit() {
+		return sup_goods_unit;
+	}
+	public void setSup_goods_unit(String sup_goods_unit) {
+		this.sup_goods_unit = sup_goods_unit;
+	}
+	public String getSup_goods_laca() {
+		return sup_goods_laca;
+	}
+	public void setSup_goods_laca(String sup_goods_laca) {
+		this.sup_goods_laca = sup_goods_laca;
+	}
+	public String getSup_goods_smca() {
+		return sup_goods_smca;
+	}
+	public void setSup_goods_smca(String sup_goods_smca) {
+		this.sup_goods_smca = sup_goods_smca;
+	}
+	public String getSup_goods_attr1() {
+		return sup_goods_attr1;
+	}
+	public void setSup_goods_attr1(String sup_goods_attr1) {
+		this.sup_goods_attr1 = sup_goods_attr1;
+	}
+	public String getSup_goods_img() {
+		return sup_goods_img;
+	}
+	public void setSup_goods_img(String sup_goods_img) {
+		this.sup_goods_img = sup_goods_img;
+	}
+	public int getHq_goods_appr() {
+		return hq_goods_appr;
+	}
+	public void setHq_goods_appr(int hq_goods_appr) {
+		this.hq_goods_appr = hq_goods_appr;
+	}
+	public String getSup_goods_attr2() {
+		return sup_goods_attr2;
+	}
+	public void setSup_goods_attr2(String sup_goods_attr2) {
+		this.sup_goods_attr2 = sup_goods_attr2;
+	}
+	public String getSup_goods_attr3() {
+		return sup_goods_attr3;
+	}
+	public void setSup_goods_attr3(String sup_goods_attr3) {
+		this.sup_goods_attr3 = sup_goods_attr3;
+	}
+	public String getSup_goods_attr4() {
+		return sup_goods_attr4;
+	}
+	public void setSup_goods_attr4(String sup_goods_attr4) {
+		this.sup_goods_attr4 = sup_goods_attr4;
+	}
+	public String getSup_goods_attr5() {
+		return sup_goods_attr5;
+	}
+	public void setSup_goods_attr5(String sup_goods_attr5) {
+		this.sup_goods_attr5 = sup_goods_attr5;
+	}
+	public String getSup_goods_attr6() {
+		return sup_goods_attr6;
+	}
+	public void setSup_goods_attr6(String sup_goods_attr6) {
+		this.sup_goods_attr6 = sup_goods_attr6;
+	}
+	public String getSup_goods_attr7() {
+		return sup_goods_attr7;
+	}
+	public void setSup_goods_attr7(String sup_goods_attr7) {
+		this.sup_goods_attr7 = sup_goods_attr7;
+	}
+	public String getSup_goods_attr8() {
+		return sup_goods_attr8;
+	}
+	public void setSup_goods_attr8(String sup_goods_attr8) {
+		this.sup_goods_attr8 = sup_goods_attr8;
+	}
+	public Date getSup_goods_update() {
+		return sup_goods_update;
+	}
+	public void setSup_goods_update(Date sup_goods_update) {
+		this.sup_goods_update = sup_goods_update;
+	}
+	
+}

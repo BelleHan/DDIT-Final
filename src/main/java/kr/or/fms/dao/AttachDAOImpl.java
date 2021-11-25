@@ -1,0 +1,66 @@
+package kr.or.fms.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.dto.AttachVO;
+
+public class AttachDAOImpl implements AttachDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+				
+	}
+	@Override
+	public List<AttachVO> selectAttachesByReturn_code(String return_code) throws SQLException {
+		List<AttachVO> attachList=session.selectList("Attach-Mapper.selectAttachByReturn_code", return_code);
+		return attachList;
+	}
+	@Override
+	public List<AttachVO> selectAttachesByFran_applidoc_code(String fran_applidoc_code) throws SQLException {
+		List<AttachVO> attachList=session.selectList("Attach-Mapper.selectAttachByFran_applidoc_code", fran_applidoc_code);
+		return attachList;
+	}
+	@Override
+	public List<AttachVO> selectAttachByAttach_no(String attach_no) throws SQLException {
+		List<AttachVO> attachList=session.selectList("Attach-Mapper.selectAttachByAttach_no", attach_no);
+		return attachList;
+	}
+	
+	@Override
+	public void insertAttach(AttachVO attach) throws SQLException {
+		session.update("Attach-Mapper.insertAttach",attach);
+		
+	}
+	@Override
+	public void deleteAttach(String attach_no) throws SQLException {
+		session.update("Attach-Mapper.deleteAttach",attach_no);		
+		
+	}
+	@Override
+	public void deleteAllAttach(String return_code) throws SQLException {
+		session.update("Attach-Mapper.deleteAllAttach",return_code);
+		
+	}
+	@Override
+	public AttachVO selectAttachDownload(String attach_no) throws SQLException {
+		
+		return session.selectOne("Attach-Mapper.selectAttachDownload", attach_no);
+	}
+	@Override
+	public AttachVO selectAttachByAno(String attach_no) throws SQLException {
+		AttachVO attach=session.selectOne("Attach-Mapper.selectAttachByAno",attach_no);
+		return attach;
+	}
+	@Override
+	public void deleteAttachModi(String attach_no) throws SQLException {
+		session.update("Attach-Mapper.deleteAttachModi",attach_no);
+		
+	}
+	
+	
+	
+}

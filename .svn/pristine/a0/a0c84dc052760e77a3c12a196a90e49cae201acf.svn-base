@@ -1,0 +1,115 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+      <c:forEach items="${sampleList}" var="goods">
+<%--    		<c:forEach items="${goods.list}" var="even"> --%>
+   			${goods }
+<%--    		</c:forEach> --%>
+         <div class="row">
+            <div class="col-sm-12">
+               <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                      <thead>
+                         <tr role="row">
+                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="2">선택</th>
+                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"></th>
+                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"></th>
+                         </tr>
+                      </thead>
+                         <tbody>
+                            <tr role="row" class="odd">
+                              <td class="sorting_1" rowspan="3">기본정보</td>
+                              <td>업체명</td>
+                              <td>${goods.sup_code }</td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="even">
+                                 <td>업체주소</td>
+                              <td></td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="odd">
+                              <td>물품분류</td>
+                              <td>${goods.sup_goods_laca }</td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="even">
+                              <td class="sorting_1" rowspan="4">상품정보</td>
+                              <td>물품명</td>
+                              <td>${goods.sup_goods_name }</td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="odd">
+                               <td>이미지</td>
+                              <td>
+                                 <div class="product-image col-sm-2" id="pictureView"
+                        style="height:150px; width:140px; background-image:url('<%=request.getContextPath()%>/sup/goods/getPicture.do?sup_goods_img=${goods.sup_goods_img }');background-repeat:no-repeat;background-position:center;background-size:cover;"></div>
+                              </td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="even">
+                              <td>가격(원)</td>
+                              <td>${goods.sup_goods_price }</td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="odd">
+                               <td>상품속성</td>
+                              <td>
+                                 <p><span style="color:#0080FF;">용량 :</span> ${goods.sup_goods_attr1}${goods.sup_goods_unit }</p>
+                                   <p><span style="color:#0080FF;">물품재질 :</span> ${goods.sup_goods_attr3}</p>
+                                   <p><span style="color:#0080FF;">포장재질 :</span> ${goods.sup_goods_attr2}</p>
+                                   <p><span style="color:#0080FF;">크기 :</span> ${goods.sup_goods_attr4}cm&nbsp;*&nbsp;${goods.sup_goods_attr5}cm&nbsp;*&nbsp;${goods.sup_goods_attr6}</p>
+                                   <p><span style="color:#0080FF;">무게 :</span> ${goods.sup_goods_attr7}kg</p>
+                                   <p><span style="color:#0080FF;">특성 :</span> ${goods.sup_goods_attr8}</p>
+                              </td>
+                              <td>(채워짐)</td>
+                            </tr>
+                            
+                            <tr role="row" class="even">
+                              <td class="sorting_1" colspan="2">예상구매수량</td>
+                              <td>수량 :&nbsp;<input type="text" name="buyNum" value=1 style="text-align: right"
+                                 id="buy_quan${st.count}" name="buy_quan" onkeyup='this.value=this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z]/g, "");calcprice(${st.count },${goods.sup_goods_price});'>&nbsp;개
+                              </td>
+                              <td>수량 :&nbsp;<input type="text" id="buyNum" name="buyNum"/>&nbsp;개</td>
+                            </tr>
+                            
+                            <tr role="row" class="odd">
+                              <td class="sorting_1" colspan="2">결제금액(단가*수량)</td>
+                              <td><span id="buyTotalPrice${st.count }"></span></td>
+                              <td>자동계산</td>
+                            </tr>
+                            
+                         </tbody>
+                    </table>
+                </div>
+             </div>
+          </c:forEach>
+      
+          
+<script>
+   //단가*수량 계산
+   function calcprice(count,price){
+      var num = $('#buy_quan'+count).val().trim();
+      var totalprice = $('#buyTotalPrice'+count);
+      
+      if(num)   totalprice.text(num * price); 
+   }
+
+
+</script>      
+</body>
+</html>

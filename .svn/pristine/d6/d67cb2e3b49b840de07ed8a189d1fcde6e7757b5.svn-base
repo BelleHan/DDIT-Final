@@ -1,0 +1,146 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<html>
+<head>
+<title>FMS</title>
+<style>
+body{
+	width: 1280px; 
+	margin:0 auto;
+}
+<style>
+.searchgroup{
+	text-align: right;
+}
+.input-group{
+	float: left;
+}
+</style>
+</head>
+<body>
+	<div style="diplay:block;">
+		<iframe name="ifr" src="" frameborder="0" style="width : 100%; height : 85vh;"></iframe>
+	</div>
+<script type="text/javascript">
+//페이지 출력 
+function goPage(url, mCode){
+	if (typeof(history.pushState) == 'function'){
+		var renewURL = location.href;
+		console.log('url : ' + url);
+		renewURL = renewURL.substring(0, renewURL.indexOf('.do') + 3);
+		console.log('mCode : '+mCode);
+		if (mCode != 'MH00000') {
+			renewURL += '?mCode=' + mCode;
+		}
+		
+		history.pushState(mCode, null, renewURL);
+	} else {
+		location.hash = '#'+mCode;		
+	}
+	$('iframe[name="ifr"]').attr("src", "<%=request.getContextPath()%>"+url);
+}
+</script>
+<script>
+window.onload=function(){
+	goPage('/hq/main.do','MH00000');
+	var home = $('a.nav-link')[0];
+	home.setAttribute('href', 'javascript:goPage("/hq/main.do")');
+	var homeParentClassName = home.parentElement.classList;
+	homeParentClassName.remove('dropdown');
+	
+}
+</script>
+<!-- searchModle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script type="text/x-handlebars-template"  id="search-goods-template" >
+{{#each .}}
+<div class="searchList" >
+	    <tr class="goods" val="{{sup_goods_name}}">
+        	<td>{{hq_code}}</td>
+        	<td>{{sup_goods_name}}</td>
+        	<td>{{sup_name}}</td>
+        	<td>{{sup_goods_price}}</td>
+        	<td>{{last_update}}</td>
+        </tr>
+</div>
+{{/each}}
+</script>
+<script>
+var searchPage=1;
+/*템플릿에 서치키워드 데이터*/
+function printData(dataArr,target,templateObject){
+	var template = Handlebars.compile(templateObject.html());
+	var html = template(dataArr);
+	$('.searchList').remove();
+	target.after(html);
+}
+
+function getData(pageInfo){
+	$.ajax({
+		url : pageInfo,
+		type : 'get',
+		contentType : 'application/json',
+		success : function(data){
+			printData(data.replyList,$('#modal-fms-goods'),$('#search-goods-template'));
+			/* printPagination(data.pageMaker,$('ul#pagination'),$('#reply-pagination-template')); */
+		},
+		error : function(error){
+			AjaxErrorSecurityRedirectHandler(error.status);
+		}
+	})
+}
+
+//모달창 출력
+// 모달창 선택시 ajax 실행
+$('#btn-goods').on('click', function(){
+	$.ajax({
+		url:'<%=request.getContextPath()%>/search/goods.do',
+		type:'get',
+		success:function(goods){
+
+		},
+		error:function(error){
+			alert('데이터를 불러오는데 실패했습니다.');
+		},
+		complete:function(){
+			$('#modal-goods').modal('show');
+		}
+	})
+});
+// 데이터를 선택하면 해당 값이 넘어감
+$('.test').on('click', function(){
+	document.querySelector('#fms-goods').value = $(this).attr('val');
+	$('#modal-goods').modal('hide');
+});
+
+//데이터 검색시 readonly
+var btntest = document.querySelector('button#btn-local');
+btntest.addEventListener('click', function(){
+	$('input#fms-local').attr('readonly', true);
+})
+var btntest = document.querySelector('button#btn-fran');
+btntest.addEventListener('click', function(){
+	$('input#fms-fran').attr('readonly', true);
+})
+var btntest = document.querySelector('button#btn-logis');
+btntest.addEventListener('click', function(){
+	$('input#fms-logis').attr('readonly', true);
+})
+var btntest = document.querySelector('button#btn-sup');
+btntest.addEventListener('click', function(){
+	$('input#fms-sup').attr('readonly', true);
+})
+var btntest = document.querySelector('button#btn-case');
+btntest.addEventListener('click', function(){
+	$('input#fms-case').attr('readonly', true);
+})
+var btntest = document.querySelector('button#btn-goods');
+btntest.addEventListener('click', function(){
+	$('input#fms-goods').attr('readonly', true);
+})
+//데이터 검색 readonly 끝
+</script>
+<!-- /.searchModle -->
+</body>
+</html>

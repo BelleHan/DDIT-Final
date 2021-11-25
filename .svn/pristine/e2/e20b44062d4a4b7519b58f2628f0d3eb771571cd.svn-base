@@ -1,0 +1,75 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dao.FranListDAO;
+import kr.or.fms.hq.dao.LogisListDAO;
+import kr.or.fms.logis.dto.LogisVO;
+
+public class ComListServiceImpl implements ComListService {
+
+	private FranListDAO franListDAO;
+	public void setFranListDAO(FranListDAO franListDAO) {
+		this.franListDAO = franListDAO;
+	}
+	
+	private LogisListDAO logisListDAO;
+	public void setLogisListDAO(LogisListDAO logisListDAO) {
+		this.logisListDAO = logisListDAO;
+	}
+
+	@Override
+	public Map<String, Object> getComList() throws SQLException {
+		Map<String, Object> dataMap = null;
+		List<FranVO> franList = franListDAO.selectFranList();
+		List<LogisVO> logisList = logisListDAO.selectLogisList();
+		
+		dataMap.put("franList", franList);
+		dataMap.put("logisList", logisList);
+		return dataMap;
+	}
+
+	@Override
+	public Map<String,Object> getComList(Criteria cri) throws SQLException {
+		Map<String, Object> dataMap = null;
+		List<FranVO> franList = franListDAO.selectFranList(cri);
+		List<LogisVO> logisList = logisListDAO.selectLogisList(cri);
+		
+		dataMap.put("franList", franList);
+		dataMap.put("logisList", logisList);
+		return dataMap;
+	}
+
+	@Override
+	public Map<String, Object> getComList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(franListDAO.selectFranListCount(cri));
+
+		List<FranVO> franList = franListDAO.selectFranList(cri);
+		List<LogisVO> logisList = logisListDAO.selectLogisList(cri);
+
+		dataMap.put("franList", franList);
+		dataMap.put("logisList", logisList);
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+
+	@Override
+	public FranVO getFran(String fcode) throws SQLException {
+		FranVO fran = franListDAO.selectFranByCode(fcode);
+//		noticeDAO.increaseViewCount(nno);
+		return fran;
+	}
+	
+}

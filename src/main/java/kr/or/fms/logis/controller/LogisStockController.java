@@ -1,0 +1,90 @@
+package kr.or.fms.logis.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.or.fms.command.LStockModifyCommand;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.logis.dto.LogisWhVO;
+import kr.or.fms.logis.service.LogisStockService;
+
+@Controller
+@RequestMapping("/logis")
+public class LogisStockController {
+	
+	@Autowired
+	LogisStockService logisStockService;
+	 
+	
+	@RequestMapping("/stock/list")
+	public ModelAndView list(SearchCriteria cri, String wh, String laca, String smca, String keyword, ModelAndView mnv, HttpSession session) throws SQLException {
+		String url = "logis/list";
+		cri.setPerPageNum(20);
+		
+		System.out.println("wh : " + wh);
+//		System.out.println("laca : " + laca);
+//		System.out.println("smca : " + smca);
+		cri.getKeywordMap().put("wh", wh);
+		cri.getKeywordMap().put("laca", laca);
+		cri.getKeywordMap().put("smca", smca);
+		cri.getKeywordMap().put("keyword", keyword);
+		Map<String, Object> dataMap= logisStockService.getStockList(cri, session);
+		mnv.addObject("dataMap",dataMap);
+//		System.out.println(((List<LogisWhVO>) dataMap.get("whComboList")).size());
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	
+	@RequestMapping("/stock/detail")
+	public ModelAndView detail(LogisWhVO logisWhVO, ModelAndView mnv, String wh_name, String hq_goods_code) throws SQLException{
+		String url="logis/detail";		
+		
+		List<LogisWhVO> logisWh = logisStockService.getStock(logisWhVO);
+			System.out.println(logisWhVO.getHq_goods_code());
+			System.out.println(logisWhVO.getWh_name());
+		mnv.addObject("logisWh", logisWh);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/stock/modifyForm")
+	public ModelAndView modifyForm(LogisWhVO logisWhVO, ModelAndView mnv)throws SQLException{
+		String url="logis/modify";
+		
+		List<LogisWhVO> logisWh = logisStockService.getStockForModify(logisWhVO);
+//		System.out.println("dddddddddddddddddddddddd : " + logisWh.getHq_goods_code());
+		mnv.addObject("logisWh", logisWh);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="stock/modify.do", method=RequestMethod.POST)
+	public String modifyPost(LStockModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		String url = "logis/modify_success";
+		
+		LogisWhVO logisWh = modifyReq.toLogisWhVO();			
+		
+		
+		logisStockService.modify(logisWh);
+		
+		rttr.addAttribute("hq_goods_code", logisWh.getHq_goods_code());
+		
+		return url;
+	}
+
+}

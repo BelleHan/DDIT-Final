@@ -1,0 +1,146 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<footer>
+<!-- ./wrapper -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="card-header"><!--card-header-->
+							<div class="card-title-content col-sm-1" id="example2_paginate" >
+								<ul class="pagination" style="height: 1.2em;">
+									<li class="paginate_button page-item previous" id="example2_previous">
+										<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link"> <i class="fas fa-arrow-left"></i> </a>
+									</li>
+									<li class="paginate_button page-item next" id="example2_next">
+										<a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link"> <i class="fas fa-arrow-right"></i> </a>
+									</li>
+								</ul>
+							</div>
+								<button type="button" class="btn btn-sm card-title-content col-sm-1" style="width: 6em;">구분선택</button>
+								<div class="card-title-content col-sm-1" >
+									<div class="card-title-content-detail">
+										<select class="custom-select" style="height: calc(1.75rem + 2px); font-size: 1em;">
+											<option value="">전체</option>
+											<option value="">계약</option>
+											<option value="">발주</option>
+											<option value="">재고</option> <!--안전재고알림-->
+											<option value="">출고</option>
+											<option value="">반품</option>
+										</select>
+									</div>
+								</div>
+								<div class="card-title-content col-sm-3">
+									<div class="card-title-content">
+										<button type="submit" class="btn bg-gradient-primary btn-sm">
+											<i class="fas fa-check-circle"></i>&nbsp;&nbsp;알람확인
+										</button>
+										&nbsp;&nbsp;&nbsp;
+										<button type="submit" class="btn bg-gradient-primary btn-sm">
+											<i class="fas fa-trash"></i>&nbsp;&nbsp;전체알람삭제
+										</button>
+									</div>
+								</div>
+								<div class="card-tools col-sm-1" style="text-align: right;">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+										<i class="fas fa-minus" style="color: black;"></i>
+									</button>
+								</div>
+						</div><!--/.card-header-->
+
+					<div class="card-body">
+						<div id="example2_wrapper">
+						<div class="row col-sm-12">
+							<div class="col-sm-6">
+								<table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+									<thead role="1">
+										<tr role="row" >
+											<th style="padding: 0.1em;width: 0.5em;"><input type="checkbox" id="checkboxPrimary1" check=""></th>
+											<th style="padding: 0.1em;width: 2em;">시간</th>
+											<th style="padding: 0.1em;width: 2em;">구분</th>
+											<th style="padding: 0.1em;width: 30em;">알람메시지</th>
+										</tr>
+									</thead>
+									<tbody role="1">
+										<tr role="row" class="odd">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">물류</td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청 </td>
+										</tr>
+										<tr role="row" class="even">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">가맹</td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청 </td>
+										</tr>
+										<tr role="row" class="odd">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">공급</td>
+											<td style="padding: 0.1em;">{su_name}에서 {logis_name}으로 배송시작 </td>
+										</tr>
+										<tr role="row" class="even">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">가맹</td>
+											<td style="padding: 0.1em;"></td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-sm-6">
+								<table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+									<thead role="2">
+										<tr role="row" >
+											<th style="padding: 0.1em;width: 0.5em;"><input type="checkbox" id="checkboxPrimary1" check=""></th>
+											<th style="padding: 0.1em;width: 2em;">시간</th>
+											<th style="padding: 0.1em;width: 2em;">구분</th>
+											<th style="padding: 0.1em;width: 30em;">알람메시지</th>
+										</tr>
+									</thead>
+									<tbody role="2">
+										<tr role="row" class="odd">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">물류</td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청 </td>
+										</tr>
+										<tr role="row" class="even">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">가맹</td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청 </td>
+										</tr>
+										<tr role="row" class="odd">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">{time}</td>
+											<td style="padding: 0.1em;">공급</td>
+											<td style="padding: 0.1em;">{su_name}에서 {logis_name}으로 배송시작 </td>
+										</tr>
+										<tr role="row" class="even">
+											<td style="padding: 0.1em;"><input type="checkbox" id="checkboxPrimary2" check=""></td>
+											<td style="padding: 0.1em;">가맹</td>
+											<td style="padding: 0.1em;"></td>
+											<td style="padding: 0.1em;">{name}에서 {kind} 신청</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-7">
+							</div>
+						</div>
+					</div>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+			</div>
+		</div>
+	</section>
+</footer>

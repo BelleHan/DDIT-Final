@@ -1,0 +1,86 @@
+package kr.or.fms.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import kr.or.fms.dto.MenuVO;
+import kr.or.fms.exception.InvalidPasswordException;
+import kr.or.fms.exception.NotFoundIdException;
+import kr.or.fms.hq.service.EmpService;
+import kr.or.fms.service.MenuService;
+
+@Controller
+@RequestMapping("/hq")
+public class HqController {
+	@Autowired
+	MenuService menuService;
+	
+	@Autowired
+	EmpService empService;
+	
+	private static final Logger logger = LoggerFactory.getLogger(HqController.class);
+	
+	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
+	public String home(Model model) {
+		String url = "hq/index_hq";
+		try {
+			List<MenuVO> menuList = menuService.getMainMenuList();
+			model.addAttribute("menuList", menuList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			url = null;
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String Login(String code, String pwd, HttpSession session, HttpServletRequest request) throws Exception {
+		String url = "redirect:index.do";
+		
+		try {
+			
+			empService.login(code, pwd);
+			//로그인 성공시
+			session.setAttribute("loginUser", empService.getEmp(code));
+			session.setMaxInactiveInterval(20*60);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e; 
+		} catch (NotFoundIdException | InvalidPasswordException e) {
+			request.setAttribute("message", e.getMessage());
+			url = "common/loginFail";
+		} 
+		return url;
+	}
+	
+	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
+	public String main(Model model) {
+		String url = "hq/hqhome";
+		return url;
+	}
+	
+	@RequestMapping(value = "/common/loginForm", method = RequestMethod.GET)
+	public String loginForm(@RequestParam(defaultValue="")String error, HttpServletResponse response) {
+		String url = "common/loginForm";
+		if (error.equals("1")) {
+			response.setStatus(302);
+		}
+		return url;
+	}
+		
+}

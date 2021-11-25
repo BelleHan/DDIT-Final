@@ -1,0 +1,5 @@
+package kr.or.fms.logis.dao;
+
+public class ReturnDAOImpl implements ReturnDAO {
+
+}

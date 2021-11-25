@@ -1,0 +1,147 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<head>
+<style>
+th{
+   text-align: center;
+   margin: auto; 
+}
+td {
+   width:35%;
+   margin: auto; 
+}
+
+</style>
+</head>
+
+<title>공지목록</title>
+
+<body>
+   <section class="content-header">
+        <div class="container-fluid" style="padding:0; margin:0">
+           <div class="row md-2">
+              <div class="col-sm-6">
+<!--                  <h2>물품관리</h2>               -->
+              </div>
+              <div class="col-sm-6">
+                 <ol class="breadcrumb float-sm-right">
+                 <li class="breadcrumb-item">
+                    <a href="list.do">
+                       <i class="fa fa-dashboard"></i>물품목록
+                    </a>
+                 </li>
+                 <li class="breadcrumb-item active">
+                    물품등록
+                 </li>              
+               </ol>
+              </div>
+           </div>
+        </div>
+        <hr>
+   </section>
+          
+   <div class="card-body" style="padding-top:0px;">
+          <div class="row">
+            <div class="col-12 col-sm-4" style="padding-top: 65px">
+<!--               <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3> -->
+              <div class="col-12">
+<%--             <img src="<%=request.getContextPath() %>/sup/goods/getPicture.do?sup_goods_img=${supGoods.sup_goods_img}" alt="supGoodsImage"  --%>
+<!--                   class="product-image"> -->
+            <div class="product-image" id="pictureView" data-id="${supGoods.sup_goods_code}"></div>
+<%--             <div style="background-image:url('<%=request.getContextPath() %>/resources/js/choi.PNG'); width:100px; height:100px;"></div> --%>
+            
+              </div>
+            </div>
+            <div class="col-12 col-sm-8">
+             
+              <h3 class="my-3">${supGoods.sup_goods_name }(${supGoods.sup_goods_code })
+                <button type="button" onclick="location.href='modifyForm.do?sup_goods_code=${supGoods.sup_goods_code}';" id="modifyBtn" class="btn btn-warning float-sm-right">수 정</button>
+            <button type="button" class="btn btn-default float-right" id="cancelBtn" onclick="location.href='buy.do'" style=" margin-right: 8px;">목 록</button>
+              </h3><hr style="margin-bottom:10px;">
+            
+         <div style="padding-right:10px; padding-top:0;">
+            <span class="float-right" style="font-size: 12px;">최종업데이트일 : <fmt:formatDate value="${supGoods.sup_goods_update}" pattern="yyyy-MM-dd"/> </span>
+         </div>   
+            
+            
+         <div class="col-sm-12">
+         <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                
+                <tbody>
+                
+                <tr role="row" class="odd">
+                  <th class="sorting_1">물품명</th>
+                  <td>${supGoods.sup_goods_name }</td>
+                  <th>물품코드</th>
+                  <td>${supGoods.sup_goods_code }</td>
+                </tr>
+                <tr role="row" class="even">
+                  <th class="sorting_1">대분류</th>
+                  <td>${supGoods.sup_goods_laca}</td>
+                  <th>물품종류</th>
+                  <td>${supGoods.sup_goods_smca}</td>
+                </tr>
+                
+                <tr role="row" class="odd">
+                  <th class="sorting_1">납품가(원)</th>
+                  <td>${supGoods.sup_goods_price}</td>
+                  <th>용량(단위)</th>
+                  <td>${supGoods.sup_goods_attr1}${supGoods.sup_goods_unit}</td>
+                </tr>
+
+                <tr role="row" class="even">
+                  <th class="sorting_1">포장재질</th>
+                  <td>${supGoods.sup_goods_attr2}</td>
+                  <th>물품재질</th>
+                  <td>${supGoods.sup_goods_attr3}</td>
+                </tr>
+                
+                <tr role="row" class="odd">
+                  <th class="sorting_1">가로(cm)</th>
+                  <td>${supGoods.sup_goods_attr4}</td>
+                  <th>세로(cm)</th>
+                  <td>${supGoods.sup_goods_attr5}</td>
+                </tr>
+                
+                <tr role="row" class="even">
+                  <th class="sorting_1">높이(cm)</th>
+                  <td>${supGoods.sup_goods_attr6}</td>
+                  <th>무게(kg)</th>
+                  <td>${supGoods.sup_goods_attr7}</td>
+                </tr>
+                
+                <tr role="row" class="odd" style="height:120px;">
+                  <th class="sorting_1" style="margin: 0">제품특성</th>
+                  <td colspan='3'>${supGoods.sup_goods_attr8}</td>
+                </tr>
+               </tbody>
+              </table>
+             </div>
+           </div>
+         </div>
+     </div>
+<script src="<%=request.getContextPath() %>/resources/js/common.js" ></script>
+<script>
+   window.onload=function(){
+      GoodsPictureThumb(document.querySelector('[data-id="${supGoods.sup_goods_code}"]'),'${supGoods.sup_goods_img}','<%=request.getContextPath()%>');
+      console.log("1234");
+      
+      <c:if test="${param.from eq 'modify'}" >
+         alert("${supGoods.sup_goods_name}의 정보가 수정되었습니다.");   
+         location.href='detail.do?sup_goods_code=${supGoods.sup_goods_code}';
+         
+         if(${parentReload}){         
+            if(confirm('정보가 수정되었습니다.\n현재 화면을 닫고 새로고침 하시겠습니까?')){
+               window.opener.parent.location.reload(true);
+               window.close();
+            }   
+         }
+      </c:if>
+      
+   }
+</script>  
+</body>

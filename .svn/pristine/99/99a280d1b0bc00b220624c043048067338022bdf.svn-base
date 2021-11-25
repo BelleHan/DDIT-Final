@@ -1,0 +1,40 @@
+package kr.or.fms;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.hq.dao.StockDAO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokStockList {
+	
+	@Autowired
+	SqlSession session;
+	
+	@Autowired
+	StockDAO stockDAO;
+	
+	@Test
+	public void selectEmp() throws SQLException {
+		Criteria cri = new Criteria();
+		List<FranGoodsDeVO> franStockList = stockDAO.franStockList(cri);
+		for (FranGoodsDeVO vo : franStockList) {
+			System.out.println(vo.getHq_goods_code());
+		}
+		Assert.assertEquals(8, franStockList.size());
+	}
+
+}

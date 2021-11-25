@@ -1,0 +1,173 @@
+<%@page import="kr.or.fms.sup.dto.SupGoodsVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+th{
+	background: #E0E6F8;
+	text-align: center;
+	aling:center;
+/* 	vertical-align: center; */
+ 	valign:middle;
+ 	border:1.5px solid #A9BCF5;
+ 	padding:10px;
+ 	
+}
+.name{
+	background: #E0E6F8;
+	text-align: center;
+	font-weight: bold;
+	
+}
+td{
+/* 	border:0.6px solid #E0E6F8; */
+	padding:5px;
+	border-right  : 1.5px solid #A9BCF5;
+	
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div style="margin:0 0 10px 0;color:white;background-color: #0B0B61;padding:25px 10px 5px 25px;">&nbsp;&nbsp;<i class="fas fa-info-circle"></i>&nbsp;&nbsp;상품비교 상세화면</div>
+	<c:forEach items="${sampleList}" var="goodsList"  varStatus="ot">
+<%-- 		<div class="float-right">물품 : <b style="color:red;">${goodsList.size}</b> 건</div> --%>
+		<div class="row">
+				<div class="col-sm-12">
+					<table id="example1"  role="grid" aria-describedby="example1_info" style="font-size: 14px;border:0.6px solid #819FF7;padding:10px;margin:5px 15px 10px 25px;">
+<!-- 		                <thead> -->
+		                	<tr role="row" style="border-right  : 1.5px solid #A9BCF5;">
+			                	<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="2" style="width: 300px;">선택</th>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+							        <th class="sorting" tabindex="0" style="width:300px;" aria-controls="example1" rowspan="1" colspan="1">${goods.sup_goods_name }(${goods.sup_code })</th>
+<%-- 											<td>${goods.sup_code }</td> --%>
+								</c:forEach>
+			                	
+<!-- 						        <th class="sorting" tabindex="0" style="width:300px" aria-controls="example1" rowspan="1" colspan="1"></th> -->
+<!-- 						        <th class="sorting" tabindex="0" style="width:300px" aria-controls="example1" rowspan="1" colspan="1">업체명2</th> -->
+					      </tr>
+					      <tr>
+			                	<th class="sorting" tabindex="0" aria-controls="example1" rowspan="3" colspan="1" style="text-align: center;align:center;border-bottom: 1.5px solid #A9BCF5;">업체정보</th>
+								<td class="name">업체명</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.supVO.sup_name }</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">전화번호</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.supVO.sup_tel }</td>
+								</c:forEach>
+							</tr>
+					      <tr style="border-bottom: 1.5px solid #A9BCF5;">
+								<td class="name">이메일</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.supVO.sup_email }</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+			                	<th class="sorting" tabindex="0" aria-controls="example1" rowspan="12" colspan="1" style="align:center;">물품정보</th>
+								<td class="name">물품명</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_name }</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">대분류</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_laca }</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">소분류</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_smca }</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">용량(단위)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_attr1 }(${goods.sup_goods_unit })</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">가로(cm)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_attr4}</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">세로(cm)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_attr5}</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">높이(cm)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_attr6}</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">무게(kg)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td>${goods.sup_goods_attr7}</td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">납품가(원)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+											<td><fmt:formatNumber value="${goods.sup_goods_price}" pattern="#,###"/></td>
+								</c:forEach>
+							</tr>
+					      <tr>
+								<td class="name">수량</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+								<td><input type="text" name="buyNum" value="" style="text-align: right"
+                                 id="buy_quan${st.count}" name="buy_quan" onkeyup='this.value=this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z]/g, "");calcprice(${st.count },${goods.sup_goods_price});'>&nbsp;개
+                              	</td>
+								</c:forEach>
+						</tr>
+					      <tr style="border-bottom  : 1.5px solid #A9BCF5;">
+								<td class="name">예상결제금액(원)</td>
+								<c:forEach items="${goodsList}" var="goods" varStatus="st">
+									<td><span id="buyTotalPrice${st.count }"></span></td>
+								</c:forEach>
+							</tr>
+							
+<!-- 				        </thead> -->
+		              </table>
+		          </div>	
+		       </div>
+		
+	</c:forEach>		
+<script>
+	function thousand(x){
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+	}
+
+</script>
+<script>
+
+	
+   //단가*수량 계산
+   function calcprice(count,price){
+      var num = $('#buy_quan'+count).val().trim();
+      var totalprice = $('#buyTotalPrice'+count);
+      
+      if(num) totalprice.text(thousand(num * price)); 
+   }
+
+</script>      		
+		
+</body>
+</html>

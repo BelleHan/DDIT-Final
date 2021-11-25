@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemesh>
+	<mapping path="/**/*" decorator="/WEB-INF/views/decorator/iframe.jsp"/>
+	<mapping path="/hq/index.do" decorator="/WEB-INF/views/decorator/default_hq.jsp" />
+	<mapping path="/keyword" decorator="/WEB-INF/views/decorator/default_hq.jsp" />
+	<mapping path="/fr/index.do" decorator="/WEB-INF/views/decorator/default_fr.jsp" />
+	<mapping path="/logis/index.do" decorator="/WEB-INF/views/decorator/default_logis.jsp" />
+	<mapping path="/sup/index.do" decorator="/WEB-INF/views/decorator/default_sup.jsp" />
+<!-- 	<mapping path="/main.do" decorator="/WEB-INF/views/decorator/iframe.jsp" /> -->
+	<mapping path="*/common/*" excludes="true"/>
+</sitemesh>

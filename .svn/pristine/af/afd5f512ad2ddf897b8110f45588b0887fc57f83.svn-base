@@ -1,0 +1,37 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.fran.dto.FranNoticeVO;
+import kr.or.fms.hq.dto.FranAppliDetailVO;
+import kr.or.fms.hq.dto.FranAppliVO;
+
+public interface AppliService {
+	
+	// 목록조회	
+	Map<String,Object> getAppliList(SearchCriteria cri)throws SQLException;
+		
+	// 상세보기
+	FranAppliDetailVO read(String fran_applidoc_code)throws SQLException;	
+	
+	// 상태변경
+	void modify(FranAppliVO franAppli) throws SQLException;
+	// 신청상태변경
+	void modifyAppr(FranAppliVO franAppli) throws SQLException;
+	
+	//첨부파일 조회
+	List<AttachVO> getAttachByAttach_no(String attach_no)throws SQLException;
+	
+	//첨부파일 조회
+	AttachVO getAttachByAno(String attach_no)throws SQLException;
+	
+	public AttachVO selectAttachDownload(String attach_no)throws SQLException;
+	
+	//임시등록게시글 인서트
+	void regist(FranNoticeVO frannotice)throws SQLException;
+
+}

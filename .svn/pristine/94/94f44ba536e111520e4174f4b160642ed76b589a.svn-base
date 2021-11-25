@@ -1,0 +1,33 @@
+package kr.or.fms.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.google.gson.JsonArray;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranSalesVO;
+import kr.or.fms.hq.dao.SalesDAO;
+import kr.or.fms.util.JsonUtil;
+
+@Controller
+public class testController {
+	@Autowired
+	SalesDAO salesDAO;
+	
+	@RequestMapping("/test")
+	public JsonArray test () {
+		SearchCriteria cri = new SearchCriteria();
+		try {
+			List<FranSalesVO> franSalesList = salesDAO.franSalesList(cri);
+			String listToJson = JsonUtil.ListToJson(franSalesList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

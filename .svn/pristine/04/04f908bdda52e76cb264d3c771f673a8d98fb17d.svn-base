@@ -1,0 +1,366 @@
+package kr.or.fms.controller;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.or.fms.command.FranReturnReqRegistCommand;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.MenuVO;
+import kr.or.fms.dto.ReturnDetailVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.fran.service.FranReturnService;
+import kr.or.fms.fran.service.FranService;
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.logis.service.ReturnService;
+import kr.or.fms.service.MenuService;
+import kr.or.fms.util.GetAttachesAsMultipartFiles;
+
+@Controller
+@RequestMapping("/fr")
+public class FrController {
+	
+	@Autowired
+	MenuService menuService;
+	
+	@Autowired
+	ReturnService returnService;
+	
+	@Autowired
+	FranReturnService franReturnService;
+	
+	@Autowired
+	FranService franService;
+	
+	@Resource(name="fileUploadPath")
+	private String fileUploadPath;
+	
+	private static final Logger logger = LoggerFactory.getLogger(FrController.class);
+	
+	@RequestMapping(value="return/regist.do", method=RequestMethod.POST, produces="text/plain; charset=utf-8")
+	public String regist(FranReturnReqRegistCommand registReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String url = "redirect:/fr/return/list.do";
+		
+		ReturnVO returnVO = registReq.toReturnVO();
+		ReturnDetailVO returnDeVO = registReq.toReturnDetailVO();
+		
+		
+		List<AttachVO> attachList = GetAttachesAsMultipartFiles.save(registReq.getUploadFile(), fileUploadPath);
+		
+//		pds.setTitle(HTMLInputFilter.htmlSpecialChars(pds.getTitle()));
+		returnVO.setAttachList(attachList);
+		System.out.println("첨부파일리스트=============" + attachList);
+		franReturnService.registFranReturn(returnVO);
+		
+		String returnCode = franReturnService.getSeqCurrValue();
+		
+		returnDeVO.setReturn_code(returnCode);
+		
+		franReturnService.registFranReturnDe(returnDeVO);
+		rttr.addFlashAttribute("from", "regist");
+		
+		return url;
+	}
+	
+	@RequestMapping("/return/detail.do")
+	public ModelAndView detail(String return_code, String from, ModelAndView mnv) throws SQLException {
+		
+		String url = "fr/return/detail";
+		System.out.println("return_code : -" + return_code);
+
+		ReturnVO returnVO = new ReturnVO();
+		returnVO = franReturnService.read(return_code);
+/*		if (from != null && from.equals("list")) {
+			returnVO = franRetunService.read(return_code);
+			url = "redirect:/return/detail.do?return_code=" + return_code;
+		} else {
+			returnVO = franRetunService.getReturn(return_code);
+		}*/
+		
+		
+		List<AttachVO> attachList = franReturnService.getAttachByAttach_no(returnVO.getReturn_code());
+		if (returnVO != null && attachList != null) {
+			returnVO.setAttachList(attachList);
+		}
+		mnv.addObject("returnVO", returnVO);
+		mnv.addObject("attachList", attachList);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping("/return/modifyForm.do")
+	public ModelAndView modifyForm(ModelAndView mnv, String return_code) throws Exception {
+		
+		String url = "pds/modify";
+		
+		ReturnVO returnVO = franReturnService.getReturn(return_code);
+		
+		// 파일명 재정의
+		List<AttachVO> attachList = returnVO.getAttachList();
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
+				String fileName = attach.getFile_name().split("\\$\\$")[1];
+				attach.setFile_name(fileName);
+			}
+		}
+		
+		mnv.addObject("returnVO", returnVO);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	/*
+	@RequestMapping("/modify")
+	public String modifyPOST(PdsModifyCommand modifyReq, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String url = "redirect:/pds/detail.do";
+		
+		// 파일삭제
+		if (modifyReq.getDeleteFile() != null && modifyReq.getDeleteFile().length > 0) {
+			for (String anoStr : modifyReq.getDeleteFile()) {
+				int ano = Integer.parseInt(anoStr);
+				AttachVO attach = service.getAttachByAno(ano);
+				File deleteFile = new File(attach.getUploadPath(), attach.getFileName());
+				if (deleteFile.exists()) {
+					deleteFile.delete();	// File 삭제
+				}
+				service.removeAttachByAno(ano);	// DB삭제
+			}
+		}
+		// 파일저장
+		List<AttachVO> attachList = GetAttachesAsMultipartFiles.save(modifyReq.getUploadFile(), fileUploadPath);
+		
+		// PdsVO setting
+		PdsVO pds = modifyReq.toPdsVO();
+		pds.setAttachList(attachList);
+//		pds.setTitle(HTMLInputFilter.htmlSpecialChars(pds.getTitle()));
+		pds.setTitle((String) request.getAttribute("XSStitle"));
+		
+		// DB저장
+		service.modify(pds);
+		
+		rttr.addFlashAttribute("from", "modify");
+		rttr.addAttribute("pno", pds.getPno());
+		
+		return url;
+	}
+	 */	
+	
+	@RequestMapping("/return/remove.do")
+	public String remove(String return_code, RedirectAttributes rttr) throws Exception {
+		String url = "redirect:/fr/return/detail.do";
+		
+		// 첨부파일 삭제
+		List<AttachVO> attachList = franReturnService.getReturn(return_code).getAttachList();
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
+				File target = new File(attach.getFile_location(), attach.getFile_name());
+				if (target.exists()) {
+					target.delete();
+				}
+			}
+		}
+		
+		// DB삭제
+		franReturnService.remove(return_code);
+		
+		rttr.addFlashAttribute("from", "remove");
+		rttr.addAttribute("return_code", return_code);
+		return url;
+	}
+	
+	@RequestMapping("/return/getFile.do")
+	public String getFile(String attach_no, Model model) throws Exception {
+		
+		String url = "downloadFile";
+		
+		AttachVO attach = franReturnService.selectAttachDownload(attach_no);
+		
+		model.addAttribute("savedPath", attach.getFile_location());
+		model.addAttribute("fileName", attach.getFile_name());
+		
+		
+		return url;
+		
+		
+		
+		
+	}
+	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
+	public String home(Model model) {
+		String url = "fr/index_fr";
+		try {
+			List<MenuVO> menuList = menuService.getFranMenuList();
+			model.addAttribute("menuList", menuList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			url = null;
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping("return/registForm")
+	public ModelAndView registForm(ModelAndView mnv) throws Exception {
+		String url = "fr/return/regist";
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping("/return/list")
+	public ModelAndView returnList(SearchCriteria cri, ModelAndView mnv)throws SQLException{
+		String url="fr/return/list";		
+		
+		Map<String,Object> dataMap = franReturnService.getReturnList(cri);
+		
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/goodsList.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<HqGoodsVO>> goodsList(Model model, String goods, HttpServletRequest httpServletRequest) throws SQLException {
+		
+		ResponseEntity<List<HqGoodsVO>> entity = null;
+//		String good = httpServletRequest.getParameter("goods");
+		System.out.println("=========="+ goods);
+		try {
+				//MenuVO menu = menuService.getMenuByMname(mName);
+				List<HqGoodsVO> goodsList = franReturnService.getGoodsList(goods);
+				entity = new ResponseEntity<List<HqGoodsVO>>(goodsList, HttpStatus.OK) ;
+		}catch(SQLException e) {
+				entity = new ResponseEntity<List<HqGoodsVO>>(HttpStatus.INTERNAL_SERVER_ERROR) ;
+		}
+	
+		
+		return entity;
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
+	public String main() {
+		String url = "fr/frhome";
+		return url;
+	}
+	
+	
+	
+	@RequestMapping(value = "/common/loginForm", method = RequestMethod.GET)
+	public String loginForm(@RequestParam(defaultValue="")String error, HttpServletResponse response) {
+		String url = "common/loginForm";
+		if (error.equals("1")) {
+			response.setStatus(302);
+		}
+		return url;
+	}
+
+	@RequestMapping(value = "/common/logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		String url = "redirect:/";
+		session.invalidate();
+
+		return url;
+	}
+
+	/* login processing by spring-security
+	 * @RequestMapping(value = "/common/login")
+	public String login(String id, String pwd, HttpServletRequest request, HttpSession session, RedirectAttributes rttr)
+			throws Exception {
+		String url = "redirect:/index.do";
+
+		try {
+			memberService.login(id, pwd);
+			// 로그인 성공시
+			session.setAttribute("loginUser", memberService.getMember(id));
+			session.setMaxInactiveInterval(20 * 60); // 세션유지단위(초) 현재는 20분
+		} catch (NotFoundIDException | InvalidPasswordException e) {
+			rttr.addFlashAttribute("message", e.getMessage());
+			url = "redirect:/common/loginForm";
+		} catch (SQLException e) {
+			ExceptionLoggerHelper.write(request, e, memberService);
+			e.printStackTrace();
+			throw e; // sql이 틀렸기 때문에 반드시 throw 해야함
+		}
+
+		return url;
+	}*/
+	
+	@RequestMapping("/common/loginTimeOut")
+	public String loginTimeOut(Model model) throws Exception {
+		String url = "security/sessionOut";
+		
+		model.addAttribute("message", "세션이 만료되었습니다. \\n 다시 로그인하세요.");
+				
+		return url;
+	}
+	
+	@RequestMapping("/common/loginExpired")
+	public String loginExpired(Model model) throws Exception {
+		String url = "security/sessionOut";
+		model.addAttribute("message", "중복로그인이 확인되었습니다. \\n 다시 로그인하면 다른 장치에서 로그인은 취소됩니다.");
+				
+		return url;
+	}
+
+	@RequestMapping("/getMcode")
+	@ResponseBody
+	public ResponseEntity<MenuVO> getMcode(String mName)throws Exception{
+		
+		ResponseEntity<MenuVO> entity = null;
+		try {
+				MenuVO menu = menuService.getMenuByMname(mName);
+				
+				entity = new ResponseEntity<MenuVO>(menu, HttpStatus.OK) ;
+		}catch(SQLException e) {
+				entity = new ResponseEntity<MenuVO>(HttpStatus.INTERNAL_SERVER_ERROR) ;
+		}
+	
+		
+		return entity;
+	}
+
+//	@RequestMapping(value = "/main", method = RequestMethod.GET)
+//	public String main() throws Exception {
+//		return "common/main";
+//	}
+	
+	@RequestMapping("/info/page")
+	public ModelAndView franInfo(ModelAndView mnv)throws SQLException{
+		String url = "fr/info/page";
+		
+		String fran_code = "F011";
+		FranVO franInfo = franService.getFranInfo(fran_code);
+		
+		mnv.addObject("franInfo",franInfo);
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+}

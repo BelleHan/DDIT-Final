@@ -1,0 +1,58 @@
+package kr.or.fms.sup.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.PageMaker2;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+import kr.or.fms.hq.dto.InVO;
+import kr.or.fms.sup.dao.SupSalesDAO;
+
+public class SupSalesServiceImpl implements SupSalesService {
+	
+	private SupSalesDAO supSalesDAO;
+	public void setSupSalesDAO(SupSalesDAO supSalesDAO) {
+		this.supSalesDAO = supSalesDAO;
+	}
+	
+	@Override
+	public Map<String, Object> getBuyList(SearchCriteria cri) throws SQLException {
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		List<BuyGoodsVO> buyList = supSalesDAO.selectBoardCriteria(cri);
+		
+		int totalCount = supSalesDAO.selectBoardCriteriaTotalCount(cri);
+		
+		PageMaker2 pageMaker = new PageMaker2();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		dataMap.put("buyList", buyList);
+		dataMap.put("pageMaker", pageMaker);
+		
+		return dataMap;
+		
+	}
+
+	@Override
+	public void updateBuyst(String bCode) throws SQLException {
+		
+		supSalesDAO.updateBuySt(bCode);
+		
+	}
+
+	@Override
+	public void registInList(InVO inVO) throws SQLException {
+
+		supSalesDAO.insertInList(inVO);
+		
+	}
+
+	
+
+}

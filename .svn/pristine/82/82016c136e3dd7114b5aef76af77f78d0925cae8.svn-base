@@ -1,0 +1,93 @@
+package kr.or.fms.hq.controller;
+
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.dto.AttachVO;
+import kr.or.fms.dto.ReturnVO;
+import kr.or.fms.fran.dto.FranOrderVO;
+import kr.or.fms.hq.service.HqOrderService;
+import kr.or.fms.hq.service.HqReturnService;
+import kr.or.fms.service.MenuService;
+
+@Controller
+@RequestMapping("/hq")
+public class HqOrderController {
+
+	
+	@Autowired
+	HqOrderService hqOrderService;
+	
+	@RequestMapping("/order/list")
+	public ModelAndView orderList(SearchCriteria cri, FranOrderVO franOrderVo,  ModelAndView mnv, String orderDate)throws SQLException, ParseException{
+		String url="hq/order/list";	
+		
+
+		
+		if(franOrderVo.getFran_appr_st()!=0) {
+			cri.getKeywordMap().put("apprSt", String.valueOf(franOrderVo.getFran_appr_st()));
+		}
+		if(franOrderVo.getOrder_st_code()!=null) {
+			cri.getKeywordMap().put("orderSt", franOrderVo.getOrder_st_code());
+		}
+		
+		if(franOrderVo.getFran_code()!=null) {
+			cri.getKeywordMap().put("franCode", franOrderVo.getFran_code());
+		}
+		if(orderDate!=null && !"".equals(orderDate)) {
+			
+			System.out.println(orderDate);
+			String[] date = orderDate.split(" - ");
+			String startDate = date[0];
+			String endDate = date[1];
+			System.out.println(startDate);
+			System.out.println(endDate);
+			cri.getKeywordMap().put("orderDate", orderDate);
+			cri.getKeywordMap().put("startDate", startDate);
+			cri.getKeywordMap().put("endDate", endDate);
+			
+		}	
+
+
+		
+		
+		cri.setPerPageNum(13);
+		
+		Map<String, Object> dataMap = hqOrderService.getOrderList(cri);
+		
+		
+		mnv.addObject("dataMap", dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/order/detail")
+	public String orderDetail() throws SQLException{
+		String url="hq/order/detail";
+		
+		return url;
+		
+	}
+	
+
+
+}

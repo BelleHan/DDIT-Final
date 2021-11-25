@@ -1,0 +1,44 @@
+package kr.or.fms.logis.dto;
+
+public class LogisGoodsDeVO {
+	
+	private String sup_goods_code;
+	private String hq_code;
+	private int logis_goods_stock;
+	private int logis_safe_stock;
+	private int logis_suit_stock;
+	
+	public String getSup_goods_code() {
+		return sup_goods_code;
+	}
+	public void setSup_goods_code(String sup_goods_code) {
+		this.sup_goods_code = sup_goods_code;
+	}
+	public String getHq_code() {
+		return hq_code;
+	}
+	public void setHq_code(String hq_code) {
+		this.hq_code = hq_code;
+	}
+	public int getLogis_goods_stock() {
+		return logis_goods_stock;
+	}
+	public void setLogis_goods_stock(int logis_goods_stock) {
+		this.logis_goods_stock = logis_goods_stock;
+	}
+	public int getLogis_safe_stock() {
+		return logis_safe_stock;
+	}
+	public void setLogis_safe_stock(int logis_safe_stock) {
+		this.logis_safe_stock = logis_safe_stock;
+	}
+	public int getLogis_suit_stock() {
+		return logis_suit_stock;
+	}
+	public void setLogis_suit_stock(int logis_suit_stock) {
+		this.logis_suit_stock = logis_suit_stock;
+	}
+	
+	
+
+}

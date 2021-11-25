@@ -1,0 +1,213 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body class="sidebar-mini sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 1071.31px;">
+<!--     Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Advanced Form</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Advanced Form</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+<!--       /.container-fluid -->
+    </section>
+
+<!--     Main content -->
+    <section class="content">
+      <div class="container-fluid">
+<!--         SELECT2 EXAMPLE -->
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title">Select2 (Default Theme)</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
+            </div>
+          </div>
+<!--           /.card-header -->
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6" data-select2-id="57">
+                <div class="form-group">
+                  <label>Minimal</label>
+                  <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="3">Alabama</option>
+                    <option data-select2-id="29">Alaska</option>
+                    <option data-select2-id="30">California</option>
+                    <option data-select2-id="31">Delaware</option>
+                    <option data-select2-id="32">Tennessee</option>
+                    <option data-select2-id="33">Texas</option>
+                    <option data-select2-id="34">Washington</option>
+                  </select><span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" data-select2-id="2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-iz33-container"><span class="select2-selection__rendered" id="select2-iz33-container" role="textbox" aria-readonly="true" title="Alaska">Alaska</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                </div>
+<!--                 /.form-group -->
+                <div class="form-group">
+                  <label>Disabled</label>
+                  <select class="form-control select2 select2-hidden-accessible" disabled="" style="width: 100%;" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="6">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select><span class="select2 select2-container select2-container--default select2-container--disabled" dir="ltr" data-select2-id="5" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="true" aria-labelledby="select2-rmiv-container"><span class="select2-selection__rendered" id="select2-rmiv-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                </div>
+<!--                 /.form-group -->
+              </div>
+<!--               /.col -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Multiple</label>
+                  <select class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="8" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false"><ul class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox" aria-autocomplete="list" placeholder="Select a State" style="width: 319px;"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                </div>
+<!--                 /.form-group -->
+                <div class="form-group">
+                  <label>Disabled Result</label>
+                  <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="9" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="11">Alabama</option>
+                    <option data-select2-id="39">Alaska</option>
+                    <option disabled="disabled" data-select2-id="40">California (disabled)</option>
+                    <option data-select2-id="41">Delaware</option>
+                    <option data-select2-id="42">Tennessee</option>
+                    <option data-select2-id="43">Texas</option>
+                    <option data-select2-id="44">Washington</option>
+                  </select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="10" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-uxy9-container"><span class="select2-selection__rendered" id="select2-uxy9-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                </div>
+<!--                 /.form-group -->
+              </div>
+<!--               /.col -->
+            </div>
+<!--             /.row -->
+          <div id="jsGrid1" class="jsgrid" style="position: relative; height: 100%; width: 100%;"><div class="jsgrid-grid-header jsgrid-header-scrollbar"><table class="jsgrid-table"><tr class="jsgrid-header-row"><th class="jsgrid-header-cell jsgrid-header-sortable" style="width: 150px;">Name</th><th class="jsgrid-header-cell jsgrid-align-right jsgrid-header-sortable" style="width: 50px;">Age</th><th class="jsgrid-header-cell jsgrid-header-sortable" style="width: 200px;">Address</th><th class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable" style="width: 100px;">Country</th><th class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable" style="width: 100px;">Is Married</th></tr><tr class="jsgrid-filter-row" style="display: none;"><td class="jsgrid-cell" style="width: 150px;"><input type="text"></td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;"><input type="number"></td><td class="jsgrid-cell" style="width: 200px;"><input type="text"></td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><select><option value="0"></option><option value="1">United States</option><option value="2">Canada</option><option value="3">United Kingdom</option><option value="4">France</option><option value="5">Brazil</option><option value="6">China</option><option value="7">Russia</option></select></td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" readonly=""></td></tr><tr class="jsgrid-insert-row" style="display: none;"><td class="jsgrid-cell" style="width: 150px;"><input type="text"></td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;"><input type="number"></td><td class="jsgrid-cell" style="width: 200px;"><input type="text"></td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><select><option value="0"></option><option value="1">United States</option><option value="2">Canada</option><option value="3">United Kingdom</option><option value="4">France</option><option value="5">Brazil</option><option value="6">China</option><option value="7">Russia</option></select></td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox"></td></tr></table></div><div class="jsgrid-grid-body" style="height: 821px;"><table class="jsgrid-table"><tbody><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Otto Clay</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">61</td><td class="jsgrid-cell" style="width: 200px;">Ap #897-1459 Quam Avenue</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">China</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Connor Johnston</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">73</td><td class="jsgrid-cell" style="width: 200px;">Ap #370-4647 Dis Av.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Russia</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Lacey Hess</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">29</td><td class="jsgrid-cell" style="width: 200px;">Ap #365-8835 Integer St.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Russia</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Timothy Henson</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">78</td><td class="jsgrid-cell" style="width: 200px;">911-5143 Luctus Ave</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Ramona Benton</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">43</td><td class="jsgrid-cell" style="width: 200px;">Ap #614-689 Vehicula Street</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Brazil</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Ezra Tillman</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">51</td><td class="jsgrid-cell" style="width: 200px;">P.O. Box 738, 7583 Quisque St.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Dante Carter</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">59</td><td class="jsgrid-cell" style="width: 200px;">P.O. Box 976, 6316 Lorem, St.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Christopher Mcclure</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">58</td><td class="jsgrid-cell" style="width: 200px;">847-4303 Dictum Av.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Ruby Rocha</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">62</td><td class="jsgrid-cell" style="width: 200px;">5212 Sagittis Ave</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Canada</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Imelda Hardin</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">39</td><td class="jsgrid-cell" style="width: 200px;">719-7009 Auctor Av.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Brazil</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Jonah Johns</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">28</td><td class="jsgrid-cell" style="width: 200px;">P.O. Box 939, 9310 A Ave</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Brazil</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Herman Rosa</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">49</td><td class="jsgrid-cell" style="width: 200px;">718-7162 Molestie Av.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Russia</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Arthur Gay</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">20</td><td class="jsgrid-cell" style="width: 200px;">5497 Neque Street</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Russia</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Xena Wilkerson</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">63</td><td class="jsgrid-cell" style="width: 200px;">Ap #303-6974 Proin Street</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Lilah Atkins</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">33</td><td class="jsgrid-cell" style="width: 200px;">622-8602 Gravida Ave</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Brazil</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Malik Shepard</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">59</td><td class="jsgrid-cell" style="width: 200px;">967-5176 Tincidunt Av.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Keely Silva</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">24</td><td class="jsgrid-cell" style="width: 200px;">P.O. Box 153, 8995 Praesent Ave</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">United States</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Hunter Pate</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">73</td><td class="jsgrid-cell" style="width: 200px;">P.O. Box 771, 7599 Ante, Road</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Russia</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-row"><td class="jsgrid-cell" style="width: 150px;">Mikayla Roach</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">55</td><td class="jsgrid-cell" style="width: 200px;">Ap #438-9886 Donec Rd.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">Brazil</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr><tr class="jsgrid-alt-row"><td class="jsgrid-cell" style="width: 150px;">Upton Joseph</td><td class="jsgrid-cell jsgrid-align-right" style="width: 50px;">48</td><td class="jsgrid-cell" style="width: 200px;">Ap #896-7592 Habitant St.</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">France</td><td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input type="checkbox" disabled=""></td></tr></tbody></table></div><div class="jsgrid-pager-container"><div class="jsgrid-pager">Pages: <span class="jsgrid-pager-nav-button jsgrid-pager-nav-inactive-button"><a href="javascript:void(0);">First</a></span> <span class="jsgrid-pager-nav-button jsgrid-pager-nav-inactive-button"><a href="javascript:void(0);">Prev</a></span> <span class="jsgrid-pager-page jsgrid-pager-current-page">1</span><span class="jsgrid-pager-page"><a href="javascript:void(0);">2</a></span><span class="jsgrid-pager-page"><a href="javascript:void(0);">3</a></span><span class="jsgrid-pager-page"><a href="javascript:void(0);">4</a></span><span class="jsgrid-pager-page"><a href="javascript:void(0);">5</a></span> <span class="jsgrid-pager-nav-button"><a href="javascript:void(0);">Next</a></span> <span class="jsgrid-pager-nav-button"><a href="javascript:void(0);">Last</a></span> &nbsp;&nbsp; 1 of 5 </div></div><div class="jsgrid-load-shader" style="display: none; position: absolute; inset: 0px; z-index: 1000;"></div><div class="jsgrid-load-panel" style="display: none; position: absolute; top: 50%; left: 50%; z-index: 1000;">Please, wait...</div></div>
+
+          </div>
+<!--           /.card-body -->
+    
+
+<!-- jQuery -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/moment/moment.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- AdminLTE App -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script>
+
+
+<!-- Page script -->
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+
+    //Timepicker
+    $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+    
+    //Bootstrap Duallistbox
+    $('.duallistbox').bootstrapDualListbox()
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    });
+
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
+
+  })
+</script>
+
+
+<div class="daterangepicker ltr show-calendar opensright"><div class="ranges"></div><div class="drp-calendar left"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-calendar right"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-buttons"><span class="drp-selected"></span><button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button><button class="applyBtn btn btn-sm btn-primary" disabled="disabled" type="button">Apply</button> </div></div><div class="daterangepicker ltr show-calendar opensright"><div class="ranges"></div><div class="drp-calendar left"><div class="calendar-table"></div><div class="calendar-time"></div></div><div class="drp-calendar right"><div class="calendar-table"></div><div class="calendar-time"></div></div><div class="drp-buttons"><span class="drp-selected"></span><button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button><button class="applyBtn btn btn-sm btn-primary" disabled="disabled" type="button">Apply</button> </div></div><div class="daterangepicker ltr show-ranges opensright"><div class="ranges"><ul><li data-range-key="Today">Today</li><li data-range-key="Yesterday">Yesterday</li><li data-range-key="Last 7 Days">Last 7 Days</li><li data-range-key="Last 30 Days">Last 30 Days</li><li data-range-key="This Month">This Month</li><li data-range-key="Last Month">Last Month</li><li data-range-key="Custom Range">Custom Range</li></ul></div><div class="drp-calendar left"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-calendar right"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-buttons"><span class="drp-selected"></span><button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button><button class="applyBtn btn btn-sm btn-primary" disabled="disabled" type="button">Apply</button> </div></div></body>
+</html>

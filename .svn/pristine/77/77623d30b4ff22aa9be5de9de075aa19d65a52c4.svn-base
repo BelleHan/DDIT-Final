@@ -1,0 +1,168 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dao.OutDAO;
+import kr.or.fms.hq.dto.OutVO;
+
+public class InOutServiceImpl implements InOutService{
+	private OutDAO outDAO;
+	
+	public void setOutDAO(OutDAO outDAO) {
+		this.outDAO = outDAO;
+	}
+	
+	@Override
+	public Map<String, Object> getOutList(SearchCriteria cri) throws SQLException {
+		 Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		List<OutVO> outList = outDAO.selectOutList(cri);
+		
+		int totalCount = outDAO.selectOutListCount(cri);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		dataMap.put("outList", outList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+	
+	@Override
+	public Map<String, Object> getOutSearch(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(outDAO.selectOutListCount(cri));
+		
+		List<OutVO> outList = outDAO.selectOutList(cri);
+		dataMap.put("outList", outList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+	
+	@Override
+	public OutVO getOut(String ocode) throws SQLException {
+		OutVO out = outDAO.selectOutByCode(ocode);
+		return out;
+	}
+
+	@Override
+	public OutVO regist(OutVO out) throws SQLException {
+		String outCode = outDAO.selectOutSeqNext();
+		
+		out.setOut_code(outCode);
+		OutVO outDetail = outDAO.selectOutByCode(outCode);
+		outDAO.insertOutPlan(out);
+		return outDetail;
+		
+	}
+
+	@Override
+	public void modifyOut(OutVO out) throws SQLException {
+		outDAO.updateOut(out);
+		
+	}
+
+	@Override
+	public OutVO getOutForModify(String ocode) throws SQLException {
+		OutVO out = outDAO.selectOutByCode(ocode);
+		return out;
+	}
+
+	@Override
+	public List<OutVO> getOutList() throws SQLException {
+		List<OutVO> outList = outDAO.selectOutList();
+		return outList;
+	}
+
+	@Override
+	public List<OutVO> getOutList(Criteria cri) throws SQLException {
+		List<OutVO> outList = outDAO.selectOutList(cri);
+		return outList;
+	}
+
+	@Override
+	public Map<String, Object> getOutTakingSearchList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		//날짜변환
+				Map<String, String> data = cri.getKeywordMap();
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+				String startDate = null;
+				if (data.get("start_date") != null) {
+					startDate = data.get("start_date");
+					try {
+						Date sDate = simpleDateFormat.parse(startDate);
+						cri.setStartDate(sDate);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				String endDate = null;
+				if (data.get("end_date") != null) {
+					try {
+						endDate = data.get("end_date");
+						Date eDate = simpleDateFormat.parse(endDate);
+						cri.setEndDate(eDate);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}
+		List<OutVO> OutTakingList = outDAO.outTakingList(cri);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(outDAO.outTakingSearchCount(cri));
+		
+		dataMap.put("outTakingList", OutTakingList);
+		dataMap.put("pageMaker", pageMaker);
+		
+		return dataMap;
+	}
+
+	@Override
+	public List<OutVO> getOutTakingDetail(String ocode) throws SQLException {
+		List<OutVO> outDetail = outDAO.getOutTakingDetail(ocode);
+		return outDetail;
+	}
+
+	@Override
+	public List<OutVO> getOutTakingList() throws SQLException {
+		List<OutVO> outTakingList = outDAO.outTakingList();
+		return outTakingList;
+	}
+
+	@Override
+	public List<OutVO> getOutTakingList(Criteria cri) throws SQLException {
+		List<OutVO> outTakingList = outDAO.outTakingList(cri);
+		return outTakingList;
+	}
+
+	@Override
+	public Map<String, Object> getOutTakingList(SearchCriteria cri) throws SQLException {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		List<OutVO> outTakingList = outDAO.outTakingList(cri);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(outDAO.outTakingSearchCount(cri));
+		
+		dataMap.put("outTakingList", outTakingList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+}

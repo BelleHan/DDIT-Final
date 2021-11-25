@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Stock-Mapper">
+
+	<sql id="searchFranMap">	
+		<if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+			and e.fran_local_num like '%'||#{keywordMap.fms_local}||'%'			
+		</if>
+		<if test="keywordMap.fms_fran!=null and !keywordMap.fms_fran.equals('')">
+			and f.fran_code like '%'||#{keywordMap.fms_fran}||'%'			
+		</if>
+		<if test="keywordMap.fms_laca!=null and !keywordMap.fms_laca.equals('')">
+			and h.sup_goods_laca like '%'||#{keywordMap.fms_laca}||'%'
+		</if>		
+		<if test="keywordMap.fms_smca!=null and !keywordMap.fms_smca.equals('')">
+			and h.sup_goods_smca like '%'||#{keywordMap.fms_smca}||'%'			
+		</if>		
+		<if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+			and h.sup_goods_name like '%'||#{keywordMap.fms_goods}||'%'			
+		</if>		
+	</sql>
+	<sql id="searchLogisMap">	
+		<if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+			and c.logis_local_num like '%'||#{keywordMap.fms_local}||'%'			
+		</if>
+		<if test="keywordMap.fms_logis!=null and !keywordMap.fms_logis.equals('')">
+			and c.logis_code like '%'||#{keywordMap.fms_logis}||'%'			
+		</if>
+		<if test="keywordMap.fms_laca!=null and !keywordMap.fms_laca.equals('')">
+			and f.sup_goods_laca like '%'||#{keywordMap.fms_laca}||'%'
+		</if>		
+		<if test="keywordMap.fms_smca!=null and !keywordMap.fms_smca.equals('')">
+			and f.sup_goods_smca like '%'||#{keywordMap.fms_smca}||'%'			
+		</if>		
+		<if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+			and f.sup_goods_name like '%'||#{keywordMap.fms_goods}||'%'			
+		</if>		
+	</sql>
+	<sql id="searchLogisTakingMap">	
+		<if test="keywordMap.fms_logis!=null and !keywordMap.fms_logis.equals('')">
+			and d.logis_code like '%'||#{keywordMap.fms_logis}||'%'			
+		</if>
+		<if test="keywordMap.fms_wh!=null and !keywordMap.fms_wh.equals('')">
+			and d.wh_code like '%'||#{keywordMap.fms_wh}||'%'			
+		</if>
+		<if test="keywordMap.start_date!=null and !keywordMap.start_date.equals('')">
+		    and <![CDATA[d.taking_date >= #{keywordMap.start_date}]]>
+	    			
+		</if>
+		<if test="keywordMap.end_date!=null and !keywordMap.end_date.equals('')">
+			and <![CDATA[d.taking_date <= #{keywordMap.end_date}]]>			
+		</if>
+	</sql>
+	
+	<update id="updateFranSafeSuit" parameterType="franStockVO">
+		update fran_goods_detail
+		set
+		fran_safe_stock=#{fran_safe_stock},
+		fran_suit_stock=#{fran_suit_stock}
+		where fran_code=#{fran_code}
+		and hq_goods_code=#{hq_goods_code}
+	</update>
+	
+	
+	<select id="franStockList" resultType="franStockVO">
+	SELECT
+	    e.fran_local_num,
+	    f.fran_code,
+	    e.fran_name,
+	    h.sup_goods_laca,
+	    h.sup_goods_smca,
+	    f.hq_goods_code ,
+	    h.sup_goods_name ,
+	    i.sup_name ,
+	    f.fran_goods_stock ,
+	    f.fran_safe_stock ,
+	    f.fran_suit_stock ,
+	    g.goods_delivery_price ,
+	    g.goods_retail_price ,
+	    g.goods_max_order
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code = f.fran_code
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+	ORDER by
+		f.fran_code, h.sup_goods_laca, h.sup_goods_smca, f.hq_goods_code
+	</select>
+	
+	<select id="franStockSearchList" resultType="franStockVO">
+	SELECT
+	    e.fran_local_num,
+	    f.fran_code,
+	    e.fran_name,
+	    h.sup_goods_laca,
+	    h.sup_goods_smca,
+	    f.hq_goods_code ,
+	    h.sup_goods_name ,
+	    i.sup_name ,
+	    f.fran_goods_stock ,
+	    f.fran_safe_stock ,
+	    f.fran_suit_stock ,
+	    g.goods_delivery_price ,
+	    g.goods_retail_price ,
+	    g.goods_max_order
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code is not null
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+		AND   e.fran_code = f.fran_code
+		<include refid="searchFranMap" />
+	ORDER by
+		f.fran_code, h.sup_goods_laca, h.sup_goods_smca, f.hq_goods_code
+	</select>
+	
+	
+	
+	
+	<select id="franStockListCount" parameterType="map" resultType="int">
+	SELECT 
+		count(*)
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+		h.sup_goods_code is not null
+	    AND e.fran_code = f.fran_code
+	    AND g.hq_goods_code = f.hq_goods_code
+	    AND h.sup_goods_code = g.sup_goods_code
+	    AND i.sup_code = h.sup_code 
+		<include refid="searchFranMap" />
+	</select>
+	
+	<select id="logisStockList" resultType="logisStockVO">
+	SELECT
+	    c.logis_code,
+	    c.logis_local_num,
+	    c.logis_name,
+	    d.wh_name,
+	    f.sup_goods_laca,
+	    f.sup_goods_smca,
+	    f.sup_goods_name,
+	    d.hq_goods_code,
+	    d.logis_goods_stock,
+	    d.logis_safe_stock,
+	    d.logis_suit_stock,
+	    e.goods_max_order,
+	    e.goods_delivery_price
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+		c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+    ORDER by
+		c.logis_code, d.wh_name, f.sup_goods_laca, f.sup_goods_smca, d.hq_goods_code
+	</select>
+	
+	<select id="logisStockSearchList" resultType="logisStockVO">
+	SELECT
+	    c.logis_code,
+	    c.logis_local_num,
+	    c.logis_name,
+	    d.wh_name,
+	    f.sup_goods_laca,
+	    f.sup_goods_smca,
+	    f.sup_goods_name,
+	    d.hq_goods_code,
+	    d.logis_goods_stock,
+	    d.logis_safe_stock,
+	    d.logis_suit_stock,
+	    e.goods_max_order,
+	    e.goods_delivery_price
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+		c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+		<include refid="searchLogisMap" />
+	ORDER by
+		c.logis_code, d.wh_name, f.sup_goods_laca, f.sup_goods_smca, d.hq_goods_code
+	</select>
+	<select id="logisStockListCount" parameterType="map" resultType="int">
+	SELECT 
+		count(*)
+	FROM
+	    logis_wh d,
+	    logis c,
+	    hq_goods e,
+	    sup_goods f
+	WHERE
+		c.logis_code is not null
+	    AND   c.logis_code = d.logis_code
+	    AND   e.hq_goods_code = d.hq_goods_code
+	    AND   f.sup_goods_code = e.sup_goods_code
+	    <include refid="searchLogisMap" />
+	</select>
+	
+	<select id="logisStockTakingList" resultType="logisStockTakingVO">
+	SELECT
+    distinct d.taking_code,
+	    d.logis_code,
+	    a.logis_name,
+	    d.wh_code,
+	    b.wh_name,
+   	    TO_CHAR(d.taking_date, 'YYYY-MM-DD') TDATE
+
+	FROM
+	    logis_wh b,
+	    logis a,
+	    hq_goods c,
+	    logis_stock_taking d
+	WHERE
+	    a.logis_code = b.logis_code
+	    AND   b.hq_goods_code = c.hq_goods_code
+	    AND   d.logis_code = a.logis_code
+	    AND   d.wh_code = b.wh_code
+	    AND   d.hq_goods_code = c.hq_goods_code
+	ORDER BY d.taking_code, d.wh_code
+	
+	</select>
+	
+	<select id="logisStockTakingSearchList" parameterType="map" resultType="logisStockTakingVO">
+	SELECT
+    distinct d.taking_code,
+	    d.logis_code,
+	    a.logis_name,
+	    d.wh_code,
+	    b.wh_name,
+	    TO_CHAR(d.taking_date, 'YYYY-MM-DD') TDATE
+	FROM
+	    logis_wh b,
+	    logis a,
+	    hq_goods c,
+	    logis_stock_taking d
+	WHERE
+	    a.logis_code = b.logis_code
+	    AND   b.hq_goods_code = c.hq_goods_code
+	    AND   d.logis_code = a.logis_code
+	    AND   d.wh_code = b.wh_code
+	    AND   d.hq_goods_code = c.hq_goods_code
+	    <include refid="searchLogisTakingMap" />
+	ORDER BY d.taking_code
+	</select>
+	<select id="logisStockTakingSearchCount" parameterType="map" resultType="int">
+	SELECT
+	 count(distinct d.taking_code)
+	FROM
+	   logis_stock_taking d
+	WHERE taking_code is not null
+	    <include refid="searchLogisTakingMap" />
+	</select>
+	
+	<select id="getLogisStockTakingDetail" resultType="logisStockTakingVO">
+	SELECT
+	    d.taking_code,
+	    d.logis_code,
+	    a.logis_name,
+	    d.wh_code,
+	    b.wh_name,
+	    d.taking_date,
+	    c.hq_goods_code,
+	    c.hq_goods_name,
+	    b.logis_goods_stock,
+	    d.computer_stock,
+	    d.actual_stock,
+	    d.deff_quantity,
+	    d.adjust_quantity,
+	    d.note
+	FROM
+	    logis_wh b,
+	    logis a,
+	    hq_goods c,
+	    logis_stock_taking d
+	WHERE
+	     d.taking_code is not null
+	    AND      a.logis_code = b.logis_code
+	    AND   b.hq_goods_code = c.hq_goods_code
+	    AND   d.logis_code = a.logis_code
+	    AND   d.wh_code = b.wh_code
+	    AND   d.hq_goods_code = c.hq_goods_code    
+	    AND   d.taking_code = #{data}
+	</select>
+	
+	<!-- 웅 -->
+	<select id="logisStockList2" resultType="logisStockVO">
+	SELECT
+	    e.logis_safe_stock,
+	    e.logis_suit_stock,
+	    e.logis_goods_stock,
+	    e.wh_name,
+	    f.sup_goods_name,
+	    f.sup_goods_smca,
+	    f.sup_goods_laca,
+	    d.goods_max_order,
+	    d.hq_goods_code,
+        E.LOGIS_CODE
+	FROM
+	    logis_wh e,
+	    hq_goods d,
+	    sup_goods f
+	WHERE
+	    d.hq_goods_code = e.hq_goods_code
+	    AND   f.sup_goods_code = d.sup_goods_code
+	</select>
+	
+	<select id="logisStockSearchList2" resultType="logisStockVO">
+	SELECT
+	    e.logis_safe_stock,
+	    e.logis_suit_stock,
+	    e.logis_goods_stock,
+	    e.wh_name,
+	    f.sup_goods_name,
+	    f.sup_goods_smca,
+	    f.sup_goods_laca,
+	    d.goods_max_order,
+	    d.hq_goods_code,
+        E.LOGIS_CODE
+	FROM
+	    logis_wh e,
+	    hq_goods d,
+	    sup_goods f
+	WHERE
+	    d.hq_goods_code = e.hq_goods_code
+	    AND   f.sup_goods_code = d.sup_goods_code
+		<include refid="searchLogisMap" />
+	</select>
+	
+</mapper>

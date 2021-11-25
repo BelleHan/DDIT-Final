@@ -1,0 +1,187 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
+<c:set var="outList" value="${dataMap.outList }" />
+
+<head>
+<style>
+.th{
+	background-color: silver;
+
+}
+.tab {
+	width: 1000px;
+	margin-left: 10%;
+	
+}
+
+</style>
+
+</head>
+
+<title>입출고계획</title>
+
+<body>
+	<c:if test="${from eq 'regist'}">
+    		<script>
+    		    alert("등록되었습니다.");
+    			window.opener.location.reload();
+    			window.close();
+    		</script>
+   		</c:if>
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>물류관리</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>입출고계획
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	검색
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+   	<section class="content">
+   		<div class="card">
+   			<div class="card-header with-border">
+   				<!-- <button type="button" class="btn btn-primary" onclick="OpenWindow('registForm.do', '업체등록', '800', '700');" >업체등록</button> -->
+   							
+   			</div>
+   			
+   			
+   			</div>
+   			</section>
+   			
+   			<div class="row">
+			<div class="col-12 col-sm-12">
+			  <div class="card card-primary card-tabs">
+				<div class="card-header p-0 pt-1">
+				  <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+					
+					<li class="nav-item">
+					  <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">출고</a>
+					</li>
+					
+				  </ul>
+				</div>
+				<div>
+   			
+   			<td>
+            <button type="button" class="btn btn-block bg-gradient-primary btn-sm" style="width: 7%; margin-left: 90%; margin-top: 5px;" onclick="OpenWindow('outRegistForm.do','글등록',800,700);">등록</button>
+			
+             </td>
+   			
+   			</div> 
+				
+				<div class="card-body">
+				  <div class="tab-content" id="custom-tabs-one-tabContent">
+					<div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+					   <!-- <div class="card-body" style="text-align:center;"> -->
+		    		  <div class="row">
+			             <div class="col-sm-12">	
+				    		<table class="table table-bordered">
+				    			<tr>
+				                	<th>출고번호</th>
+				                	<th>물류센터코드</th>
+				                	<th>물품코드</th>
+				                	<th>출고지유형</th>
+				                	<th>도착지</th>
+				                	<th>출고일자</th> 
+				                	<th>출고상태</th> 
+				                	<th>출고수량</th> 
+				               	</tr>
+				               	
+							<c:forEach items="${outList }" var="out">
+							<tr onclick="OpenWindow('outdetail.do?ocode=${out.out_code}','','800','900');" style="cursor:pointer;">
+									<td>${out.out_code }</td>
+									<td>${out.logis_code }</td>
+					        		<td>${out.hq_goods_code }</td>
+					        		<td>${out.out_loca_type }</td>
+					        		<td>${out.out_loca }</td>
+					        		<td><fmt:formatDate value="${out.out_date }" pattern="yyyy-MM-dd"/></td>
+					        		<td>${out.out_st }</td>
+					        		<td>${out.out_num }</td>
+				               	</tr>
+							</c:forEach>
+				            </table>
+		    		     </div> <!-- col-sm-12 -->
+		    	       </div> <!-- row -->
+					    <div class="card-footer">
+							<%@ include file="/WEB-INF/views/common/paginationhq.jsp" %>    			
+			    		</div>
+    				</div> <!-- card-body -->
+    		
+    				
+					
+					<!--  <table border="1" class="tab" style="margin-bottom: 20px;">
+					 	<tr>
+					 		<th class="th">키워드 검색</th>
+					 		<th>
+					 		<select class="form-control" style="width: 300px; float: left; margin-left: 20px; margin-top: 5px;">
+                          <option>공급업체코드</option>
+                          <option>지역코드</option>
+                          <option>공급업체명</option>
+                        </select>
+                        
+					 <div class="row" style="width: 600px; float: left;">
+               		 	<div class="col-md-8 offset-md-2">
+		                    <form action="simple-results.html">
+		                        <div class="input-group">
+	                            <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
+	                            <div class="input-group-append">
+	                                <button type="submit" class="btn btn-lg btn-default">
+	                                    <i class="fa fa-search"></i>
+	                                </button>
+	                            </div>
+	                        </div>
+		                    </form>
+		                </div>
+		            </div>
+			 		</th>					 	
+					 	</tr>
+					 	<tr>
+					 		<th  class="th">등록상태</th>
+					 		<th>
+					 		<div class="form-check" style="margin-left: 10px; float: left;">
+                          <input class="form-check-input" type="checkbox">
+                          <label class="form-check-label">임시</label> 
+                        </div>
+					 		<div class="form-check" style="margin-left: 10px;  float: left;">
+                          <input class="form-check-input" type="checkbox">
+                          <label class="form-check-label">정식</label> 
+                        </div>
+                       	<button type="button" class="btn btn-block btn-primary btn-sm" style="margin-left: 20px; width: 80px;">검색</button>
+					 		</th>					 	
+					 	</tr>
+					 	
+					 </table> -->
+					   
+
+<!-- 		</div> -->
+					</div>
+					
+				  </div>
+				</div>
+				<!-- /.card -->
+				
+			  </div>
+			  
+
+   	
+
+</body>

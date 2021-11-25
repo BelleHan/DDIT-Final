@@ -1,0 +1,90 @@
+package kr.or.fms.hq.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.Criteria;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranGoodsDeVO;
+import kr.or.fms.logis.dto.LogisGoodsDeVO;
+
+public class StockDAOImpl implements StockDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public List<FranGoodsDeVO> franStockList() throws SQLException {
+		List<FranGoodsDeVO> franList = session.selectList("Stock-Mapper.franStockList");
+		return franList;
+	}
+
+	@Override
+	public List<FranGoodsDeVO> franStockList(Criteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranGoodsDeVO> franList = session.selectList("Stock-Mapper.franStockSearchList", null, rowBounds);
+		return franList;
+	}
+
+	@Override
+	public List<FranGoodsDeVO> franStockList(SearchCriteria cri) throws SQLException {
+		int offset = cri.getStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		List<FranGoodsDeVO> franList = session.selectList("Stock-Mapper.franStockList", cri, rowBounds);
+		return franList;
+	}
+
+	@Override
+	public int franStockListCount(SearchCriteria cri) throws SQLException {
+		int count=0;		
+		count=session.selectOne("Stock-Mapper.franStockListCount",cri);
+		return count;
+	}
+
+	@Override
+	public void updateFranStock(FranGoodsDeVO franGoods) throws SQLException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<LogisGoodsDeVO> logisStockList() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LogisGoodsDeVO> logisStockList(Criteria cri) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LogisGoodsDeVO> logisStockList(SearchCriteria cri) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int logisStockListCount(SearchCriteria cri) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public LogisGoodsDeVO logisStockdetail(String logis_code, String wh_code, String hq_goods_code)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

@@ -1,0 +1,93 @@
+package kr.or.fms.fran.dto;
+
+import java.util.Date;
+
+public class FranOrderVO {
+	private String fran_order_code;  //가맹점발주코드
+	private String fran_code;    	 //가맹점코드
+	private Date fran_order_date;	 //발주일자
+	private String fran_appr_st;		 //발주승인상태
+	private int fran_order_price;	 //발주총금액
+	private int fran_mark;			 //발주즐겨찾기
+	private String order_st_code;
+	private Date startDate;
+	private Date endDate;
+	private Date order_end_date;
+	private String order_deli_se;		//총알, 일반
+	private String deposit_st_code;
+	
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public String getOrder_st_code() {
+		return order_st_code;
+	}
+	public void setOrder_st_code(String order_st_code) {
+		this.order_st_code = order_st_code;
+	}
+	public Date getOrder_end_date() {
+		return order_end_date;
+	}
+	public void setOrder_end_date(Date order_end_date) {
+		this.order_end_date = order_end_date;
+	}
+	public String getOrder_deli_se() {
+		return order_deli_se;
+	}
+	public void setOrder_deli_se(String order_deli_se) {
+		this.order_deli_se = order_deli_se;
+	}
+	public String getDeposit_st_code() {
+		return deposit_st_code;
+	}
+	public void setDeposit_st_code(String deposit_st_code) {
+		this.deposit_st_code = deposit_st_code;
+	}
+	public String getFran_order_code() {
+		return fran_order_code;
+	}
+	public void setFran_order_code(String fran_order_code) {
+		this.fran_order_code = fran_order_code;
+	}
+	public String getFran_code() {
+		return fran_code;
+	}
+	public void setFran_code(String fran_code) {
+		this.fran_code = fran_code;
+	}
+	public Date getFran_order_date() {
+		return fran_order_date;
+	}
+	public void setFran_order_date(Date fran_order_date) {
+		this.fran_order_date = fran_order_date;
+	}
+	public String getFran_appr_st() {
+		return fran_appr_st;
+	}
+	public void setFran_appr_st(String fran_appr_st) {
+		this.fran_appr_st = fran_appr_st;
+	}
+	public int getFran_order_price() {
+		return fran_order_price;
+	}
+	public void setFran_order_price(int fran_order_price) {
+		this.fran_order_price = fran_order_price;
+	}
+	public int getFran_mark() {
+		return fran_mark;
+	}
+	public void setFran_mark(int fran_mark) {
+		this.fran_mark = fran_mark;
+	}
+	
+}

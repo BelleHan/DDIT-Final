@@ -1,0 +1,19 @@
+package kr.or.fms.sup.dto;
+
+import java.util.Date;
+
+public class SupAccountHistoryVO {
+	
+	private Date sup_account_code;
+
+	public Date getSup_account_code() {
+		return sup_account_code;
+	}
+
+	public void setSup_account_code(Date sup_account_code) {
+		this.sup_account_code = sup_account_code;
+	}
+	
+	
+
+}

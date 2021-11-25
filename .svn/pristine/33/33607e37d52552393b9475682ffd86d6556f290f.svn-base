@@ -1,0 +1,31 @@
+package kr.or.fms.fran.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.or.fms.fran.service.FranOrderService;
+import kr.or.fms.hq.dto.HqGoodsVO;
+
+@Controller
+@RequestMapping("/fr")
+public class FrOrderController {
+
+	@Autowired
+	FranOrderService franOrderService;
+	
+    @RequestMapping("/order/list")
+    public String hqGoodsList(Model model) throws SQLException{
+        String url="fr/order/list";
+        
+        List<HqGoodsVO> orderGoodsList = franOrderService.getOrderGoodsList();
+        model.addAttribute("orderGoodsList", orderGoodsList);
+                
+        return url;
+     }
+
+}

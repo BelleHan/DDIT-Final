@@ -1,0 +1,198 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${dataMap.pageMaker.cri }" />
+<c:set var="appliList" value="${dataMap.appliList }" />
+
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style>
+body {
+   font-family: 'Noto Sans KR', sans-serif;
+}
+.content-header{
+   padding : 8px .5em;
+}
+.card-body{
+    padding: 0.25rem;
+}
+.table {
+    font-size: 13px;
+    text-align: center;
+}
+.search-group, .form-control {
+   font-size : 13px;
+   text-align : right;
+}
+.search-group {
+   padding-top: 2px;
+}
+.search-card {
+   padding-top : 5px;
+    padding-bottom: 0px;
+   height : 85px;
+    width: 1260px;
+    margin: auto;
+}
+.search-body{
+   padding : 5px 30px;
+   height : 80px;
+}
+.search-navi{
+   position : fixed;
+   top : 92vh;
+   left : 71vh;
+   font-size : 13px;   
+}
+.search-navi{
+   position : fixed;
+   top : 35rem;
+   left : 34rem;   
+   font-size : 13px;
+}
+.input-padding-bottom {
+   margin-bottom : 5px;
+}
+.custom-checkbox {
+   padding-left : 108px;
+}
+#btn-goods {
+   height : 31px;
+}
+.custom-control-label {
+   padding-top: 3px;
+}
+.btn-fms-search{
+   height: 30px;
+}
+#btn-search {
+   height : 65px; margin-left : 26px;
+}
+.body-top {
+   margin-top : 5px;
+}
+#custom-tabs-one-profile-tab{
+   background-color: white;
+}
+#tab{
+background-color: #5ea4ff;
+}
+.table td{
+padding: 6.8px;
+}
+
+
+</style>
+</head>
+
+<title>가맹점신청서게시판</title>
+
+<body>
+
+	 <!-- Main content -->
+	<section class="content-header">
+	  	<div class="container-fluid">
+	  		<div class="row md-2">
+	  			<div class="col-sm-6">
+	  				<h1>신청서</h1>  				
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item">
+			        	<a href="list.do">
+				        	<i class="fa fa-dashboard"></i>신청서
+				        </a>
+			        </li>
+			        <li class="breadcrumb-item active">
+			        	목록
+			        </li>		        
+	    	  </ol>
+	  			</div>
+	  		</div>
+	  	</div>
+	</section>
+	 
+	 <!-- Main content -->
+    <section class="content">		
+		<div class="card">
+			<div class="card-body">
+				<div class="col-12 col-sm-12">
+        <div class="card card-primary card-tabs">
+          <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">가맹점</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">공급업체</a>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content" id="custom-tabs-one-tabContent">
+              <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                <table class="table table-bordered text-center" >					
+                  <tr style="font-size:0.95em;">
+                    <th style="width:5%;">번 호</th>
+                    <th style="width:10%;">신청코드</th>
+                    <th style="width:10%;">등록상태</th>
+                    <th style="width:10%;">신청자</th>
+                    <th style="width:10%;">신청일자</th>
+                    <th style="width:10%;">신청상태</th>
+                  </tr>				
+                  <c:if test="${empty appliList }" >
+                    <tr>
+                      <td colspan="6">
+                        <strong>해당 내용이 없습니다.</strong>
+                      </td>
+                    </tr>
+                  </c:if>						
+                  <c:forEach items="${appliList }" var="appli">
+                  <c:set var="i" value="${i+1 }" />
+                    <tr onclick="OpenWindow('detail.do?fran_applidoc_code=${appli.fran_applidoc_code }','상세보기',800,900);"
+                                style='font-size: 1em;' style="cursor:pointer;">
+                      <td>${i }</td>
+                      <td>${appli.fran_applidoc_code }</td>
+                      <td>${appli.fran_reg_st }</td>
+                      <td>${appli.fran_owner }</td>
+                      <td>
+                        <fmt:formatDate value="${appli.fran_appli_date }" pattern="yyyy-MM-dd"/>
+                      </td>
+                      <td><span class="badge bg-red">${appli.fran_applidoc_appr_st }</span></td>
+                    </tr>
+                  </c:forEach>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                 
+ddddddddddddddddddddd
+
+              </div>
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>				
+			</div>
+			<div class="card-footer">
+				<%@ include file="/WEB-INF/views/common/pagination.jsp" %>				
+			</div>
+		</div>
+		
+    </section>
+    <!-- /.content -->
+
+</body>
+
+
+
+
+
+
+

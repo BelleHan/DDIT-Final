@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FranToFran-Mapper">
+	
+	<resultMap type="hqGoods" id="hqGoods">
+		<result column="hq_goods_name" property="hq_goods_name" />
+		<result column="hq_goods_code" property="hq_goods_code" />
+		<result column="goods_delivery_price" property="goods_delivery_price" />
+		<collection property="supGoodsVO" resultMap="supGoods"></collection>
+	</resultMap>
+
+	<resultMap type="supGoods" id="supGoods">
+		<result column="sup_goods_attr1" property="sup_goods_attr1" />
+		<result column="sup_goods_unit" property="sup_goods_unit" />
+		<result column="sup_goods_code" property="sup_goods_code" />
+		<result column="sup_goods_laca" property="sup_goods_laca" />
+		<result column="sup_goods_smca" property="sup_goods_smca" />
+		<result column="sup_goods_name" property="sup_goods_name"/>
+		<result column="sup_goods_regdate" property="sup_goods_regdate"/>
+	</resultMap>
+	
+	<resultMap type="fran" id="fran">
+		<result column="fran_code" property="fran_code"/>
+		<result column="fran_name" property="fran_name"/>
+		<result column="fran_tel" property="fran_tel"/>
+		<result column="fran_zip" property="fran_zip"/>
+		<result column="fran_addr" property="fran_addr"/>
+		<result column="fran_detail_addr" property="fran_detail_addr"/>
+	</resultMap>
+	
+	<resultMap type="franDeal" id="franDeal">
+		<result column="fran_deal_code" property="fran_deal_code"/>
+		<result column="appr_deal_fran" property="appr_deal_fran"/>
+		<result column="deal_quan" property="deal_quan"/>
+		<result column="deal_st" property="deal_st"/>
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<collection property="hqGoodsVO" resultMap="hqGoods"></collection>
+		<collection property="franVO" resultMap="fran"></collection>
+	</resultMap>
+	
+	<resultMap type="franGoodsDe" id="franGoodsDe">
+		<result column="hq_goods_code" property="hq_goods_code"/>
+		<result column="fran_goods_stock" property="fran_goods_stock"/>
+		<result column="fran_suit_stock" property="fran_suit_stock"/>
+		<collection property="hqGoodsVO" resultMap="hqGoods"></collection>
+	</resultMap>
+	
+	<select id="selectSearchFran" parameterType="str">
+         select fran_latitude, fran_longitude 
+         from fran 
+         where fran_local_num = #{fran_local_num}
+	</select>
+	
+	<select id="selectFranLocal" parameterType="str">
+         select fran_local_num 
+         from fran 
+         where fran_code = #{fran_code}
+	</select>
+
+	<select id="searchNearFran" parameterType="fran" resultType="fran">
+		select *
+		from (
+		select  fran_name, fran_tel, fran_code, fran_latitude, fran_zip, fran_addr, fran_detail_addr, fran_longitude, DISTANCE_WGS84( #{fran_latitude}, #{fran_longitude}, fran_latitude, fran_longitude) as distance
+		from fran)
+		<![CDATA[where distance <= 5]]>
+		order by distance
+	</select>
+<!-- 		SELECT  FRAN_NAME, FRAN_TEL, DISTANCE_WGS84(36.325029177771526, 127.42004956953849, FRAN_LATITUDE, FRAN_LONGITUDE) AS DISTANCE -->
+	<sql id="searchBox">
+		<if test="keywordMap.laca == null or keywordMap.laca.equals('')">
+			  and b.sup_goods_laca = ''			
+		</if>
+		<if test="keywordMap.laca != null and !keywordMap.laca.equals('')">
+			  and b.sup_goods_laca = #{keywordMap.laca}			
+		</if>
+		<if test="keywordMap.smca != null and keywordMap.smca != ''">
+			  and b.sup_goods_smca = #{keywordMap.smca}			
+		</if>
+		<if test="keywordMap.keyword != null and keywordMap.keyword != ''">
+			  and b.sup_goods_name like '%'||#{keywordMap.keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectChangeGoods" parameterType="str" resultMap="hqGoods">
+		select 
+		a.hq_goods_code, a.hq_goods_name, b.sup_goods_attr1, b.sup_goods_unit
+		from hq_goods a, sup_goods b 
+		where a.sup_goods_code 
+		in (select sup_goods_code from sup_goods where sup_goods_laca = #{sup_goods_laca})
+	</select>
+
+
+	<select id="searchGoods" resultMap="hqGoods">
+		select a.hq_goods_code, a.goods_delivery_price, b.sup_goods_laca, b.sup_goods_smca, a.hq_goods_name
+		from hq_goods a, sup_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		<include refid="searchBox"></include>
+		 order by b.sup_goods_regdate desc
+	</select>
+
+	<select id="searchGoodsCount" resultType="int">
+		select count(*)
+		from hq_goods a, sup_goods b
+		where a.sup_goods_code = b.sup_goods_code
+		<include refid="searchBox"></include>
+	</select>
+	
+	<!-- 대분류 콤보박스 -->
+	<select id="lacaCombo" resultType="str">
+		select 
+		distinct (sup_goods_laca) 
+		from sup_goods 
+		where sup_goods_code in (select sup_goods_code from hq_goods)
+	</select>
+	
+	<!-- 소분류 콤보박스 -->
+	<select id="smcaCombo" resultType="str">
+	    select 
+	    distinct(sup_goods_smca) 
+	    from sup_goods 
+	    where sup_goods_code in(select sup_goods_code from hq_goods)
+	</select>
+	
+	<!-- 대분류 적용시 대분류에 속한 소분류 -->
+	<select id="searchSmca" parameterType="str" resultType="str">
+		 select 
+		 distinct(sup_goods_smca) 
+		 from sup_goods 
+		 where sup_goods_laca = #{sup_goods_laca}
+	</select>
+	
+	<!-- 거래코드 만들기 -->
+	<select id="makeFranDealCode" resultType="str">
+		select  'FF'||lpad(fran_tofran_seq.nextval, 4, '0') from dual
+	</select>
+	
+	<!-- 가맹점간 거래 fran_deal insert -->
+	<update id="franToFranDeal" parameterType="franDeal">
+		insert into 
+		fran_deal(fran_deal_code, fran_code, appr_deal_fran, deal_quan, hq_goods_code)
+		values(#{fran_deal_code}, #{fran_code}, #{appr_deal_fran}, #{deal_quan}, #{hq_goods_code})
+	</update>
+	
+	<!-- 가맹점간 거래 요청 후 요청중인 물품 list가져오기 -->
+	<select id="selectFranDeal" resultMap="franDeal" parameterType="str">
+		select 
+		a.fran_deal_code, a.appr_deal_fran, a.deal_quan, a.deal_st, a.hq_goods_code, b.hq_goods_name 
+        from fran_deal a, hq_goods b 
+        where a.hq_goods_code = b.hq_goods_code
+        and to_char(a.deal_date,'yyyy/mm/dd') = (select to_char(sysdate, 'yyyy/mm/dd') from dual)
+        and a.fran_code = #{fran_code}
+	</select>
+	
+	<!-- 나에게 온 가맹점간 거래 내용 조회(거래내용) -->
+	<!-- 로그인한 가맹점 -->
+	<select id="selectDealList"  parameterType="str" resultMap="franDeal">
+	 	select a.*, b.hq_goods_name, c.fran_name, c.fran_tel, c.fran_zip, c.fran_addr, c.fran_detail_addr
+        from fran_deal a, hq_goods b, fran c
+        where a.hq_goods_code = b.hq_goods_code
+        and a.fran_code = c.fran_code
+        and a.appr_deal_fran = #{fran_code}
+        and deal_st='1'
+        and deal_date like sysdate
+	</select>
+	
+	<!--1) 가맹점 재고요청 목록에서 물품 가져오기 -->
+<!-- 	<select id="dealgoodslist" parameterType="java.util.List" resultType="frangoodsde"> -->
+<!-- 	   select  -->
+<!--        hq_goods_code, fran_goods_stock, fran_suit_stock  -->
+<!--        from fran_goods_detail  -->
+<!--        where fran_code = #{fran_code} -->
+<!--        and hq_goods_code in  -->
+       
+<!--         <ITERATE  property="goodsCodeList" open="(" close=")" conjunction=","> -->
+<!--         #goodsCodeList[]# -->
+<!--     	</ITERATE> -->
+<!-- 	</select> -->
+	
+	<!-- 2) 가맹점 재고요청 목록 물품가져오기 -->
+	<select id="dealGoodsList" parameterType="str" resultMap="franGoodsDe">
+	   select 
+       a.hq_goods_code, a.fran_goods_stock, a.fran_suit_stock, b.hq_goods_name 
+       from fran_goods_detail a, hq_goods b
+       where fran_code = #{fran_code}
+       and a.hq_goods_code = b.hq_goods_code
+       and a.hq_goods_code in (
+            select distinct a.hq_goods_code
+            from fran_deal a, hq_goods b, fran c
+            where a.hq_goods_code = b.hq_goods_code
+            and a.fran_code = c.fran_code
+            and a.appr_deal_fran = #{fran_code}
+            and deal_st='1'
+            and deal_date like sysdate
+        )
+	</select>
+	
+	<!-- 당장거래 물품에 대한 재고조회 -->
+	<select id="selectGoodsStock" parameterType="franGoodsDe" resultType="franGoodsDe">
+       select 
+       hq_goods_code, fran_goods_stock, fran_suit_stock 
+       from fran_goods_detail 
+       where hq_goods_code = #{hq_goods_code} and fran_code =#{fran_code}
+	</select>
+	
+	<!-- 거래를 요청한 가맹점의 정보조회 -->
+	<!-- 거래코드로 조회 -->
+	<select id="getRequestFranInfo" parameterType="str" resultType="fran">
+		select 
+		* 
+		from fran 
+		where fran_code = (select fran_code from fran_deal where fran_deal_code = #{fran_deal_code})
+	</select>
+	
+	<!-- 거래수락 -->
+	<update id="acceptDeal" parameterType="franDeal">
+		 update fran_deal 
+		 set deal_st = '2' 
+		 where appr_deal_fran = #{fran_code} 
+		 and fran_deal_code= #{fran_deal_code}
+	</update>
+	<!-- 거래거절 -->
+	<update id="denyDeal" parameterType="franDeal">
+	    update fran_deal 
+	    set deal_st = '3' 
+	    where appr_deal_fran = #{fran_code} 
+		and fran_deal_code= #{fran_deal_code}
+	</update>
+	
+	<!-- 거래수락 후 다른 요청 삭제 -->
+	<update id="deleteOtherDeal" parameterType="franDeal">
+	  	delete from fran_deal 
+	  	where appr_deal_fran != #{fran_code} 
+		and fran_deal_code= #{fran_deal_code}
+	</update>
+</mapper>

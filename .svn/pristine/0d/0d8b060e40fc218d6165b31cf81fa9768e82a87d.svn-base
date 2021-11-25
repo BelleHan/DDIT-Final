@@ -1,0 +1,62 @@
+package kr.or.fms.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dto.HqGoodsVO;
+import kr.or.fms.logis.dto.LogisVO;
+import kr.or.fms.sup.dto.SupGoodsVO;
+import kr.or.fms.sup.dto.SupVO;
+
+public class KeywordDAOImpl implements KeywordDAO {
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+
+	@Override
+	public List<HqGoodsVO> goods() throws SQLException {
+		List<HqGoodsVO> goodsList = null;
+		goodsList = session.selectList("Keyword-Mapper.hqGoods");
+		return goodsList;
+	}
+
+	@Override
+	public List<String> local() throws SQLException {
+		List<String> localList = session.selectList("Keyword-Mapper.local");
+		return localList;
+	}
+	
+	@Override
+	public List<LogisVO> logis() throws SQLException {
+		List<LogisVO> logisList = session.selectList("Keyword-Mapper.logis");
+		return logisList;
+	}
+	
+	@Override
+	public List<FranVO> fran() throws SQLException {
+		List<FranVO> franList = session.selectList("Keyword-Mapper.fran");
+		return franList;
+	}
+	
+	@Override
+	public List<SupVO> sup() throws SQLException {
+		List<SupVO> supList = session.selectList("Keyword-Mapper.sup");
+		return supList;
+	}
+	@Override
+	public List<String> laca() throws SQLException {
+		List<String> lacaList = session.selectList("Keyword-Mapper.laca");
+		return lacaList;
+	}
+	@Override
+	public List<String> smca() throws SQLException {
+		List<String> smcaList = session.selectList("Keyword-Mapper.smca");
+		return smcaList;
+	}
+
+}

@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+        <div class="row">
+          <div class="col-md-12">
+                 <button type="button" class="btn btn-block btn-danger btn-xs" style="height: 150px;"><h1>종료</h1></button>
+          </div>
+        </div>
+        
+        <div class="row" style="height: 1000px;">
+          <div class="col-md-12">
+                 <div><h1>QR자리</h1></div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-12">
+          <table class="col-12">
+          
+          	<tr>
+          		<td><h1>물품코드</h1></td> 
+          		<td><h1>물품명</h1></td>
+          	</tr>
+          	
+          	<tr>
+          		<td><h1><input type="text" style="text-align: center;" value="hg0001"></h1></td>
+          		<td><h1><input type="text" style="text-align: center;" value="가공원두"></h1></td>
+          	</tr>
+
+          	<tr>
+          		<td><h1>현재수량</h1></td>
+          		<td><h1>실사수량</h1></td>
+          	</tr>
+          	
+          	<tr>
+          		<td><h1><input type="text" style="text-align: center;" value="11"></h1></td>
+          		<td><h1><input type="text" style="text-align: center;" value="22"></h1></td>
+          	</tr>
+          	
+          </table>
+          <div class="col-12 row">
+	          <div class="col-6">
+	          	<button type="button" class="btn btn-block btn-info btn-xs" style="height: 300px; font-size: 20em;"><h1><strong>+</strong></h1></button>
+	          </div>
+	          <div class="col-6">
+	          	<button type="button" class="btn btn-block btn-info btn-xs" style="height: 300px; font-size: 20em;"><h1><strong>-</strong></h1></button>
+	          </div>
+          </div>
+        </div>
+        </div>
+        
+        <div class="col-12 row" style="margin-top: 7px;">
+        	<button type="button" class="btn btn-block btn-primary btn-xs" style="height: 200px; font-size: 20em;"><h1><strong>확인</strong></h1></button>
+        </div>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+package kr.or.fms.hq.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dao.OutDAO;
+import kr.or.fms.hq.dto.OutVO;
+
+public class InOutServiceImpl implements InOutService{
+	private OutDAO outDAO;
+	
+	public void setOutDAO(OutDAO outDAO) {
+		this.outDAO = outDAO;
+	}
+	
+	@Override
+	public Map<String, Object> getOutList(SearchCriteria cri) throws SQLException {
+		 Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		List<OutVO> outList = outDAO.selectOutList(cri);
+		
+		int totalCount = outDAO.selectOutListCount(cri);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalCount);
+		
+		dataMap.put("outList", outList);
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
+	}
+
+	@Override
+	public OutVO getOut(String ocode) throws SQLException {
+		OutVO out = outDAO.selectOutByCode(ocode);
+		return out;
+	}
+
+	@Override
+	public void regist(OutVO out) throws SQLException {
+		outDAO.insertOutPlan(out);
+		
+	}
+
+	@Override
+	public void modifyOut(OutVO out) throws SQLException {
+		outDAO.updateOut(out);
+		
+	}
+
+	@Override
+	public OutVO getOutForModify(String ocode) throws SQLException {
+		OutVO out = outDAO.selectOutByCode(ocode);
+		return out;
+	}
+
+	
+	
+}

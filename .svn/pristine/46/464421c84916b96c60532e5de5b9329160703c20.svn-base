@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Attach-Mapper">
+
+	<select id="selectAttachByFrno" resultType="attach">
+		select * 
+		from attach 
+		where file_register = #{file_register}
+	</select>	
+	
+	<select id="selectAttachByAno" resultType="attach">
+		select *
+		from attach
+		where attach_no=#{attach_no}
+	</select>
+	
+	<update id="insertAttach">
+		insert into
+		attach (attach_no, file_location, file_name, file_type, file_no, file_register)
+		values (#{attach_no}, #{file_location}, #{file_name},#{file_type}, 
+				#{file_no},#{file_register} )
+	</update>
+	
+	<update id="deleteAttach">
+		delete from attach where ano = #{ano}
+	</update>
+	
+	<update id="deleteAllAttach">
+		delete 
+		from attach 
+		where pno = #{pno}
+	</update>
+	
+</mapper>

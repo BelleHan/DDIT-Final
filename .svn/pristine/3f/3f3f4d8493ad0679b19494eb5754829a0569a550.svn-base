@@ -1,0 +1,22 @@
+package kr.or.fms.controller;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class CommonController {
+	
+	@RequestMapping(value = "/logout.do")
+	public String logout(HttpSession session) {
+		String url = "redirect:/";
+		session.invalidate();
+		return url;
+	}
+	@RequestMapping(value = "/keyword")
+	public String keyword(HttpSession session) {
+		String url = "common/keyword";
+		return url;
+	}
+}

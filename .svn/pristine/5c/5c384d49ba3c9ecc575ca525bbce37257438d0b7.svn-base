@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Fran-Mapper">
+
+	<select id="selectFranByCode" parameterType="str" resultType="fran">
+		select *
+		from fran
+		where fran_code = #{fran_code}
+	</select>
+	
+	<select id="selectFranCont" parameterType="str" resultType="franContractInfo">
+		select *
+		from fran_contract_info
+		where fran_code = #{fran_code}
+	</select>
+	
+	<select id="selectFranEmp" parameterType="str" resultType="hqEmp">
+		select emp_name, emp_tel 
+		from hq_emp 
+		where fran_code = #{fran_code}
+	</select>
+	
+	<update id="insertST" parameterType="franStChange">
+		insert 
+		into 
+		fran_st_change
+        (
+        
+       	  ST_CHANGE_REASON
+        , ST_CHANGE_DATE
+        , APPLI_ST
+        , ST_CHANGE_START
+        , ST_CHANGE_END
+        , ST_CHANGE_CODE
+        , FRAN_CODE
+        
+        )
+		values
+        (#{st_change_reason}, sysdate, #{appli_st}, #{st_change_start}, #{st_change_end}, 'ST'||lpad(franstchange_seq.nextval, 4, '0'), #{fran_code})
+	</update>
+	
+	<update id="updateST" parameterType="franStChange">
+		update 
+		board 
+		set 
+		title=#{title}, content=#{content}, updatedate=sysdate 
+		where bno=#{bno}
+	</update>
+	
+	<update id="deleteST" parameterType="int">
+		delete 
+		from board 
+		where bno=#{bno}
+	</update>
+</mapper>

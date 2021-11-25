@@ -1,0 +1,42 @@
+package kr.or.fms.hq;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.or.fms.command.PageMaker;
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.fran.dto.FranVO;
+import kr.or.fms.hq.dao.FranListDAO;
+import kr.or.fms.hq.dao.LogisListDAO;
+import kr.or.fms.hq.service.ComListService;
+import kr.or.fms.logis.dto.LogisVO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:kr/or/fms/context/root-context.xml")
+@Transactional
+public class MokFranModify {
+	
+	@Autowired
+	   private FranListDAO franListDAO;
+	   
+	   @Rollback
+	   @Test
+	   public void selectEmp() throws SQLException {
+	      FranVO fran = new FranVO();
+	      fran.setFran_addr("ㅇㅇㅇ");
+	      franListDAO.updateFran(fran);
+	   }
+
+
+}

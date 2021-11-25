@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+	
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/fontawesome-free/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- daterange picker -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/daterangepicker/daterangepicker.css">
+	<!-- iCheck for checkboxes and radio inputs -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+	<!-- Bootstrap Color Picker -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+	<!-- Tempusdominus Bbootstrap 4 -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	<!-- Select2 -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	<!-- Bootstrap4 Duallistbox -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/dist/css/adminlte.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet"	href="<%=request.getContextPath() %>/resources/bootstrap/dist/css/adminlte.min.css">
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Common Style -->
+	<link rel="stylesheet"	href="<%=request.getContextPath() %>/resources/css/common.css">
+	<!-- toast ui Grid -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/tui-grid/dist/tui-grid.min.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/tui-date-picker/dist/tui-date-picker.min.css" />
+	
+	<!-- sweetalert -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Noto+Sans+KR&display=swap" rel="stylesheet">

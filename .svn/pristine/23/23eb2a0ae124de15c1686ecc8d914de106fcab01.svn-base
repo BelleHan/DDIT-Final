@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Stock-Mapper">
+
+	<select id="franStockList" resultType="franGoodsDe">
+	SELECT
+	    e.fran_local_num,
+	    f.fran_code,
+	    e.fran_name,
+	    h.sup_goods_laca,
+	    h.sup_goods_smca,
+	    f.hq_goods_code ,
+	    h.sup_goods_name ,
+	    i.sup_name ,
+	    f.fran_goods_stock ,
+	    f.fran_safe_stock ,
+	    f.fran_suit_stock ,
+	    g.goods_delivery_price ,
+	    g.goods_retail_price ,
+	    g.goods_max_order
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code = f.fran_code
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+	</select>
+	
+	<select id="franStockSearchList" resultType="franGoodsDe">
+	SELECT
+	    e.fran_local_num,
+	    f.fran_code,
+	    e.fran_name,
+	    h.sup_goods_laca,
+	    h.sup_goods_smca,
+	    f.hq_goods_code ,
+	    h.sup_goods_name ,
+	    i.sup_name ,
+	    f.fran_goods_stock ,
+	    f.fran_safe_stock ,
+	    f.fran_suit_stock ,
+	    g.goods_delivery_price ,
+	    g.goods_retail_price ,
+	    g.goods_max_order
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+	    e.fran_code = f.fran_code
+	    AND   g.hq_goods_code = f.hq_goods_code
+	    AND   h.sup_goods_code = g.sup_goods_code
+	    AND   i.sup_code = h.sup_code
+		AND   e.fran_code is not null
+		order by e.fran_code
+	</select>
+	
+	<sql id="searchFranMap">	
+		<if test="keywordMap.fms_local!=null and !keywordMap.fms_local.equals('')">
+			and e.fran_local_num like '%'||#{keywordMap.fms_local}||'%'			
+		</if>
+		<if test="keywordMap.fms_fran!=null and !keywordMap.fms_fran.equals('')">
+			and f.fran_code like '%'||#{keywordMap.fms_fran}||'%'			
+		</if>
+		<if test="keywordMap.fms_laca!=null and !keywordMap.fms_laca.equals('')">
+			and h.sup_goods_laca like '%'||#{keywordMap.fms_laca}||'%'
+		</if>		
+		<if test="keywordMap.fms_smca!=null and !keywordMap.fms_smca.equals('')">
+			and h.sup_goods_smca like '%'||#{keywordMap.fms_smca}||'%'			
+		</if>		
+		<if test="keywordMap.fms_goods!=null and !keywordMap.fms_goods.equals('')">
+			and h.sup_goods_name like '%'||#{keywordMap.fms_goods}||'%'			
+		</if>		
+	</sql>
+	
+	
+	<select id="franStockListCount" parameterType="map" resultType="int">
+	SELECT 
+		count(*)
+	FROM
+	    fran_goods_detail f,
+	    fran e,
+	    hq_goods g,
+	    sup_goods h,
+	    sup i
+	WHERE
+		h.sup_goods_code is not null
+	    AND e.fran_code = f.fran_code
+	    AND g.hq_goods_code = f.hq_goods_code
+	    AND h.sup_goods_code = g.sup_goods_code
+	    AND i.sup_code = h.sup_code 
+		<include refid="searchFranMap" />
+	</select>
+</mapper>

@@ -1,0 +1,55 @@
+package kr.or.fms.sup.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.fms.command.SearchCriteria;
+import kr.or.fms.hq.dto.BuyGoodsVO;
+import kr.or.fms.hq.dto.InVO;
+
+public class SupSalesDAOImpl implements SupSalesDAO {
+	
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session=session;
+	}
+	
+	@Override
+	public List<BuyGoodsVO> selectBoardCriteria(SearchCriteria cri) throws SQLException {
+		int offset=cri.getStartRowNum();
+		int limit=cri.getPerPageNum();		
+		RowBounds rowBounds=new RowBounds(offset,limit);
+		
+		List<BuyGoodsVO> buyList=
+				session.selectList("SupSales-Mapper.selectBuyGoodsList",cri,rowBounds);
+		
+		return buyList;
+	}
+	
+	@Override
+	public int selectBoardCriteriaTotalCount(SearchCriteria cri) throws SQLException {
+		
+		int count=session.selectOne("SupSales-Mapper.selectSearchBuyListCount",cri);
+		
+		return count;
+	}
+
+	@Override
+	public void updateBuySt(String bCode) throws SQLException {
+		
+		session.update("SupSales-Mapper.updateBuySt", bCode);
+		
+	}
+
+	@Override
+	public void insertInList(InVO inVO) throws SQLException {
+
+		session.update("SupSales-Mapper.insertInList", inVO);
+		
+	}
+
+
+}
